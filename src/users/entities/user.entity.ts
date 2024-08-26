@@ -1,3 +1,4 @@
+import { Role } from '#/roles/entities/role.entity';
 import {
   Entity,
   Column,
@@ -6,6 +7,7 @@ import {
   DeleteDateColumn,
   VersionColumn,
   CreateDateColumn,
+  ManyToOne,
 } from 'typeorm';
 
 @Entity()
@@ -13,27 +15,19 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    default: 'guest',
-  })
+  @Column()
   fullName: string;
 
   @Column()
   email: string;
 
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    default: 'unknown',
-  })
+  @Column()
   phoneNumber: string;
 
   @Column({
-    type: "enum",
-    enum: ["male", "female", "other"],
-    default: "other"
+    type: 'enum',
+    enum: ['male', 'female', 'other'],
+    default: 'other',
   })
   gender: string;
 
@@ -43,15 +37,8 @@ export class User {
   @Column('text')
   address: string;
 
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    default: 'unknown',
-  })
+  @Column()
   password: string;
-
-  @Column({ default: true })
-  isActive: boolean;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
@@ -70,4 +57,8 @@ export class User {
     nullable: true,
   })
   deletedAt: Date;
+
+  @ManyToOne(() => Role, (role) => role.users)
+  role: Role;
 }
+
