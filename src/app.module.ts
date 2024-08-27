@@ -11,6 +11,7 @@ import * as pino from 'pino';
 import { SeederModule } from '#/seeder/seeder.module';
 import { RolesModule } from './roles/roles.module';
 import { DestinationsModule } from './destinations/destinations.module';
+import { BlogsModule } from './blogs/blogs.module';
 
 @Module({
   imports: [
@@ -95,11 +96,12 @@ import { DestinationsModule } from './destinations/destinations.module';
       },
       inject: [ConfigService],
     }),
-    SeederModule,
+    // SeederModule,
     UsersModule,
     HealthModule,
     RolesModule,
     DestinationsModule,
+    BlogsModule,
   ],
 })
 export class AppModule {}

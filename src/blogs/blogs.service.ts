@@ -1,21 +1,21 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
-import { Role } from './entities/role.entity';
+import { CreateBlogDto } from './dto/create-blog.dto';
+import { UpdateBlogDto } from './dto/update-blog.dto';
+import { Blog } from './entities/blog.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
-export class RolesService {
+export class BlogsService {
   constructor(
-    @InjectRepository(Role)
-    private rolesRepository: Repository<Role>,
+    @InjectRepository(Blog)
+    private blogsRepository: Repository<Blog>,
   ) {}
 
-  async create(createRoleDto: CreateRoleDto) {
-    const result = await this.rolesRepository.insert(createRoleDto);
+  async create(createBlogDto: CreateBlogDto) {
+    const result = await this.blogsRepository.insert(createBlogDto);
 
-    return this.rolesRepository.findOneOrFail({
+    return this.blogsRepository.findOneOrFail({
       where: {
         id: result.identifiers[0].id,
       },
@@ -23,16 +23,12 @@ export class RolesService {
   }
 
   findAll() {
-    return this.rolesRepository.findAndCount({
-      relations: {
-        users : true,
-      }
-    });
+    return this.blogsRepository.findAndCount();
   }
 
   async findOne(id: string) {
     try {
-      return await this.rolesRepository.findOneOrFail({
+      return await this.blogsRepository.findOneOrFail({
         where: {
           id,
         },
@@ -52,9 +48,9 @@ export class RolesService {
     }
   }
 
-  async update(id: string, updateRoleDto: UpdateRoleDto) {
+  async update(id: string, updateBlogDto: UpdateBlogDto) {
     try {
-      await this.rolesRepository.findOneOrFail({
+      await this.blogsRepository.findOneOrFail({
         where: {
           id,
         },
@@ -73,9 +69,9 @@ export class RolesService {
       }
     }
 
-    await this.rolesRepository.update(id, updateRoleDto);
+    await this.blogsRepository.update(id, updateBlogDto);
 
-    return this.rolesRepository.findOneOrFail({
+    return this.blogsRepository.findOneOrFail({
       where: {
         id,
       },
@@ -84,7 +80,7 @@ export class RolesService {
 
   async remove(id: string) {
     try {
-      await this.rolesRepository.findOneOrFail({
+      await this.blogsRepository.findOneOrFail({
         where: {
           id,
         },
@@ -103,6 +99,6 @@ export class RolesService {
       }
     }
 
-    await this.rolesRepository.delete(id);
+    await this.blogsRepository.delete(id);
   }
 }

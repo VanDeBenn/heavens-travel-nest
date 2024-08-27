@@ -1,3 +1,4 @@
+import { Blog } from '#/blogs/entities/blog.entity';
 import { Role } from '#/roles/entities/role.entity';
 import {
   Entity,
@@ -8,6 +9,8 @@ import {
   VersionColumn,
   CreateDateColumn,
   ManyToOne,
+  OneToMany,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -15,14 +18,14 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('varchar', { length: 255 })
   fullName: string;
 
-  @Column()
+  @Column('varchar', { length: 32 })
   email: string;
 
-  @Column()
-  phoneNumber: string;
+  @Column('bigint')
+  phoneNumber: number;
 
   @Column({
     type: 'enum',
@@ -31,13 +34,13 @@ export class User {
   })
   gender: string;
 
-  @Column('date')
+  @Column()
   birtDate: Date;
 
-  @Column('text')
+  @Column('varchar', { length: 255 })
   address: string;
 
-  @Column()
+  @Column('varchar', { length: 32 })
   password: string;
 
   @CreateDateColumn({
@@ -58,7 +61,14 @@ export class User {
   })
   deletedAt: Date;
 
-  @ManyToOne(() => Role, (role) => role.users)
-  role: Role;
-}
+  // @Column({ name: 'role_id' })
+  // roleId: string;
 
+  @ManyToOne(() => Role, (role) => role.users)
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
+
+  @OneToMany(() => Blog, (blog) => blog.user)
+  blogs: Blog[];
+  result: { id: string; };
+}

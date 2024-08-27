@@ -8,15 +8,22 @@ import {
   VersionColumn,
   CreateDateColumn,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 
 @Entity()
-export class Role {
+export class Blog {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  name: string;
+  title: string;
+  
+  @Column()
+  description: string;
+  
+  @Column()
+  pathPhoto: string;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
@@ -36,7 +43,7 @@ export class Role {
   })
   deletedAt: Date;
 
-  @OneToMany(() => User, (user) => user.role)
-  users?: User[];
+  @ManyToOne(() => User, (user) => user.blogs)
+  user: User;
 }
 
