@@ -13,7 +13,16 @@ export class DestinationsService {
   ) {}
 
   async create(createDestinationDto: CreateDestinationDto) {
-    const result = await this.destinationsRepository.insert(createDestinationDto);
+    const dataDestination = new Destination();
+    dataDestination.name = createDestinationDto.name;
+    dataDestination.priceAdult = createDestinationDto.priceAdult;
+    dataDestination.priceChildren = createDestinationDto.priceChildren;
+    dataDestination.maxCapacity = createDestinationDto.maxCapacity;
+    dataDestination.description = createDestinationDto.description;
+    dataDestination.address = createDestinationDto.address;
+    dataDestination.pathLocation = createDestinationDto.pathLocation;
+
+    const result = await this.destinationsRepository.insert(dataDestination);
 
     return this.destinationsRepository.findOneOrFail({
       where: {
@@ -49,6 +58,15 @@ export class DestinationsService {
   }
 
   async update(id: string, updateDestinationDto: UpdateDestinationDto) {
+    const dataDestination = new Destination();
+    dataDestination.name = updateDestinationDto.name;
+    dataDestination.priceAdult = updateDestinationDto.priceAdult;
+    dataDestination.priceChildren = updateDestinationDto.priceChildren;
+    dataDestination.maxCapacity = updateDestinationDto.maxCapacity;
+    dataDestination.description = updateDestinationDto.description;
+    dataDestination.address = updateDestinationDto.address;
+    dataDestination.pathLocation = updateDestinationDto.pathLocation;
+
     try {
       await this.destinationsRepository.findOneOrFail({
         where: {
@@ -69,7 +87,7 @@ export class DestinationsService {
       }
     }
 
-    await this.destinationsRepository.update(id, updateDestinationDto);
+    await this.destinationsRepository.update(id, dataDestination);
 
     return this.destinationsRepository.findOneOrFail({
       where: {

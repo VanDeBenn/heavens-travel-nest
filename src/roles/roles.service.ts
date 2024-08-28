@@ -12,8 +12,12 @@ export class RolesService {
     private rolesRepository: Repository<Role>,
   ) {}
 
+  // create new role
   async create(createRoleDto: CreateRoleDto) {
-    const result = await this.rolesRepository.insert(createRoleDto);
+    const dataRole = new Role();
+    dataRole.name = createRoleDto.name;
+
+    const result = await this.rolesRepository.insert(dataRole);
 
     return this.rolesRepository.findOneOrFail({
       where: {
@@ -25,8 +29,8 @@ export class RolesService {
   findAll() {
     return this.rolesRepository.findAndCount({
       relations: {
-        users : true,
-      }
+        users: true,
+      },
     });
   }
 
@@ -52,7 +56,11 @@ export class RolesService {
     }
   }
 
+  // update role
   async update(id: string, updateRoleDto: UpdateRoleDto) {
+    let dataRole = new Role();
+    dataRole.name = dataRole.name;
+
     try {
       await this.rolesRepository.findOneOrFail({
         where: {
@@ -73,7 +81,7 @@ export class RolesService {
       }
     }
 
-    await this.rolesRepository.update(id, updateRoleDto);
+    const result = await this.rolesRepository.update(id, updateRoleDto);
 
     return this.rolesRepository.findOneOrFail({
       where: {
@@ -82,6 +90,7 @@ export class RolesService {
     });
   }
 
+  // delete role
   async remove(id: string) {
     try {
       await this.rolesRepository.findOneOrFail({

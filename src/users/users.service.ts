@@ -11,20 +11,21 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    private roleService: RolesService
+    private roleService: RolesService,
   ) {}
 
+  // create new user
   async create(createUserDto: CreateUserDto) {
-    const role = await this.roleService.findOne(createUserDto.roleId)
-    const dataUser = new User()
-    dataUser.fullName = createUserDto.fullName
-    dataUser.email = createUserDto.email
-    dataUser.phoneNumber = createUserDto.phoneNumber
-    dataUser.gender = createUserDto.gender
-    dataUser.birtDate = createUserDto.birtDate
-    dataUser.address = createUserDto.address
-    dataUser.password = createUserDto.password
-    dataUser.role = role
+    const role = await this.roleService.findOne(createUserDto.roleId);
+    const dataUser = new User();
+    dataUser.fullName = createUserDto.fullName;
+    dataUser.email = createUserDto.email;
+    dataUser.phoneNumber = createUserDto.phoneNumber;
+    dataUser.gender = createUserDto.gender;
+    dataUser.birtDate = createUserDto.birtDate;
+    dataUser.address = createUserDto.address;
+    dataUser.password = createUserDto.password;
+    dataUser.role = role;
 
     const result = await this.usersRepository.insert(dataUser);
     return this.usersRepository.findOneOrFail({
@@ -37,8 +38,9 @@ export class UsersService {
   findAll() {
     return this.usersRepository.findAndCount({
       relations: {
-        role : true,
-      }
+        role: true,
+        blogs: true,
+      },
     });
   }
 
@@ -64,7 +66,19 @@ export class UsersService {
     }
   }
 
+  // update user
   async update(id: string, updateUserDto: UpdateUserDto) {
+    const role = await this.roleService.findOne(updateUserDto.roleId);
+    let dataUser = new User();
+    dataUser.fullName = updateUserDto.fullName;
+    dataUser.email = updateUserDto.email;
+    dataUser.phoneNumber = updateUserDto.phoneNumber;
+    dataUser.gender = updateUserDto.gender;
+    dataUser.birtDate = updateUserDto.birtDate;
+    dataUser.address = updateUserDto.address;
+    dataUser.password = updateUserDto.password;
+    dataUser.role = role;
+
     try {
       await this.usersRepository.findOneOrFail({
         where: {
@@ -85,7 +99,7 @@ export class UsersService {
       }
     }
 
-    await this.usersRepository.update(id, updateUserDto);
+    const result = await this.usersRepository.update(id, dataUser);
 
     return this.usersRepository.findOneOrFail({
       where: {
@@ -94,6 +108,7 @@ export class UsersService {
     });
   }
 
+  // delete user
   async remove(id: string) {
     try {
       await this.usersRepository.findOneOrFail({
@@ -118,4 +133,3 @@ export class UsersService {
     await this.usersRepository.delete(id);
   }
 }
-

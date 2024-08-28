@@ -1,3 +1,4 @@
+import { Blog } from '#/blogs/entities/blog.entity';
 import { User } from '#/users/entities/user.entity';
 import {
   Entity,
@@ -20,12 +21,9 @@ export class Destination {
 
   @Column()
   priceAdult: number;
-  
+
   @Column()
   priceChildren: number;
-  
-  @Column()
-  rating: number;
 
   @Column()
   maxCapacity: number;
@@ -56,4 +54,7 @@ export class Destination {
     nullable: true,
   })
   deletedAt: Date;
+
+  @OneToMany(() => Blog, (blog) => blog.description)
+  blogs?: Blog[];
 }

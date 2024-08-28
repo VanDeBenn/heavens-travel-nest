@@ -70,5 +70,4 @@ export class User {
 
   @OneToMany(() => Blog, (blog) => blog.user)
   blogs: Blog[];
-  result: { id: string; };
 }

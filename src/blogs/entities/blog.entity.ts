@@ -1,3 +1,4 @@
+import { Destination } from '#/destinations/entities/destination.entity';
 import { User } from '#/users/entities/user.entity';
 import {
   Entity,
@@ -9,6 +10,7 @@ import {
   CreateDateColumn,
   OneToMany,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -18,10 +20,10 @@ export class Blog {
 
   @Column()
   title: string;
-  
+
   @Column()
   description: string;
-  
+
   @Column()
   pathPhoto: string;
 
@@ -44,6 +46,10 @@ export class Blog {
   deletedAt: Date;
 
   @ManyToOne(() => User, (user) => user.blogs)
+  @JoinColumn({ name: 'user_id' })
   user: User;
-}
 
+  @ManyToOne(() => Destination, (destination) => destination.blogs)
+  @JoinColumn({ name: 'destination_id' })
+  destination: Destination;
+}

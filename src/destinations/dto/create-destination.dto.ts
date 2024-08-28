@@ -1,1 +1,24 @@
-export class CreateDestinationDto {}
+import { IsNotEmpty } from 'class-validator';
+
+export class CreateDestinationDto {
+  @IsNotEmpty()
+  name: string;
+
+  @IsNotEmpty()
+  priceAdult: number;
+
+  @IsNotEmpty()
+  priceChildren: number;
+
+  @IsNotEmpty()
+  maxCapacity: number;
+
+  @IsNotEmpty()
+  description: string;
+
+  @IsNotEmpty()
+  address: string;
+
+  @IsNotEmpty()
+  pathLocation: string;
+}
