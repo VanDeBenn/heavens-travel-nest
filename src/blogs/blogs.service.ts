@@ -42,6 +42,7 @@ export class BlogsService {
     return this.blogsRepository.findAndCount({
       relations: {
         user: true,
+        destination: true,
       },
     });
   }

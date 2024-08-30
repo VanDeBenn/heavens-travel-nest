@@ -12,6 +12,9 @@ import { SeederModule } from '#/seeder/seeder.module';
 import { RolesModule } from './roles/roles.module';
 import { DestinationsModule } from './destinations/destinations.module';
 import { BlogsModule } from './blogs/blogs.module';
+import { HotelsModule } from './hotels/hotels.module';
+import { DistrictsModule } from './districts/districts.module';
+import { RoomHotelsModule } from './room-hotels/room-hotels.module';
 
 @Module({
   imports: [
@@ -102,6 +105,9 @@ import { BlogsModule } from './blogs/blogs.module';
     RolesModule,
     DestinationsModule,
     BlogsModule,
+    HotelsModule,
+    DistrictsModule,
+    RoomHotelsModule,
   ],
 })
 export class AppModule {}

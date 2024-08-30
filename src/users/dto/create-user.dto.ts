@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { IsAlpha, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateUserDto {

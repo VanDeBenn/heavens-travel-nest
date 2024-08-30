@@ -32,7 +32,11 @@ export class DestinationsService {
   }
 
   findAll() {
-    return this.destinationsRepository.findAndCount();
+    return this.destinationsRepository.findAndCount({
+      relations: {
+        blogs: true,
+      },
+    });
   }
 
   async findOne(id: string) {

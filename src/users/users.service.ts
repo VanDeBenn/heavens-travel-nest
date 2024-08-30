@@ -5,6 +5,7 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RolesService } from '#/roles/roles.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -17,6 +18,8 @@ export class UsersService {
   // create new user
   async create(createUserDto: CreateUserDto) {
     const role = await this.roleService.findOne(createUserDto.roleId);
+    const salt = await bcrypt.genSalt();
+    const password = await bcrypt.hash(createUserDto.password, salt);
     const dataUser = new User();
     dataUser.fullName = createUserDto.fullName;
     dataUser.email = createUserDto.email;
@@ -24,7 +27,7 @@ export class UsersService {
     dataUser.gender = createUserDto.gender;
     dataUser.birtDate = createUserDto.birtDate;
     dataUser.address = createUserDto.address;
-    dataUser.password = createUserDto.password;
+    dataUser.password = password;
     dataUser.role = role;
 
     const result = await this.usersRepository.insert(dataUser);

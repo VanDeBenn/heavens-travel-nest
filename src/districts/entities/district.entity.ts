@@ -1,5 +1,5 @@
-import { Blog } from '#/blogs/entities/blog.entity';
-import { District } from '#/districts/entities/district.entity';
+import { Destination } from '#/destinations/entities/destination.entity';
+import { Hotel } from '#/hotels/entities/hotel.entity';
 import { User } from '#/users/entities/user.entity';
 import {
   Entity,
@@ -10,35 +10,15 @@ import {
   VersionColumn,
   CreateDateColumn,
   OneToMany,
-  ManyToOne,
-  JoinColumn,
 } from 'typeorm';
 
 @Entity()
-export class Destination {
+export class District {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   name: string;
-
-  @Column()
-  priceAdult: number;
-
-  @Column()
-  priceChildren: number;
-
-  @Column()
-  maxCapacity: number;
-
-  @Column()
-  description: string;
-
-  @Column()
-  address: string;
-
-  @Column()
-  pathLocation: string;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
@@ -58,10 +38,12 @@ export class Destination {
   })
   deletedAt: Date;
 
-  @ManyToOne(() => District, (district) => district.destinations)
-  @JoinColumn({ name: 'district_id' })
-  district: District;
+  @OneToMany(() => User, (user) => user.district)
+  users?: User[];
 
-  @OneToMany(() => Blog, (blog) => blog.destination)
-  blogs?: Blog[];
+  @OneToMany(() => Hotel, (hotel) => hotel.district)
+  hotels?: Hotel[];
+
+  @OneToMany(() => Destination, (destination) => destination.district)
+  destinations?: Destination[];
 }

@@ -1,6 +1,4 @@
-import { Blog } from '#/blogs/entities/blog.entity';
-import { District } from '#/districts/entities/district.entity';
-import { User } from '#/users/entities/user.entity';
+import { Hotel } from '#/hotels/entities/hotel.entity';
 import {
   Entity,
   Column,
@@ -11,34 +9,27 @@ import {
   CreateDateColumn,
   OneToMany,
   ManyToOne,
-  JoinColumn,
 } from 'typeorm';
 
 @Entity()
-export class Destination {
+export class RoomHotel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  name: string;
+  type: string;
 
   @Column()
-  priceAdult: number;
+  price: number;
 
   @Column()
-  priceChildren: number;
+  adult: number;
 
   @Column()
-  maxCapacity: number;
+  children: number;
 
   @Column()
-  description: string;
-
-  @Column()
-  address: string;
-
-  @Column()
-  pathLocation: string;
+  bed: number;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
@@ -58,10 +49,6 @@ export class Destination {
   })
   deletedAt: Date;
 
-  @ManyToOne(() => District, (district) => district.destinations)
-  @JoinColumn({ name: 'district_id' })
-  district: District;
-
-  @OneToMany(() => Blog, (blog) => blog.destination)
-  blogs?: Blog[];
+  @ManyToOne(() => Hotel, (hotel) => hotel.roomHotels)
+  hotel: Hotel;
 }

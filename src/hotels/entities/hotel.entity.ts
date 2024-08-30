@@ -1,7 +1,6 @@
-import { Blog } from '#/blogs/entities/blog.entity';
 import { District } from '#/districts/entities/district.entity';
-import { Role } from '#/roles/entities/role.entity';
-import { Exclude } from 'class-transformer';
+import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
+import { User } from '#/users/entities/user.entity';
 import {
   Entity,
   Column,
@@ -10,40 +9,30 @@ import {
   DeleteDateColumn,
   VersionColumn,
   CreateDateColumn,
-  ManyToOne,
   OneToMany,
+  ManyToOne,
   JoinColumn,
 } from 'typeorm';
 
 @Entity()
-export class User {
+export class Hotel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  fullName: string;
-
-  @Column({ unique: true })
-  email: string;
+  name: string;
 
   @Column()
-  phoneNumber: number;
-
-  @Column({
-    type: 'enum',
-    enum: ['male', 'female', 'other'],
-    default: 'other',
-  })
-  gender: string;
+  rating: number;
 
   @Column()
-  birtDate: Date;
+  description: string;
 
   @Column()
   address: string;
 
-  @Column({ select: false })
-  password: string;
+  @Column()
+  pathLocation: string;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
@@ -63,15 +52,8 @@ export class User {
   })
   deletedAt: Date;
 
-  @OneToMany(() => Blog, (blog) => blog.user)
-  blogs?: Blog[];
-
-  // @Column({ name: 'role_id' })
-  // roleId: string;
-
-  @ManyToOne(() => Role, (role) => role.users)
-  @JoinColumn({ name: 'role_id' })
-  role: Role;
+  @OneToMany(() => RoomHotel, (roomHotel) => roomHotel.hotel)
+  roomHotels: RoomHotel;
 
   @ManyToOne(() => District, (district) => district.users)
   @JoinColumn({ name: 'district_id' })
