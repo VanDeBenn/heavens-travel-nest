@@ -15,6 +15,8 @@ import { BlogsModule } from './blogs/blogs.module';
 import { HotelsModule } from './hotels/hotels.module';
 import { DistrictsModule } from './districts/districts.module';
 import { RoomHotelsModule } from './room-hotels/room-hotels.module';
+import { BookingsModule } from './bookings/bookings.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -108,6 +110,9 @@ import { RoomHotelsModule } from './room-hotels/room-hotels.module';
     HotelsModule,
     DistrictsModule,
     RoomHotelsModule,
+    BookingsModule,
+    CartModule,
   ],
 })
 export class AppModule {}
+
