@@ -1,3 +1,4 @@
+import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -138,6 +139,7 @@ import { SomehelpfulFactsModule } from './somehelpful-facts/somehelpful-facts.mo
     RefundModule,
     BookingDetailModule,
     SomehelpfulFactsModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
