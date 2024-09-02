@@ -16,10 +16,11 @@ export class UsersService {
   ) {}
 
   // create new user
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const role = await this.roleService.findOne(createUserDto.roleId);
     const salt = await bcrypt.genSalt();
-    const password = await bcrypt.hash(createUserDto.password, salt);
+    const userPassword = await bcrypt.hash(createUserDto.password, salt);
+
     const dataUser = new User();
     dataUser.fullName = createUserDto.fullName;
     dataUser.email = createUserDto.email;
@@ -27,7 +28,7 @@ export class UsersService {
     dataUser.gender = createUserDto.gender;
     dataUser.birtDate = createUserDto.birtDate;
     dataUser.address = createUserDto.address;
-    dataUser.password = password;
+    dataUser.password = userPassword;
     dataUser.role = role;
 
     const result = await this.usersRepository.insert(dataUser);
@@ -47,7 +48,7 @@ export class UsersService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<User> {
     try {
       return await this.usersRepository.findOneOrFail({
         where: {
@@ -67,6 +68,10 @@ export class UsersService {
         throw e;
       }
     }
+  }
+
+  async findUser(email: string): Promise<User> {
+    return this.usersRepository.findOne({ where: { email } });
   }
 
   // update user

@@ -17,6 +17,7 @@ import { DistrictsModule } from './districts/districts.module';
 import { RoomHotelsModule } from './room-hotels/room-hotels.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { CartModule } from './cart/cart.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -112,7 +113,7 @@ import { CartModule } from './cart/cart.module';
     RoomHotelsModule,
     BookingsModule,
     CartModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
-

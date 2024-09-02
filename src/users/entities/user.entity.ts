@@ -42,7 +42,8 @@ export class User {
   @Column()
   address: string;
 
-  @Column({ select: false })
+  // @Column({ select: false })
+  @Column()
   password: string;
 
   @CreateDateColumn({
