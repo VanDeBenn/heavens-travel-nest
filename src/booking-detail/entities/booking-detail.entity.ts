@@ -15,43 +15,22 @@ import {
     id: string;
 
     @Column()
-    customerName: string;
-  
+    startDate: Date;
+
     @Column()
-    customerEmail: string;
-  
+    endDate: Date;
+
     @Column()
-    CustomerPhoneNumber: number;
-  
+    quantity: number;
+
     @Column()
-    guestName: string;
-  
-    @Column()
-    guestEmail: string;
-  
-    @Column()
-    guestPhoneNumber: number;
-  
+    price: number;
+
     @Column({
       type: 'enum',
-      enum: ['bank', 'e-wallet', 'virtual account'],
+      enum: ['booked', 'refund', 'pending', 'canceled'],
     })
-    paymentType: string;
-  
-    @Column()
-    paymentDueDate: string;
-  
-    @Column()
-    paymentAmount: number;
-  
-    @Column()
-    totalPrice: number;
-  
-    @Column()
-    statusPayment: string;
-  
-    @Column()
-    fullFilment: string;
+    orderStatus: string;
   
     @CreateDateColumn({
       type: 'timestamp with time zone',

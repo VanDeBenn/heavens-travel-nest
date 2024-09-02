@@ -17,7 +17,19 @@ import { DistrictsModule } from './districts/districts.module';
 import { RoomHotelsModule } from './room-hotels/room-hotels.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { CartModule } from './cart/cart.module';
-import { AuthModule } from './auth/auth.module';
+import { CitiesModule } from './cities/cities.module';
+import { ProvincesModule } from './provinces/provinces.module';
+import { CountriesModule } from './countries/countries.module';
+import { FotoDestinationsModule } from './foto-destinations/foto-destinations.module';
+import { FotoHotelsModule } from './foto-hotels/foto-hotels.module';
+import { FotoRoomHotelsModule } from './foto-room-hotels/foto-room-hotels.module';
+import { ReportsModule } from './reports/reports.module';
+import { FotoReportsModule } from './foto-reports/foto-reports.module';
+import { ReviewsModule } from './reviews/reviews.module';
+import { FotoReviewsModule } from './foto-reviews/foto-reviews.module';
+import { RefundModule } from './refund/refund.module';
+import { BookingDetailModule } from './booking-detail/booking-detail.module';
+import { SomehelpfulFactsModule } from './somehelpful-facts/somehelpful-facts.module';
 
 @Module({
   imports: [
@@ -113,7 +125,19 @@ import { AuthModule } from './auth/auth.module';
     RoomHotelsModule,
     BookingsModule,
     CartModule,
-    AuthModule,
+    CitiesModule,
+    ProvincesModule,
+    CountriesModule,
+    FotoDestinationsModule,
+    FotoHotelsModule,
+    FotoRoomHotelsModule,
+    ReportsModule,
+    FotoReportsModule,
+    ReviewsModule,
+    FotoReviewsModule,
+    RefundModule,
+    BookingDetailModule,
+    SomehelpfulFactsModule,
   ],
 })
 export class AppModule {}
