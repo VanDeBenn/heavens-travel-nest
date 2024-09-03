@@ -10,7 +10,7 @@ import {
   } from 'typeorm';
   
   @Entity()
-  export class SomehelpfulFact {
+  export class ServiceAmenity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
   

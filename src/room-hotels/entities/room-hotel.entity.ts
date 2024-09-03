@@ -29,7 +29,16 @@ export class RoomHotel {
   children: number;
 
   @Column()
-  bed: number;
+  singleBed: number;
+
+  @Column()
+  doubleBed: number;
+
+  @Column()
+  queenBed: number;
+
+  @Column()
+  kingBed: number;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',

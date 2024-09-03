@@ -5,5 +5,14 @@ export class CreateHotelDto {
   name: string;
 
   @IsNotEmpty()
+  rating: number;
+
+  @IsNotEmpty()
   description: string;
+
+  @IsNotEmpty()
+  address: string;
+
+  @IsNotEmpty()
+  pathLocation: string;
 }

@@ -10,12 +10,12 @@ import {
   } from 'typeorm';
   
   @Entity()
-  export class SomehelpfulFact {
+  export class ReplyReview {
     @PrimaryGeneratedColumn('uuid')
     id: string;
   
     @Column()
-    title: string;
+    Comment: string;
 
     @CreateDateColumn({
       type: 'timestamp with time zone',

@@ -31,6 +31,16 @@ import { FotoReviewsModule } from './foto-reviews/foto-reviews.module';
 import { RefundModule } from './refund/refund.module';
 import { BookingDetailModule } from './booking-detail/booking-detail.module';
 import { SomehelpfulFactsModule } from './somehelpful-facts/somehelpful-facts.module';
+import { WishlistModule } from './wishlist/wishlist.module';
+import { ReplyReviewsModule } from './reply-reviews/reply-reviews.module';
+import { CategoriesSomehelpfulFactsModule } from './categories-somehelpful-facts/categories-somehelpful-facts.module';
+import { PropertyPoliciesModule } from './property-policies/property-policies.module';
+import { CategoriesServiceAmenitiesModule } from './categories-service-amenities/categories-service-amenities.module';
+import { ServiceAmenitiesModule } from './service-amenities/service-amenities.module';
+import { CategoriesFaqsModule } from './categories-faqs/categories-faqs.module';
+import { FaqsModule } from './faqs/faqs.module';
+import { CategoriesNearbyLocationModule } from './categories-nearby-location/categories-nearby-location.module';
+import { NearbyLocationModule } from './nearby-location/nearby-location.module';
 
 @Module({
   imports: [
@@ -140,6 +150,16 @@ import { SomehelpfulFactsModule } from './somehelpful-facts/somehelpful-facts.mo
     BookingDetailModule,
     SomehelpfulFactsModule,
     AuthModule,
+    WishlistModule,
+    ReplyReviewsModule,
+    CategoriesSomehelpfulFactsModule,
+    PropertyPoliciesModule,
+    CategoriesServiceAmenitiesModule,
+    ServiceAmenitiesModule,
+    CategoriesFaqsModule,
+    FaqsModule,
+    CategoriesNearbyLocationModule,
+    NearbyLocationModule,
   ],
 })
 export class AppModule {}

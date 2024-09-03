@@ -14,5 +14,15 @@ export class CreateRoomHotelDto {
   children: number;
 
   @IsNotEmpty()
-  bed: number;
+  singleBed: number;
+
+  @IsNotEmpty()
+  doubleBed: number;
+
+  @IsNotEmpty()
+  queenBed: number;
+
+  @IsNotEmpty()
+  kingBed: number;
+
 }

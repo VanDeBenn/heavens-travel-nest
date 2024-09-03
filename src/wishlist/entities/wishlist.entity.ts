@@ -10,13 +10,10 @@ import {
   } from 'typeorm';
   
   @Entity()
-  export class SomehelpfulFact {
+  export class Wishlist{
     @PrimaryGeneratedColumn('uuid')
     id: string;
   
-    @Column()
-    title: string;
-
     @CreateDateColumn({
       type: 'timestamp with time zone',
       nullable: false,

@@ -1,6 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateSomehelpfulFactDto {
+export class CreatePropertyPolicyDto {
     @IsNotEmpty()
     title: string;
 }
+

@@ -1,6 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateSomehelpfulFactDto {
+export class CreateCategoriesSomehelpfulFactDto {
     @IsNotEmpty()
     title: string;
 }
+
