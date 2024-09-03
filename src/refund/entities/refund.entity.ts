@@ -1,44 +1,43 @@
 import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-    DeleteDateColumn,
-    VersionColumn,
-    CreateDateColumn,
-    OneToMany,
-  } from 'typeorm';
-  
-  @Entity()
-  export class Report {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-  
-    @Column()
-    nameofBank: string;
-  
-    @Column()
-    bankAccountNumber: string;
-  
-    @Column()
-    refundReason: string;
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  VersionColumn,
+  CreateDateColumn,
+  OneToMany,
+} from 'typeorm';
 
-    @CreateDateColumn({
-      type: 'timestamp with time zone',
-      nullable: false,
-    })
-    createdAt: Date;
-  
-    @UpdateDateColumn({
-      type: 'timestamp with time zone',
-      nullable: false,
-    })
-    updatedAt: Date;
+@Entity()
+export class Refund {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @DeleteDateColumn({
+  @Column()
+  nameofBank: string;
+
+  @Column()
+  bankAccountNumber: string;
+
+  @Column()
+  refundReason: string;
+
+  @CreateDateColumn({
+    type: 'timestamp with time zone',
+    nullable: false,
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp with time zone',
+    nullable: false,
+  })
+  updatedAt: Date;
+
+  @DeleteDateColumn({
     type: 'timestamp with time zone',
     nullable: true,
   })
   deletedAt: Date;
-  }
-  
+}

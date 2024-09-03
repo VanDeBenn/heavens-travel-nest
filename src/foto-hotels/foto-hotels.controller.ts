@@ -1,6 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { FotoHotelsService } from './foto-hotels.service';
-import { CreatephotoHotelsDto } from './dto/create-foto-hotel.dto';
+import { CreatefotoHotelsDto } from './dto/create-foto-hotel.dto';
 import { UpdateFotoHotelDto } from './dto/update-foto-hotel.dto';
 
 @Controller('foto-hotels')
@@ -8,7 +16,7 @@ export class FotoHotelsController {
   constructor(private readonly fotoHotelsService: FotoHotelsService) {}
 
   @Post()
-  create(@Body() createFotoHotelDto: CreatephotoHotelsDto) {
+  create(@Body() createFotoHotelDto: CreatefotoHotelsDto) {
     return this.fotoHotelsService.create(createFotoHotelDto);
   }
 
@@ -23,7 +31,10 @@ export class FotoHotelsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFotoHotelDto: UpdateFotoHotelDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateFotoHotelDto: UpdateFotoHotelDto,
+  ) {
     return this.fotoHotelsService.update(+id, updateFotoHotelDto);
   }
 

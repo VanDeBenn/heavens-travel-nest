@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreatephotoHotelsDto } from './dto/create-foto-hotel.dto';
+import { CreatefotoHotelsDto } from './dto/create-foto-hotel.dto';
 import { UpdateFotoHotelDto } from './dto/update-foto-hotel.dto';
 
 @Injectable()
 export class FotoHotelsService {
-  create(createFotoHotelDto: CreatephotoHotelsDto) {
+  create(createFotoHotelDto: CreatefotoHotelsDto) {
     return 'This action adds a new fotoHotel';
   }
 

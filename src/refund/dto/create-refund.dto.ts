@@ -1,6 +1,6 @@
 import { IsAlpha, IsNotEmpty, IsNumber } from 'class-validator';
 
-export class CreateReportDto {
+export class CreateRefundDto {
   @IsNotEmpty()
   nameofBank: string;
 
@@ -10,4 +10,3 @@ export class CreateReportDto {
   @IsNotEmpty()
   refundReason: string;
 }
-

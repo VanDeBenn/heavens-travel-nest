@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFotoReportDto } from './dto/create-foto-report.dto';
+import { CreatefotoReportDto } from './dto/create-foto-report.dto';
 import { UpdateFotoReportDto } from './dto/update-foto-report.dto';
 
 @Injectable()
 export class FotoReportsService {
-  create(createFotoReportDto: CreateFotoReportDto) {
+  create(createFotoReportDto: CreatefotoReportDto) {
     return 'This action adds a new fotoReport';
   }
 
