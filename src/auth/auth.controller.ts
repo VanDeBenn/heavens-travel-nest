@@ -1,31 +1,55 @@
+import { UsersService } from './../users/users.service';
 import {
   Body,
   Controller,
   Get,
+  HttpStatus,
+  Param,
+  ParseUUIDPipe,
   Post,
+  Put,
+  Req,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { CreateUserDto } from '#/users/dto/create-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '#/users/entities/user.entity';
+import { UpdateUserDto } from '#/users/dto/update-user.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    @InjectRepository(User)
+    private usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
-  @Post('register')
-  register(@Body() registerDto) {
-    return this.authService.register(registerDto);
+  @Post('signup')
+  async signup(@Body() createUserDto: CreateUserDto) {
+    return {
+      data: await this.authService.signup(createUserDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Post('login')
-  login(@Body() dto) {
-    return this.authService.login(dto);
+  async login(@Body() dto) {
+    return {
+      data: await this.authService.login(dto),
+      statusCode: HttpStatus.OK,
+      message: 'succes',
+    };
   }
 
-  @Get('user-info')
-  getUserInfo(@Request() req) {
+  @Put('/change-password/:id')
+  async changePassword(@Param('id', ParseUUIDPipe) id: string, @Body() dto) {
     return {
-      user_info: req?.user,
+      data: await this.authService.changePassword(id, dto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
     };
   }
 }

@@ -1,6 +1,11 @@
 import { RolesService } from '#/roles/roles.service';
 import { CreateUserDto } from './../users/dto/create-user.dto';
-import { HttpException, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { hash, compare } from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
@@ -20,43 +25,32 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(registerDto: CreateUserDto): Promise<User> {
-    const role = await this.roleService.findOne(registerDto.roleId);
-    const salt = await bcrypt.genSalt();
-    const userPassword = await bcrypt.hash(registerDto.password, salt);
-
-    const dataUser = new User();
-    dataUser.fullName = registerDto.fullName;
-    dataUser.email = registerDto.email;
-    dataUser.phoneNumber = registerDto.phoneNumber;
-    dataUser.gender = registerDto.gender;
-    dataUser.birtDate = registerDto.birtDate;
-    dataUser.address = registerDto.address;
-    dataUser.password = userPassword;
-    dataUser.role = role;
-
-    const payload = { ...registerDto, password: userPassword };
-    const createdUser = await this.usersRepository.insert(payload);
-    return this.usersRepository.findOneOrFail({
-      where: {
-        id: createdUser.identifiers[0].id,
-      },
-    });
+  async signup(createUserDto: CreateUserDto): Promise<User> {
+    return this.usersService.create(createUserDto);
   }
 
   async login(dto: { email: string; password: string }) {
+    // plain text / input user
     const email = dto.email;
     const password = dto.password;
 
+    // find user by email
     const user = await this.usersRepository.findOne({ where: { email } });
-    if (!user) throw new HttpException('email not found', 404);
+    if (!user) {
+      throw new HttpException('email not found', 404);
+    }
 
+    // fetch email from data user
     const userPassword = user.password;
 
-    const isPasswordValid = await compare(password, userPassword);
-    if (!isPasswordValid) throw new HttpException('invalid password', 403);
+    // validate password
+    const isPasswordValid = await bcrypt.compare(password, userPassword);
+    if (!isPasswordValid) {
+      throw new HttpException('invalid password', 403);
+    }
 
-    const payload = { id: user.id, email: user.email };
+    // handle data user
+    const payload = { user };
 
     const token = await this.jwtService.signAsync(payload);
     return {
@@ -64,5 +58,36 @@ export class AuthService {
     };
 
     // return payload;
+  }
+
+  async changePassword(
+    id,
+    dto: { email: string; oldPassword: string; newPassword: string },
+  ) {
+    // plain text / input user
+    const email = dto.email;
+    const oldPassword = dto.oldPassword;
+    const newPassword = dto.newPassword;
+    // find user by id
+    const user = await this.usersRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new HttpException('User not found...', 404);
+    }
+
+    // compare the old password with the password in db
+    const passwordMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!passwordMatch) {
+      throw new HttpException('Wrong credentials', 403);
+    }
+
+    // change user password
+    const newHashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = newHashedPassword;
+
+    const result = await this.usersRepository.update(id, user);
+    // await user.save();
+    return this.usersRepository.findOneOrFail({
+      where: { id },
+    });
   }
 }

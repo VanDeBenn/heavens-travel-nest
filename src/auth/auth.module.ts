@@ -5,9 +5,12 @@ import { UsersModule } from '#/users/users.module';
 import { RolesModule } from '#/roles/roles.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JWT_SECRET } from './constants';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from '#/users/entities/user.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([User]),
     UsersModule,
     RolesModule,
     JwtModule.register({
