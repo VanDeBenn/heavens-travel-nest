@@ -44,6 +44,11 @@ export class AuthController {
     };
   }
 
+  @Post('refresh')
+  async refreshTokens(@Body() dto) {
+    return this.authService.refreshTokens(dto);
+  }
+
   @Put('/change-password/:id')
   async changePassword(@Param('id', ParseUUIDPipe) id: string, @Body() dto) {
     return {
@@ -51,5 +56,15 @@ export class AuthController {
       statusCode: HttpStatus.OK,
       message: 'success',
     };
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body() dto) {
+    return this.authService.forgotPassword(dto);
+  }
+
+  @Put('reset-password')
+  async resetPassword(@Body() dto) {
+    return this.authService.resetPassword(dto);
   }
 }

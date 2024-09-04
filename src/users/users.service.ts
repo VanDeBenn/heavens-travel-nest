@@ -70,8 +70,8 @@ export class UsersService {
     }
   }
 
-  async findUser(email: string): Promise<User> {
-    return this.usersRepository.findOne({ where: { email } });
+  async findByEmail(email: string): Promise<User> {
+    return await this.usersRepository.findOne({ where: { email } });
   }
 
   // update user

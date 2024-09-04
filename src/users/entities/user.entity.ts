@@ -46,6 +46,15 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ nullable: true })
+  refreshToken: string;
+
+  @Column({ nullable: true })
+  resetToken: string;
+
+  @Column({ nullable: true })
+  expiryDate: Date;
+
   @CreateDateColumn({
     type: 'timestamp with time zone',
     nullable: false,
