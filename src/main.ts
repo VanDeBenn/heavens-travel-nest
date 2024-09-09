@@ -15,10 +15,16 @@ async function bootstrap() {
   app.disable('x-powered-by');
   app.use(CorrelationIdMiddleware());
   app.useLogger(logger);
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true,
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
     }),
   );
 

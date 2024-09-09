@@ -25,11 +25,7 @@ export class UsersService {
     dataUser.fullName = createUserDto.fullName;
     dataUser.email = createUserDto.email;
     dataUser.phoneNumber = createUserDto.phoneNumber;
-    dataUser.gender = createUserDto.gender;
-    dataUser.birtDate = createUserDto.birtDate;
-    dataUser.address = createUserDto.address;
     dataUser.password = userPassword;
-    dataUser.role = role;
 
     const result = await this.usersRepository.insert(dataUser);
     return this.usersRepository.findOneOrFail({

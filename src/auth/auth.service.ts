@@ -56,10 +56,24 @@ export class AuthService {
     const token = await this.generateUserTokens(email);
 
     return {
-      refreshTokens: token,
+      token: token,
     };
 
     // return payload;
+  }
+
+  // logout
+  async logout(dto: { email: string }) {
+    const email = dto.email;
+    const user = await this.usersService.findByEmail(email);
+
+    if (!user) {
+      throw new UnauthorizedException('user not found');
+    }
+
+    user.refreshToken = null;
+
+    await this.usersRepository.save(user);
   }
 
   // change password
@@ -135,18 +149,19 @@ export class AuthService {
 
   async refreshTokens(dto: { refreshToken: string }) {
     const refreshToken = dto.refreshToken;
-    const token = await this.usersRepository.findOne({
+
+    const user = await this.usersRepository.findOne({
       where: {
         refreshToken,
         expiryDate: MoreThan(new Date()),
       },
     });
 
-    if (!token) {
-      throw new UnauthorizedException('Refresh Token is invalid');
+    if (!user) {
+      throw new UnauthorizedException('Refresh Token is invalid or expired');
     }
 
-    return this.generateUserTokens(refreshToken);
+    return this.generateUserTokens(user.email);
   }
 
   async generateUserTokens(email: string) {
@@ -176,7 +191,6 @@ export class AuthService {
   }
 
   async storeRefreshToken(token: string, id: string) {
-    // Calculate expiry date 3 days from now
     const expiryDate = new Date();
     expiryDate.setDate(expiryDate.getDate() + 3);
 

@@ -5,6 +5,8 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  Length,
+  Matches,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -16,16 +18,17 @@ export class CreateUserDto {
   email: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  phoneNumber: number;
+  @Length(10, 15)
+  @Matches(/^[0-9]+$/)
+  phoneNumber: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   gender: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   birtDate: Date;
 
-  @IsNotEmpty()
+  @IsOptional()
   address: string;
 
   @IsNotEmpty()
@@ -40,6 +43,6 @@ export class CreateUserDto {
   @IsOptional()
   expiryDate: Date;
 
-  @IsNotEmpty()
+  @IsOptional()
   roleId: string;
 }

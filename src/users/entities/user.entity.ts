@@ -27,20 +27,21 @@ export class User {
   email: string;
 
   @Column()
-  phoneNumber: number;
+  phoneNumber: string;
 
   @Column({
     type: 'enum',
     enum: ['male', 'female', 'other'],
     default: 'other',
+    nullable: true,
   })
-  gender: string;
+  gender?: string;
 
-  @Column()
-  birtDate: Date;
+  @Column({ nullable: true })
+  birtDate?: Date;
 
-  @Column()
-  address: string;
+  @Column({ nullable: true })
+  address?: string;
 
   // @Column({ select: false })
   @Column()

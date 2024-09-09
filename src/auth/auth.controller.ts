@@ -46,7 +46,11 @@ export class AuthController {
 
   @Post('refresh')
   async refreshTokens(@Body() dto) {
-    return this.authService.refreshTokens(dto);
+    return {
+      data: this.authService.refreshTokens(dto),
+      statusCode: HttpStatus.OK,
+      message: 'succes',
+    };
   }
 
   @Put('/change-password/:id')
@@ -60,11 +64,29 @@ export class AuthController {
 
   @Post('forgot-password')
   async forgotPassword(@Body() dto) {
-    return this.authService.forgotPassword(dto);
+    console.log(dto);
+    return {
+      data: this.authService.forgotPassword(dto),
+      statusCode: HttpStatus.OK,
+      message: 'succes',
+    };
   }
 
   @Put('reset-password')
   async resetPassword(@Body() dto) {
-    return this.authService.resetPassword(dto);
+    return {
+      data: this.authService.resetPassword(dto),
+      statusCode: HttpStatus.OK,
+      message: 'succes',
+    };
+  }
+
+  @Post('logout')
+  async logout(@Body() dto) {
+    return {
+      data: this.authService.logout(dto),
+      statusCode: HttpStatus.OK,
+      message: 'succes',
+    };
   }
 }
