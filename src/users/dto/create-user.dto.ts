@@ -43,6 +43,6 @@ export class CreateUserDto {
   @IsOptional()
   expiryDate: Date;
 
-  @IsOptional()
+  @IsNotEmpty()
   roleId: string;
 }

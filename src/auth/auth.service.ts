@@ -51,11 +51,12 @@ export class AuthService {
       throw new HttpException('invalid password', 403);
     }
 
-    const payload = { user };
+    const payload = user;
 
     const token = await this.generateUserTokens(email);
 
     return {
+      payload,
       token: token,
     };
 
@@ -121,7 +122,9 @@ export class AuthService {
 
     this.mailservice.sendPasswordResetEmail(email, resetToken);
 
-    return { message: 'If this user exists, they will receive an email' };
+    return {
+      token: resetToken,
+    };
   }
 
   // reset password
@@ -140,7 +143,8 @@ export class AuthService {
       throw new UnauthorizedException('Invalid or expired token');
     }
 
-    user.password = await bcrypt.hash(newPassword, 10);
+    const salt = await bcrypt.genSalt();
+    user.password = await bcrypt.hash(newPassword, salt);
     user.resetToken = null;
     user.expiryDate = null;
 

@@ -44,10 +44,19 @@ export class AuthController {
     };
   }
 
+  @Post('logout')
+  async logout(@Body() dto) {
+    return {
+      data: await this.authService.logout(dto),
+      statusCode: HttpStatus.OK,
+      message: 'succes',
+    };
+  }
+
   @Post('refresh')
   async refreshTokens(@Body() dto) {
     return {
-      data: this.authService.refreshTokens(dto),
+      data: await this.authService.refreshTokens(dto),
       statusCode: HttpStatus.OK,
       message: 'succes',
     };
@@ -64,9 +73,8 @@ export class AuthController {
 
   @Post('forgot-password')
   async forgotPassword(@Body() dto) {
-    console.log(dto);
     return {
-      data: this.authService.forgotPassword(dto),
+      data: await this.authService.forgotPassword(dto),
       statusCode: HttpStatus.OK,
       message: 'succes',
     };
@@ -75,16 +83,7 @@ export class AuthController {
   @Put('reset-password')
   async resetPassword(@Body() dto) {
     return {
-      data: this.authService.resetPassword(dto),
-      statusCode: HttpStatus.OK,
-      message: 'succes',
-    };
-  }
-
-  @Post('logout')
-  async logout(@Body() dto) {
-    return {
-      data: this.authService.logout(dto),
+      data: await this.authService.resetPassword(dto),
       statusCode: HttpStatus.OK,
       message: 'succes',
     };
