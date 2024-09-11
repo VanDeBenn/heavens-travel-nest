@@ -56,7 +56,6 @@ export class AuthService {
     const token = await this.generateUserTokens(email);
 
     return {
-      payload,
       token: token,
     };
 
