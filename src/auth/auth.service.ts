@@ -79,10 +79,10 @@ export class AuthService {
   // change password
   async changePassword(
     id,
-    dto: { email: string; oldPassword: string; newPassword: string },
+    dto: { email: string; currentPassword: string; newPassword: string },
   ) {
     const email = dto.email;
-    const oldPassword = dto.oldPassword;
+    const currentPassword = dto.currentPassword;
     const newPassword = dto.newPassword;
 
     const user = await this.usersService.findOne(id);
@@ -90,7 +90,7 @@ export class AuthService {
       throw new HttpException('User not found...', 404);
     }
 
-    const passwordMatch = await bcrypt.compare(oldPassword, user.password);
+    const passwordMatch = await bcrypt.compare(currentPassword, user.password);
     if (!passwordMatch) {
       throw new HttpException('Wrong credentials', 403);
     }

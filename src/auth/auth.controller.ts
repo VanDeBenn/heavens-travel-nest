@@ -54,12 +54,8 @@ export class AuthController {
   }
 
   @Post('logout')
-  async logout(@Body() dto) {
-    return {
-      data: await this.authService.logout(dto),
-      statusCode: HttpStatus.OK,
-      message: 'success',
-    };
+  logout(@Request() req) {
+    return req.user;
   }
 
   @Post('refresh')
