@@ -6,40 +6,70 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
 } from '@nestjs/common';
-import { FotoHotelsService } from './foto-hotels.service';
-import { CreatefotoHotelsDto } from './dto/create-foto-hotel.dto';
-import { UpdateFotoHotelDto } from './dto/update-foto-hotel.dto';
+import { PhotoHotelsService } from './foto-hotels.service';
+import { CreatePhotoHotelDto } from './dto/create-foto-hotel.dto';
+import { UpdatePhotoHotelDto } from './dto/update-foto-hotel.dto';
 
-@Controller('foto-hotels')
-export class FotoHotelsController {
-  constructor(private readonly fotoHotelsService: FotoHotelsService) {}
+
+@Controller('photohotels')
+export class PhotoHotelsController {
+  constructor(private readonly photohotelsService: PhotoHotelsService) {}
 
   @Post()
-  create(@Body() createFotoHotelDto: CreatefotoHotelsDto) {
-    return this.fotoHotelsService.create(createFotoHotelDto);
+  async create(@Body() createPhotoHotelDto: CreatePhotoHotelDto) {
+    return {
+      data: await this.photohotelsService.create(createPhotoHotelDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.fotoHotelsService.findAll();
+  async findAll() {
+    const [data, count] = await this.photohotelsService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.fotoHotelsService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.photohotelsService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateFotoHotelDto: UpdateFotoHotelDto,
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updatePhotoHotelDto: UpdatePhotoHotelDto,
   ) {
-    return this.fotoHotelsService.update(+id, updateFotoHotelDto);
+    return {
+      data: await this.photohotelsService.update(id, updatePhotoHotelDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.fotoHotelsService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.photohotelsService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

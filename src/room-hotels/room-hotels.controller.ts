@@ -1,4 +1,3 @@
-import { RoomHotelsService } from './room-hotels.service';
 import {
   Controller,
   Get,
@@ -11,17 +10,18 @@ import {
   ParseUUIDPipe,
   Put,
 } from '@nestjs/common';
+import { RoomHotelsService } from './room-hotels.service';
 import { CreateRoomHotelDto } from './dto/create-room-hotel.dto';
 import { UpdateRoomHotelDto } from './dto/update-room-hotel.dto';
 
-@Controller('roomHotels')
+@Controller('roomhotels')
 export class RoomHotelsController {
-  constructor(private readonly roomHotelsService: RoomHotelsService) {}
+  constructor(private readonly roomhotelsService: RoomHotelsService) {}
 
   @Post()
   async create(@Body() createRoomHotelDto: CreateRoomHotelDto) {
     return {
-      data: await this.roomHotelsService.create(createRoomHotelDto),
+      data: await this.roomhotelsService.create(createRoomHotelDto),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
@@ -29,7 +29,7 @@ export class RoomHotelsController {
 
   @Get()
   async findAll() {
-    const [data, count] = await this.roomHotelsService.findAll();
+    const [data, count] = await this.roomhotelsService.findAll();
 
     return {
       data,
@@ -42,7 +42,7 @@ export class RoomHotelsController {
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return {
-      data: await this.roomHotelsService.findOne(id),
+      data: await this.roomhotelsService.findOne(id),
       statusCode: HttpStatus.OK,
       message: 'success',
     };
@@ -54,7 +54,7 @@ export class RoomHotelsController {
     @Body() updateRoomHotelDto: UpdateRoomHotelDto,
   ) {
     return {
-      data: await this.roomHotelsService.update(id, updateRoomHotelDto),
+      data: await this.roomhotelsService.update(id, updateRoomHotelDto),
       statusCode: HttpStatus.OK,
       message: 'success',
     };
@@ -62,7 +62,7 @@ export class RoomHotelsController {
 
   @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id: string) {
-    await this.roomHotelsService.remove(id);
+    await this.roomhotelsService.remove(id);
 
     return {
       statusCode: HttpStatus.OK,

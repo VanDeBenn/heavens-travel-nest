@@ -1,26 +1,116 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCategoriesSomehelpfulFactDto } from './dto/create-categories-somehelpful-fact.dto';
-import { UpdateCategoriesSomehelpfulFactDto } from './dto/update-categories-somehelpful-fact.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
+import { CategoriSomehelpfulFact } from './entities/categories-somehelpful-fact.entity';
+import { CreateCategoriSomehelpfulFactDto } from './dto/create-categories-somehelpful-fact.dto';
+import { UpdateCategoriSomehelpfulFactDto } from './dto/update-categories-somehelpful-fact.dto';
 
 @Injectable()
-export class CategoriesSomehelpfulFactsService {
-  create(createCategoriesSomehelpfulFactDto: CreateCategoriesSomehelpfulFactDto) {
-    return 'This action adds a new categoriesSomehelpfulFact';
+export class CategoriSomehelpfulFactService {
+  constructor(
+    @InjectRepository(CategoriSomehelpfulFact)
+    private categorisomehelpfulfactsRepository: Repository<CategoriSomehelpfulFact>,
+  ) {}
+
+  // create new categorisomehelpfulfact
+  async create(createCategoriSomehelpfulFactDto: CreateCategoriSomehelpfulFactDto) {
+    const dataCategoriSomehelpfulFact = new CategoriSomehelpfulFact();
+
+    const result = await this.categorisomehelpfulfactsRepository.insert(dataCategoriSomehelpfulFact);
+
+    return this.categorisomehelpfulfactsRepository.findOneOrFail({
+      where: {
+        id: result.identifiers[0].id,
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all categoriesSomehelpfulFacts`;
+    return this.categorisomehelpfulfactsRepository.findAndCount({
+      relations: {
+        somehelpfulfacts: true,
+        hotel: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} categoriesSomehelpfulFact`;
+  async findOne(id: string) {
+    try {
+      return await this.categorisomehelpfulfactsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
   }
 
-  update(id: number, updateCategoriesSomehelpfulFactDto: UpdateCategoriesSomehelpfulFactDto) {
-    return `This action updates a #${id} categoriesSomehelpfulFact`;
+  // update categorisomehelpfulfact
+  async update(id: string, updateCategoriSomehelpfulFactDto: UpdateCategoriSomehelpfulFactDto) {
+    let dataCategoriSomehelpfulFact = new CategoriSomehelpfulFact();
+
+    try {
+      await this.categorisomehelpfulfactsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    const result = await this.categorisomehelpfulfactsRepository.update(id, dataCategoriSomehelpfulFact);
+
+    return this.categorisomehelpfulfactsRepository.findOneOrFail({
+      where: {
+        id,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} categoriesSomehelpfulFact`;
+  // delete categorisomehelpfulfact
+  async remove(id: string) {
+    try {
+      await this.categorisomehelpfulfactsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    await this.categorisomehelpfulfactsRepository.delete(id);
   }
 }

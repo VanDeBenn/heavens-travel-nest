@@ -1,26 +1,117 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCategoriesNearbyLocationDto } from './dto/create-categories-nearby-location.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
+import { CategoriesNearbyLocation } from './entities/categories-nearby-location.entity';
 import { UpdateCategoriesNearbyLocationDto } from './dto/update-categories-nearby-location.dto';
+import { CreateCategoriesNearbyLocationDto } from './dto/create-categories-nearby-location.dto';
 
 @Injectable()
-export class CategoriesNearbyLocationService {
-  create(createCategoriesNearbyLocationDto: CreateCategoriesNearbyLocationDto) {
-    return 'This action adds a new categoriesNearbyLocation';
+export class CategoriesNearbyLocationsService {
+  constructor(
+    @InjectRepository(CategoriesNearbyLocation)
+    private categoriesnearbylocationsRepository: Repository<CategoriesNearbyLocation>,
+  ) {}
+
+  // create new categoriesnearbylocation
+  async create(createCategoriesNearbyLocationDto: CreateCategoriesNearbyLocationDto) {
+    const dataCategoriesNearbyLocation = new CategoriesNearbyLocation();
+
+    const result = await this.categoriesnearbylocationsRepository.insert(dataCategoriesNearbyLocation);
+
+    return this.categoriesnearbylocationsRepository.findOneOrFail({
+      where: {
+        id: result.identifiers[0].id,
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all categoriesNearbyLocation`;
+    return this.categoriesnearbylocationsRepository.findAndCount({
+      relations: {
+        nearbylocations: true,
+        hotel: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} categoriesNearbyLocation`;
+  async findOne(id: string) {
+    try {
+      return await this.categoriesnearbylocationsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
   }
 
-  update(id: number, updateCategoriesNearbyLocationDto: UpdateCategoriesNearbyLocationDto) {
-    return `This action updates a #${id} categoriesNearbyLocation`;
+  // update categoriesnearbylocation
+  async update(id: string, updateCategoriesNearbyLocationDto: UpdateCategoriesNearbyLocationDto) {
+    let dataCategoriesNearbyLocation = new CategoriesNearbyLocation();
+
+    try {
+      await this.categoriesnearbylocationsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    const result = await this.categoriesnearbylocationsRepository.update(id, dataCategoriesNearbyLocation);
+
+    return this.categoriesnearbylocationsRepository.findOneOrFail({
+      where: {
+        id,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} categoriesNearbyLocation`;
+  // delete categoriesnearbylocation
+  async remove(id: string) {
+    try {
+      await this.categoriesnearbylocationsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    await this.categoriesnearbylocationsRepository.delete(id);
   }
 }
+

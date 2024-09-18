@@ -1,3 +1,5 @@
+import { City } from '#/cities/entities/city.entity';
+import { Country } from '#/countries/entities/country.entity';
 import {
     Entity,
     Column,
@@ -7,6 +9,9 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToMany,
+    ManyToMany,
+    ManyToOne,
+    JoinColumn,
   } from 'typeorm';
   
   @Entity()
@@ -34,4 +39,11 @@ import {
       nullable: true,
     })
     deletedAt: Date;
-}
+
+    @OneToMany(() => City, (city) => city.province)
+    cities?: City[];
+
+    @ManyToOne(() => Country, (country) => country.provinces)
+    @JoinColumn()
+    country: Country;
+  }

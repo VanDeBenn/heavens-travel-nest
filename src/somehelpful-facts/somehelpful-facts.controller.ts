@@ -1,34 +1,74 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
 import { SomehelpfulFactsService } from './somehelpful-facts.service';
 import { CreateSomehelpfulFactDto } from './dto/create-somehelpful-fact.dto';
 import { UpdateSomehelpfulFactDto } from './dto/update-somehelpful-fact.dto';
 
-@Controller('somehelpful-facts')
+@Controller('somehelpfulFacts')
 export class SomehelpfulFactsController {
   constructor(private readonly somehelpfulFactsService: SomehelpfulFactsService) {}
 
   @Post()
-  create(@Body() createSomehelpfulFactDto: CreateSomehelpfulFactDto) {
-    return this.somehelpfulFactsService.create(createSomehelpfulFactDto);
+  async create(@Body() createSomehelpfulFactDto: CreateSomehelpfulFactDto) {
+    return {
+      data: await this.somehelpfulFactsService.create(createSomehelpfulFactDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.somehelpfulFactsService.findAll();
+  async findAll() {
+    const [data, count] = await this.somehelpfulFactsService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.somehelpfulFactsService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.somehelpfulFactsService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSomehelpfulFactDto: UpdateSomehelpfulFactDto) {
-    return this.somehelpfulFactsService.update(+id, updateSomehelpfulFactDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateSomehelpfulFactDto: UpdateSomehelpfulFactDto,
+  ) {
+    return {
+      data: await this.somehelpfulFactsService.update(id, updateSomehelpfulFactDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.somehelpfulFactsService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.somehelpfulFactsService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

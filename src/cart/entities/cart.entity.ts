@@ -1,3 +1,7 @@
+import { BookingDetail } from '#/booking-detail/entities/booking-detail.entity';
+import { Booking } from '#/bookings/entities/booking.entity';
+import { Destination } from '#/destinations/entities/destination.entity';
+import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
 import { User } from '#/users/entities/user.entity';
 import {
   Entity,
@@ -8,6 +12,9 @@ import {
   VersionColumn,
   CreateDateColumn,
   OneToMany,
+  OneToOne,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 
 @Entity()
@@ -42,6 +49,19 @@ export class Cart {
   })
   deletedAt: Date;
 
-  @OneToMany(() => User, (user) => user.role)
-  users?: User[];
+  @ManyToOne(() => Booking, (booking) => booking.carts)
+  @JoinColumn()
+  booking: Booking;
+
+  @ManyToOne(() => User, (user) => user.carts)
+  @JoinColumn()
+  user: User;
+
+  @ManyToOne(() => Destination, (destination) => destination.carts)
+  @JoinColumn()
+  destination: Destination;
+
+  @ManyToOne(() => RoomHotel, (roomhotel) => roomhotel.carts)
+  @JoinColumn()
+  roomhotel: RoomHotel;
 }

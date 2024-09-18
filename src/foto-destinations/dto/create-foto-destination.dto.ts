@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CreatefotoDestinationDto {
+export class CreatePhotoDestinationDto {
   @IsNotEmpty()
   pathPhoto: string;
 }

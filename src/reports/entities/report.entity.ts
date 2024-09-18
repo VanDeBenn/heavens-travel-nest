@@ -1,3 +1,6 @@
+import { BookingDetail } from '#/booking-detail/entities/booking-detail.entity';
+import { PhotoReport } from '#/foto-reports/entities/foto-report.entity';
+import { User } from '#/users/entities/user.entity';
 import {
     Entity,
     Column,
@@ -7,6 +10,9 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToMany,
+    OneToOne,
+    JoinColumn,
+    ManyToOne,
   } from 'typeorm';
   
   @Entity()
@@ -46,5 +52,16 @@ import {
     nullable: true,
   })
   deletedAt: Date;
+
+  @OneToOne(() => BookingDetail, (bookingdetail) => bookingdetail.report)
+  @JoinColumn()
+  bookingdetail: BookingDetail;
+
+  @OneToMany(() => PhotoReport, (photoreport) => photoreport.report)
+  photoreports?: PhotoReport[];
+
+  @ManyToOne(() => User, (user) => user.reports)
+  @JoinColumn()
+  user: User;
   }
   

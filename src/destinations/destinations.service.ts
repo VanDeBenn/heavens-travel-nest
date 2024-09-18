@@ -12,15 +12,10 @@ export class DestinationsService {
     private destinationsRepository: Repository<Destination>,
   ) {}
 
+  // create new destination
   async create(createDestinationDto: CreateDestinationDto) {
     const dataDestination = new Destination();
     dataDestination.name = createDestinationDto.name;
-    dataDestination.priceAdult = createDestinationDto.priceAdult;
-    dataDestination.priceChildren = createDestinationDto.priceChildren;
-    dataDestination.maxCapacity = createDestinationDto.maxCapacity;
-    dataDestination.description = createDestinationDto.description;
-    dataDestination.address = createDestinationDto.address;
-    dataDestination.pathLocation = createDestinationDto.pathLocation;
 
     const result = await this.destinationsRepository.insert(dataDestination);
 
@@ -35,6 +30,12 @@ export class DestinationsService {
     return this.destinationsRepository.findAndCount({
       relations: {
         blogs: true,
+        wishlists: true,
+        carts: true,
+        photodestinations: true,
+        categoriesfaqs: true,
+        bookingdetails: true,
+        district: true,
       },
     });
   }
@@ -61,15 +62,10 @@ export class DestinationsService {
     }
   }
 
+  // update destination
   async update(id: string, updateDestinationDto: UpdateDestinationDto) {
-    const dataDestination = new Destination();
-    dataDestination.name = updateDestinationDto.name;
-    dataDestination.priceAdult = updateDestinationDto.priceAdult;
-    dataDestination.priceChildren = updateDestinationDto.priceChildren;
-    dataDestination.maxCapacity = updateDestinationDto.maxCapacity;
-    dataDestination.description = updateDestinationDto.description;
-    dataDestination.address = updateDestinationDto.address;
-    dataDestination.pathLocation = updateDestinationDto.pathLocation;
+    let dataDestination = new Destination();
+    dataDestination.name = dataDestination.name;
 
     try {
       await this.destinationsRepository.findOneOrFail({
@@ -91,7 +87,7 @@ export class DestinationsService {
       }
     }
 
-    await this.destinationsRepository.update(id, dataDestination);
+    const result = await this.destinationsRepository.update(id, dataDestination);
 
     return this.destinationsRepository.findOneOrFail({
       where: {
@@ -100,6 +96,7 @@ export class DestinationsService {
     });
   }
 
+  // delete destination
   async remove(id: string) {
     try {
       await this.destinationsRepository.findOneOrFail({

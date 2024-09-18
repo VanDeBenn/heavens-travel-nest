@@ -1,3 +1,4 @@
+import { Province } from '#/provinces/entities/province.entity';
 import {
   Entity,
   Column,
@@ -34,4 +35,7 @@ export class Country {
     nullable: true,
   })
   deletedAt: Date;
+
+  @OneToMany(() => Province, (province) => province.country)
+  provinces?: Province[];
 }

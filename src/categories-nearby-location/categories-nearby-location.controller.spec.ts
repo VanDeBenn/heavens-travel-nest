@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoriesNearbyLocationController } from './categories-nearby-location.controller';
-import { CategoriesNearbyLocationService } from './categories-nearby-location.service';
+import { CategoriesNearbyLocationsController } from './categories-nearby-location.controller';
+import { CategoriesNearbyLocationsService } from './categories-nearby-location.service';
 
 describe('CategoriesNearbyLocationController', () => {
-  let controller: CategoriesNearbyLocationController;
+  let controller: CategoriesNearbyLocationsController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CategoriesNearbyLocationController],
-      providers: [CategoriesNearbyLocationService],
+      controllers: [CategoriesNearbyLocationsController],
+      providers: [CategoriesNearbyLocationsService],
     }).compile();
 
-    controller = module.get<CategoriesNearbyLocationController>(CategoriesNearbyLocationController);
+    controller = module.get<CategoriesNearbyLocationsController>(CategoriesNearbyLocationsController);
   });
 
   it('should be defined', () => {

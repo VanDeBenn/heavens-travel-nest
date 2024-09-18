@@ -1,34 +1,75 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CategoriesNearbyLocationService } from './categories-nearby-location.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
 import { CreateCategoriesNearbyLocationDto } from './dto/create-categories-nearby-location.dto';
 import { UpdateCategoriesNearbyLocationDto } from './dto/update-categories-nearby-location.dto';
+import { CategoriesNearbyLocationsService } from './categories-nearby-location.service';
 
-@Controller('categories-nearby-location')
-export class CategoriesNearbyLocationController {
-  constructor(private readonly categoriesNearbyLocationService: CategoriesNearbyLocationService) {}
+@Controller('categoriesnearbylocations')
+export class CategoriesNearbyLocationsController {
+  constructor(private readonly categoriesnearbylocationsService: CategoriesNearbyLocationsService) {}
 
   @Post()
-  create(@Body() createCategoriesNearbyLocationDto: CreateCategoriesNearbyLocationDto) {
-    return this.categoriesNearbyLocationService.create(createCategoriesNearbyLocationDto);
+  async create(@Body() createCategoriesNearbyLocationDto: CreateCategoriesNearbyLocationDto) {
+    return {
+      data: await this.categoriesnearbylocationsService.create(createCategoriesNearbyLocationDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.categoriesNearbyLocationService.findAll();
+  async findAll() {
+    const [data, count] = await this.categoriesnearbylocationsService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoriesNearbyLocationService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.categoriesnearbylocationsService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoriesNearbyLocationDto: UpdateCategoriesNearbyLocationDto) {
-    return this.categoriesNearbyLocationService.update(+id, updateCategoriesNearbyLocationDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateCategoriesNearbyLocationDto: UpdateCategoriesNearbyLocationDto,
+  ) {
+    return {
+      data: await this.categoriesnearbylocationsService.update(id, updateCategoriesNearbyLocationDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoriesNearbyLocationService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.categoriesnearbylocationsService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//
+

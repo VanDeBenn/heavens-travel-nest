@@ -1,6 +1,12 @@
 import { Blog } from '#/blogs/entities/blog.entity';
+import { Booking } from '#/bookings/entities/booking.entity';
+import { Cart } from '#/cart/entities/cart.entity';
 import { District } from '#/districts/entities/district.entity';
+import { ReplyReview } from '#/reply-reviews/entities/reply-review.entity';
+import { Report } from '#/reports/entities/report.entity';
+import { Review } from '#/reviews/entities/review.entity';
 import { Role } from '#/roles/entities/role.entity';
+import { Wishlist } from '#/wishlist/entities/wishlist.entity';
 import { Exclude } from 'class-transformer';
 import {
   Entity,
@@ -38,7 +44,7 @@ export class User {
   gender?: string;
 
   @Column({ nullable: true })
-  birtDate?: Date;
+  birthDate?: Date;
 
   @Column({ nullable: true })
   address?: string;
@@ -76,15 +82,35 @@ export class User {
 
   @OneToMany(() => Blog, (blog) => blog.user)
   blogs?: Blog[];
+  
+  @OneToMany(() => Cart, (cart) => cart.user)
+  carts?: Cart[];
+
+  @OneToMany(() => Wishlist, (wishlist) => wishlist.user)
+  wishlists?: Wishlist[];
+  
+  @OneToMany(() => Booking, (booking) => booking.user)
+  bookings?: Booking[];
+
+  @OneToMany(() => ReplyReview, (replyreview) => replyreview.user)
+  replyreviews?: ReplyReview[];
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews?: Review[];
+
+  @OneToMany(() => Report, (report) => report.user)
+  reports?: Report[];
+  
+
 
   // @Column({ name: 'role_id' })
   // roleId: string;
 
   @ManyToOne(() => Role, (role) => role.users)
-  @JoinColumn({ name: 'role_id' })
+  @JoinColumn()
   role: Role;
 
   @ManyToOne(() => District, (district) => district.users)
-  @JoinColumn({ name: 'district_id' })
+  @JoinColumn()
   district: District;
 }

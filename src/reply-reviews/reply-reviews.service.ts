@@ -1,26 +1,117 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
+import { ReplyReview } from './entities/reply-review.entity';
 import { CreateReplyReviewDto } from './dto/create-reply-review.dto';
 import { UpdateReplyReviewDto } from './dto/update-reply-review.dto';
 
 @Injectable()
-export class ReplyReviewsService {
-  create(createReplyReviewDto: CreateReplyReviewDto) {
-    return 'This action adds a new replyReview';
+export class ReplyReviewService {
+  constructor(
+    @InjectRepository(ReplyReview)
+    private replyreviewsRepository: Repository<ReplyReview>,
+  ) {}
+
+  // create new replyreview
+  async create(createReplyReviewDto: CreateReplyReviewDto) {
+    const dataReplyReview = new ReplyReview();
+
+
+    const result = await this.replyreviewsRepository.insert(dataReplyReview);
+
+    return this.replyreviewsRepository.findOneOrFail({
+      where: {
+        id: result.identifiers[0].id,
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all replyReviews`;
+    return this.replyreviewsRepository.findAndCount({
+      relations: {
+        review: true,
+        user: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} replyReview`;
+  async findOne(id: string) {
+    try {
+      return await this.replyreviewsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
   }
 
-  update(id: number, updateReplyReviewDto: UpdateReplyReviewDto) {
-    return `This action updates a #${id} replyReview`;
+  // update replyreview
+  async update(id: string, updateReplyReviewDto: UpdateReplyReviewDto) {
+    let dataReplyReview = new ReplyReview();
+
+    try {
+      await this.replyreviewsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    const result = await this.replyreviewsRepository.update(id,dataReplyReview);
+
+    return this.replyreviewsRepository.findOneOrFail({
+      where: {
+        id,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} replyReview`;
+  // delete replyreview
+  async remove(id: string) {
+    try {
+      await this.replyreviewsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    await this.replyreviewsRepository.delete(id);
   }
 }

@@ -6,37 +6,69 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
 } from '@nestjs/common';
-import { CountriesService } from './countries.service';
 import { CreateCountrysDto } from './dto/create-country.dto';
 import { UpdateCountryDto } from './dto/update-country.dto';
+import { CountrysService } from './countries.service';
 
-@Controller('countries')
-export class CountriesController {
-  constructor(private readonly countriesService: CountriesService) {}
+@Controller('countrys')
+export class CountrysController {
+  constructor(private readonly countrysService: CountrysService) {}
 
   @Post()
-  create(@Body() createCountryDto: CreateCountrysDto) {
-    return this.countriesService.create(createCountryDto);
+  async create(@Body() createCountryDto: CreateCountrysDto) {
+    return {
+      data: await this.countrysService.create(createCountryDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.countriesService.findAll();
+  async findAll() {
+    const [data, count] = await this.countrysService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.countriesService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.countrysService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCountryDto: UpdateCountryDto) {
-    return this.countriesService.update(+id, updateCountryDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateCountryDto: UpdateCountryDto,
+  ) {
+    return {
+      data: await this.countrysService.update(id, updateCountryDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.countriesService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.countrysService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

@@ -1,34 +1,74 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CategoriesServiceAmenitiesService } from './categories-service-amenities.service';
-import { CreateCategoriesServiceAmenityDto } from './dto/create-categories-service-amenity.dto';
-import { UpdateCategoriesServiceAmenityDto } from './dto/update-categories-service-amenity.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
+import { CategoriServiceAmenitysService } from './categories-service-amenities.service';
+import { CreateCategoriServiceAmenityDto } from './dto/create-categories-service-amenity.dto';
 
-@Controller('categories-service-amenities')
-export class CategoriesServiceAmenitiesController {
-  constructor(private readonly categoriesServiceAmenitiesService: CategoriesServiceAmenitiesService) {}
+
+@Controller('categoriserviceamenitys')
+export class CategoriServiceAmenitysController {
+  constructor(private readonly categoriserviceamenitysService: CategoriServiceAmenitysService) {}
 
   @Post()
-  create(@Body() createCategoriesServiceAmenityDto: CreateCategoriesServiceAmenityDto) {
-    return this.categoriesServiceAmenitiesService.create(createCategoriesServiceAmenityDto);
+  async create(@Body() createCategoriServiceAmenityDto: CreateCategoriServiceAmenityDto) {
+    return {
+      data: await this.categoriserviceamenitysService.create(createCategoriServiceAmenityDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.categoriesServiceAmenitiesService.findAll();
+  async findAll() {
+    const [data, count] = await this.categoriserviceamenitysService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoriesServiceAmenitiesService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.categoriserviceamenitysService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoriesServiceAmenityDto: UpdateCategoriesServiceAmenityDto) {
-    return this.categoriesServiceAmenitiesService.update(+id, updateCategoriesServiceAmenityDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateCategoriServiceAmenityDto: CreateCategoriServiceAmenityDto,
+  ) {
+    return {
+      data: await this.categoriserviceamenitysService.update(id, updateCategoriServiceAmenityDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoriesServiceAmenitiesService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.categoriserviceamenitysService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

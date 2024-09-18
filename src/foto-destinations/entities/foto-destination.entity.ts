@@ -1,3 +1,4 @@
+import { Destination } from '#/destinations/entities/destination.entity';
 import {
     Entity,
     Column,
@@ -7,6 +8,8 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToMany,
+    ManyToOne,
+    JoinColumn,
   } from 'typeorm';
   
   @Entity()
@@ -34,5 +37,9 @@ import {
     nullable: true,
   })
   deletedAt: Date;
+
+  @ManyToOne(() => Destination, (destination) => destination.photodestinations)
+  @JoinColumn()
+  destination: Destination;
   }
   

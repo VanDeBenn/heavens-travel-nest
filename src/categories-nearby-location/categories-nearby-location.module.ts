@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { CategoriesNearbyLocationService } from './categories-nearby-location.service';
-import { CategoriesNearbyLocationController } from './categories-nearby-location.controller';
+import { CategoriesNearbyLocationsService } from './categories-nearby-location.service';
+import { CategoriesNearbyLocationsController } from './categories-nearby-location.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CategoriesNearbyLocation } from './entities/categories-nearby-location.entity';
 
 @Module({
-  controllers: [CategoriesNearbyLocationController],
-  providers: [CategoriesNearbyLocationService]
+  imports: [TypeOrmModule.forFeature([CategoriesNearbyLocation])],
+  controllers: [CategoriesNearbyLocationsController],
+  providers: [CategoriesNearbyLocationsService]
 })
 export class CategoriesNearbyLocationModule {}

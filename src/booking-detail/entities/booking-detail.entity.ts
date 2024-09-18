@@ -1,3 +1,10 @@
+import { Booking } from '#/bookings/entities/booking.entity';
+import { Cart } from '#/cart/entities/cart.entity';
+import { Destination } from '#/destinations/entities/destination.entity';
+import { Refund } from '#/refund/entities/refund.entity';
+import { Report } from '#/reports/entities/report.entity';
+import { Review } from '#/reviews/entities/review.entity';
+import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
 import {
   Entity,
   Column,
@@ -7,6 +14,9 @@ import {
   VersionColumn,
   CreateDateColumn,
   OneToMany,
+  ManyToOne,
+  JoinColumn,
+  OneToOne,
 } from 'typeorm';
 
 @Entity()
@@ -49,4 +59,28 @@ export class BookingDetail {
     nullable: true,
   })
   deletedAt: Date;
+
+  @OneToOne(() => Refund, (refund) => refund.bookingdetail)
+  @JoinColumn()
+  refund: Refund;
+
+  @OneToOne(() => Review, (review) => review.bookingdetail)
+  @JoinColumn()
+  review: Review;
+
+  @OneToOne(() => Report, (report) => report.bookingdetail)
+  @JoinColumn()
+  report: Report;
+
+  @ManyToOne(() => Destination, (destination) => destination.bookingdetails)
+  @JoinColumn()
+  destination: Destination;
+
+  @ManyToOne(() => RoomHotel, (roomhotel) => roomhotel.bookingdetails)
+  @JoinColumn()
+  roomhotel: RoomHotel;
+
+  @ManyToOne(() => Booking, (booking) => booking.bookingdetails)
+  @JoinColumn()
+  booking: Booking;
 }

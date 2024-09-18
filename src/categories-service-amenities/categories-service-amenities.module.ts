@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { CategoriesServiceAmenitiesService } from './categories-service-amenities.service';
-import { CategoriesServiceAmenitiesController } from './categories-service-amenities.controller';
+import { CategoriServiceAmenitysService } from './categories-service-amenities.service';
+import { CategoriServiceAmenitysController } from './categories-service-amenities.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CategoriServiceAmenity } from './entities/categories-service-amenity.entity';
 
 @Module({
-  controllers: [CategoriesServiceAmenitiesController],
-  providers: [CategoriesServiceAmenitiesService]
+  imports: [TypeOrmModule.forFeature([CategoriServiceAmenity])],
+  controllers: [CategoriServiceAmenitysController],
+  providers: [CategoriServiceAmenitysService]
 })
 export class CategoriesServiceAmenitiesModule {}

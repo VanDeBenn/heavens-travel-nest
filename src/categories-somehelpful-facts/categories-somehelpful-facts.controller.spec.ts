@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoriesSomehelpfulFactsController } from './categories-somehelpful-facts.controller';
-import { CategoriesSomehelpfulFactsService } from './categories-somehelpful-facts.service';
+import { CategoriSomehelpfulFactController } from './categories-somehelpful-facts.controller';
+import { CategoriSomehelpfulFactService } from './categories-somehelpful-facts.service';
 
-describe('CategoriesSomehelpfulFactsController', () => {
-  let controller: CategoriesSomehelpfulFactsController;
+describe('CategoriesSomehelpfulFactController', () => {
+  let controller: CategoriSomehelpfulFactController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CategoriesSomehelpfulFactsController],
-      providers: [CategoriesSomehelpfulFactsService],
+      controllers: [CategoriSomehelpfulFactController],
+      providers: [CategoriSomehelpfulFactService],
     }).compile();
 
-    controller = module.get<CategoriesSomehelpfulFactsController>(CategoriesSomehelpfulFactsController);
+    controller = module.get<CategoriSomehelpfulFactController>(CategoriSomehelpfulFactController);
   });
 
   it('should be defined', () => {

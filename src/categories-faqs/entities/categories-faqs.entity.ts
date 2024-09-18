@@ -1,3 +1,5 @@
+import { Destination } from '#/destinations/entities/destination.entity';
+import { Faq } from '#/faqs/entities/faq.entity';
 import { Hotel } from '#/hotels/entities/hotel.entity';
 import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
 import { ServiceAmenity } from '#/service-amenities/entities/service-amenity.entity';
@@ -15,7 +17,7 @@ import {
   } from 'typeorm';
   
   @Entity()
-  export class CategoriServiceAmenity {
+  export class CategoriesFaq {
     @PrimaryGeneratedColumn('uuid')
     id: string;
   
@@ -38,17 +40,18 @@ import {
     type: 'timestamp with time zone',
     nullable: true,
   })
-  deletedAt: Date;
+    deletedAt: Date;
 
-  @OneToMany(() => ServiceAmenity, (serviceamenity) => serviceamenity.categoriserviceamenity)
-  serviceamenities?: ServiceAmenity[];
-   
-  @ManyToOne(() => Hotel, (hotel) => hotel.categoriserviceamenities)
-  @JoinColumn()
-  hotel: Hotel;
+    @OneToMany(() => Faq, (faq) => faq.categoriesfaq)
+    faqs?: Faq[];
 
-  @ManyToOne(() => RoomHotel, (roomhotel) => roomhotel.categoriserviceamenities)
-  @JoinColumn()
-  roomhotel: RoomHotel;
-  }
+    @ManyToOne(() => Hotel, (hotel) => hotel.categoriesfaqs)
+    @JoinColumn()
+    hotel: Hotel;
+
+    @ManyToOne(() => Destination, (destination) => destination.categoriesfaqs)
+    @JoinColumn()
+    destination: Destination;
+    
+}
   

@@ -28,7 +28,17 @@ export class HotelsService {
 
   findAll() {
     return this.hotelsRepository.findAndCount({
-      relations: {},
+      relations: {
+        wishlists: true,
+        categorisomehelpfulfacts: true,
+        categoriesnearbylocations: true,
+        categoriesfaqs: true,
+        photohotels: true,
+        categoriserviceamenities: true,
+        roomHotels: true,
+        propertypolicys: true,
+        district: true,
+      },
     });
   }
 
@@ -79,7 +89,7 @@ export class HotelsService {
       }
     }
 
-    const result = await this.hotelsRepository.update(id, updateHotelDto);
+    const result = await this.hotelsRepository.update(id, dataHotel);
 
     return this.hotelsRepository.findOneOrFail({
       where: {

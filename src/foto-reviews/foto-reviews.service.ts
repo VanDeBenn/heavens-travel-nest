@@ -1,26 +1,114 @@
-import { Injectable } from '@nestjs/common';
-import { CreateFotoReviewDto } from './dto/create-foto-review.dto';
-import { UpdateFotoReviewDto } from './dto/update-foto-review.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
+import { PhotoReview } from './entities/foto-review.entity';
+import { CreatePhotoReviewDto } from './dto/create-foto-review.dto';
+import { UpdatePhotoReviewDto } from './dto/update-foto-review.dto';
 
 @Injectable()
-export class FotoReviewsService {
-  create(createFotoReviewDto: CreateFotoReviewDto) {
-    return 'This action adds a new fotoReview';
+export class PhotoReviewsService {
+  constructor(
+    @InjectRepository(PhotoReview)
+    private photoreviewsRepository: Repository<PhotoReview>,
+  ) {}
+
+  // create new photoreview
+  async create(createPhotoReviewDto: CreatePhotoReviewDto) {
+    const dataPhotoReview = new PhotoReview();
+
+    const result = await this.photoreviewsRepository.insert(dataPhotoReview);
+
+    return this.photoreviewsRepository.findOneOrFail({
+      where: {
+        id: result.identifiers[0].id,
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all fotoReviews`;
+    return this.photoreviewsRepository.findAndCount({
+      relations: {
+        review: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} fotoReview`;
+  async findOne(id: string) {
+    try {
+      return await this.photoreviewsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
   }
 
-  update(id: number, updateFotoReviewDto: UpdateFotoReviewDto) {
-    return `This action updates a #${id} fotoReview`;
+  // update photoreview
+  async update(id: string, updatePhotoReviewDto: UpdatePhotoReviewDto) {
+    let dataPhotoReview = new PhotoReview();
+    try {
+      await this.photoreviewsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    const result = await this.photoreviewsRepository.update(id, dataPhotoReview);
+
+    return this.photoreviewsRepository.findOneOrFail({
+      where: {
+        id,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} fotoReview`;
+  // delete photoreview
+  async remove(id: string) {
+    try {
+      await this.photoreviewsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    await this.photoreviewsRepository.delete(id);
   }
 }

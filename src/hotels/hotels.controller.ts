@@ -1,4 +1,3 @@
-import { HotelsService } from './hotels.service';
 import {
   Controller,
   Get,
@@ -11,6 +10,7 @@ import {
   ParseUUIDPipe,
   Put,
 } from '@nestjs/common';
+import { HotelsService } from './hotels.service';
 import { CreateHotelDto } from './dto/create-hotel.dto';
 import { UpdateHotelDto } from './dto/update-hotel.dto';
 

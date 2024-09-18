@@ -1,3 +1,4 @@
+import { CategoriesFaq } from '#/categories-faqs/entities/categories-faqs.entity';
 import {
     Entity,
     Column,
@@ -7,6 +8,8 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToMany,
+    ManyToOne,
+    JoinColumn,
   } from 'typeorm';
   
   @Entity()
@@ -34,5 +37,9 @@ import {
     nullable: true,
   })
   deletedAt: Date;
+
+  @ManyToOne(() => CategoriesFaq, (categoriesfaq) => categoriesfaq.faqs)
+  @JoinColumn()
+  categoriesfaq: CategoriesFaq;
   }
   

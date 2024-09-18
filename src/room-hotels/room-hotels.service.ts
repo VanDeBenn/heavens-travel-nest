@@ -1,24 +1,24 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateRoomHotelDto } from './dto/create-room-hotel.dto';
-import { UpdateRoomHotelDto } from './dto/update-room-hotel.dto';
-import { RoomHotel } from './entities/room-hotel.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { RoomHotel } from './entities/room-hotel.entity';
+import { CreateRoomHotelDto } from './dto/create-room-hotel.dto';
+import { UpdateRoomHotelDto } from './dto/update-room-hotel.dto';
 
 @Injectable()
 export class RoomHotelsService {
   constructor(
     @InjectRepository(RoomHotel)
-    private roomHotelsRepository: Repository<RoomHotel>,
+    private roomhotelsRepository: Repository<RoomHotel>,
   ) {}
 
-  // create new roomHotel
+  // create new roomhotel
   async create(createRoomHotelDto: CreateRoomHotelDto) {
     const dataRoomHotel = new RoomHotel();
 
-    const result = await this.roomHotelsRepository.insert(dataRoomHotel);
+    const result = await this.roomhotelsRepository.insert(dataRoomHotel);
 
-    return this.roomHotelsRepository.findOneOrFail({
+    return this.roomhotelsRepository.findOneOrFail({
       where: {
         id: result.identifiers[0].id,
       },
@@ -26,14 +26,20 @@ export class RoomHotelsService {
   }
 
   findAll() {
-    return this.roomHotelsRepository.findAndCount({
-      relations: {},
+    return this.roomhotelsRepository.findAndCount({
+      relations: {
+        bookingdetails: true,
+        categoriserviceamenities: true,
+        carts: true,
+        photoroomhotels: true,
+        hotel: true,
+      },
     });
   }
 
   async findOne(id: string) {
     try {
-      return await this.roomHotelsRepository.findOneOrFail({
+      return await this.roomhotelsRepository.findOneOrFail({
         where: {
           id,
         },
@@ -53,12 +59,12 @@ export class RoomHotelsService {
     }
   }
 
-  // update roomHotel
+  // update roomhotel
   async update(id: string, updateRoomHotelDto: UpdateRoomHotelDto) {
     let dataRoomHotel = new RoomHotel();
 
     try {
-      await this.roomHotelsRepository.findOneOrFail({
+      await this.roomhotelsRepository.findOneOrFail({
         where: {
           id,
         },
@@ -77,22 +83,19 @@ export class RoomHotelsService {
       }
     }
 
-    const result = await this.roomHotelsRepository.update(
-      id,
-      updateRoomHotelDto,
-    );
+    const result = await this.roomhotelsRepository.update(id, dataRoomHotel);
 
-    return this.roomHotelsRepository.findOneOrFail({
+    return this.roomhotelsRepository.findOneOrFail({
       where: {
         id,
       },
     });
   }
 
-  // delete roomHotel
+  // delete roomhotel
   async remove(id: string) {
     try {
-      await this.roomHotelsRepository.findOneOrFail({
+      await this.roomhotelsRepository.findOneOrFail({
         where: {
           id,
         },
@@ -111,6 +114,6 @@ export class RoomHotelsService {
       }
     }
 
-    await this.roomHotelsRepository.delete(id);
+    await this.roomhotelsRepository.delete(id);
   }
 }

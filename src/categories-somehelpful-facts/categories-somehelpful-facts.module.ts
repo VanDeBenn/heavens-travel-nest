@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
-import { CategoriesSomehelpfulFactsService } from './categories-somehelpful-facts.service';
-import { CategoriesSomehelpfulFactsController } from './categories-somehelpful-facts.controller';
+import { CategoriSomehelpfulFact } from './entities/categories-somehelpful-fact.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CategoriSomehelpfulFactService } from './categories-somehelpful-facts.service';
+import { CategoriSomehelpfulFactController } from './categories-somehelpful-facts.controller';
+
 
 @Module({
-  controllers: [CategoriesSomehelpfulFactsController],
-  providers: [CategoriesSomehelpfulFactsService]
+  imports: [TypeOrmModule.forFeature([CategoriSomehelpfulFact])],
+  controllers: [CategoriSomehelpfulFactController],
+  providers: [CategoriSomehelpfulFactService],
+  exports:[CategoriSomehelpfulFactService]
 })
-export class CategoriesSomehelpfulFactsModule {}
+export class CategoriSomehelpfulFactModule {}

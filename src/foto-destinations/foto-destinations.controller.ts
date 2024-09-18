@@ -1,34 +1,75 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { FotoDestinationsService } from './foto-destinations.service';
-import { CreatefotoDestinationDto } from './dto/create-foto-destination.dto';
-import { UpdateFotoDestinationDto } from './dto/update-foto-destination.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
+import { PhotoDestinationsService } from './foto-destinations.service';
+import { CreatePhotoDestinationDto } from './dto/create-foto-destination.dto';
+import { UpdatePhotoDestinationDto } from './dto/update-foto-destination.dto';
 
-@Controller('foto-destinations')
-export class FotoDestinationsController {
-  constructor(private readonly fotoDestinationsService: FotoDestinationsService) {}
+
+@Controller('photodestinations')
+export class PhotoDestinationsController {
+  constructor(private readonly photodestinationsService: PhotoDestinationsService) {}
 
   @Post()
-  create(@Body() createFotoDestinationDto: CreatefotoDestinationDto) {
-    return this.fotoDestinationsService.create(createFotoDestinationDto);
+  async create(@Body() createPhotoDestinationDto: CreatePhotoDestinationDto) {
+    return {
+      data: await this.photodestinationsService.create(createPhotoDestinationDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.fotoDestinationsService.findAll();
+  async findAll() {
+    const [data, count] = await this.photodestinationsService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.fotoDestinationsService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.photodestinationsService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFotoDestinationDto: UpdateFotoDestinationDto) {
-    return this.fotoDestinationsService.update(+id, updateFotoDestinationDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updatePhotoDestinationDto: UpdatePhotoDestinationDto,
+  ) {
+    return {
+      data: await this.photodestinationsService.update(id, updatePhotoDestinationDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.fotoDestinationsService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.photodestinationsService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

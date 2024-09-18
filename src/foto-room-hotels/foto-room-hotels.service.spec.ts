@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FotoRoomHotelsService } from './foto-room-hotels.service';
+import { PhotoRoomHotelsService } from './foto-room-hotels.service';
 
 describe('FotoRoomHotelsService', () => {
-  let service: FotoRoomHotelsService;
+  let service: PhotoRoomHotelsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FotoRoomHotelsService],
+      providers: [PhotoRoomHotelsService],
     }).compile();
 
-    service = module.get<FotoRoomHotelsService>(FotoRoomHotelsService);
+    service = module.get<PhotoRoomHotelsService>(PhotoRoomHotelsService);
   });
 
   it('should be defined', () => {

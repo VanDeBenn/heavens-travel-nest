@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FotoRoomHotelsController } from './foto-room-hotels.controller';
-import { FotoRoomHotelsService } from './foto-room-hotels.service';
+import { PhotoRoomHotelsController } from './foto-room-hotels.controller';
+import { PhotoRoomHotelsService } from './foto-room-hotels.service';
 
 describe('FotoRoomHotelsController', () => {
-  let controller: FotoRoomHotelsController;
+  let controller: PhotoRoomHotelsController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [FotoRoomHotelsController],
-      providers: [FotoRoomHotelsService],
+      controllers: [PhotoRoomHotelsController],
+      providers: [PhotoRoomHotelsService],
     }).compile();
 
-    controller = module.get<FotoRoomHotelsController>(FotoRoomHotelsController);
+    controller = module.get<PhotoRoomHotelsController>(PhotoRoomHotelsController);
   });
 
   it('should be defined', () => {

@@ -1,3 +1,5 @@
+import { Hotel } from '#/hotels/entities/hotel.entity';
+import { NearbyLocation } from '#/nearby-location/entities/nearby-location.entity';
 import {
     Entity,
     Column,
@@ -7,6 +9,8 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToMany,
+    JoinColumn,
+    ManyToOne,
   } from 'typeorm';
   
   @Entity()
@@ -34,5 +38,12 @@ import {
     nullable: true,
   })
   deletedAt: Date;
+
+  @OneToMany(() => NearbyLocation, (nearbylocation) => nearbylocation.categoriesnearbylocation)
+  nearbylocations?: NearbyLocation[];
+
+  @ManyToOne(() => Hotel, (hotel) => hotel.categoriesnearbylocations)
+  @JoinColumn()
+  hotel: Hotel;
   }
   

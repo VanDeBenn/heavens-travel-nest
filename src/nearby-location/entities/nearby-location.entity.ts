@@ -1,3 +1,4 @@
+import { CategoriesNearbyLocation } from '#/categories-nearby-location/entities/categories-nearby-location.entity';
 import {
     Entity,
     Column,
@@ -7,6 +8,8 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToMany,
+    ManyToOne,
+    JoinColumn,
   } from 'typeorm';
   
   @Entity()
@@ -34,5 +37,8 @@ import {
     nullable: true,
   })
   deletedAt: Date;
+
+  @ManyToOne(() => CategoriesNearbyLocation, (categoriesnearbylocation) => categoriesnearbylocation.nearbylocations)
+  @JoinColumn()
+  categoriesnearbylocation: CategoriesNearbyLocation;
   }
-  

@@ -1,3 +1,5 @@
+import { Hotel } from '#/hotels/entities/hotel.entity';
+import { SomehelpfulFact } from '#/somehelpful-facts/entities/somehelpful-fact.entity';
 import {
     Entity,
     Column,
@@ -7,10 +9,13 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToMany,
+    ManyToOne,
+    JoinColumn,
   } from 'typeorm';
   
   @Entity()
-  export class CategoriesSomehelpfulFact {
+  export class CategoriSomehelpfulFact {
+  
     @PrimaryGeneratedColumn('uuid')
     id: string;
   
@@ -34,5 +39,12 @@ import {
     nullable: true,
   })
   deletedAt: Date;
+
+  @OneToMany(() => SomehelpfulFact, (somehelpfulfact) => somehelpfulfact.categorisomehelpfulfact)
+  somehelpfulfacts?: SomehelpfulFact[];
+
+  @ManyToOne(() => Hotel, (hotel) => hotel.categorisomehelpfulfacts)
+  @JoinColumn()
+  hotel: Hotel;
   }
   

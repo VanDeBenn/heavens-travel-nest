@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/swagger';
-import { CreatefotoReportDto } from './create-foto-report.dto';
+import { CreatePhotoReportDto } from './create-foto-report.dto';
 
-export class UpdateFotoReportDto extends PartialType(CreatefotoReportDto) {}
+export class UpdatePhotoReportDto extends PartialType(CreatePhotoReportDto) {}

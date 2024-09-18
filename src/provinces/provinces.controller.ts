@@ -1,34 +1,74 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ProvincesService } from './provinces.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
+import { ProvinceService } from './provinces.service';
 import { CreateProvinceDto } from './dto/create-province.dto';
 import { UpdateProvinceDto } from './dto/update-province.dto';
 
 @Controller('provinces')
-export class ProvincesController {
-  constructor(private readonly provincesService: ProvincesService) {}
+export class ProvinceController {
+  constructor(private readonly provincesService: ProvinceService) {}
 
   @Post()
-  create(@Body() createProvinceDto: CreateProvinceDto) {
-    return this.provincesService.create(createProvinceDto);
+  async create(@Body() createProvinceDto: CreateProvinceDto) {
+    return {
+      data: await this.provincesService.create(createProvinceDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.provincesService.findAll();
+  async findAll() {
+    const [data, count] = await this.provincesService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.provincesService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.provincesService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProvinceDto: UpdateProvinceDto) {
-    return this.provincesService.update(+id, updateProvinceDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateProvinceDto: UpdateProvinceDto,
+  ) {
+    return {
+      data: await this.provincesService.update(id, updateProvinceDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.provincesService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.provincesService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

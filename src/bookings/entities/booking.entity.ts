@@ -1,3 +1,7 @@
+import { BookingDetail } from '#/booking-detail/entities/booking-detail.entity';
+import { Cart } from '#/cart/entities/cart.entity';
+import { Refund } from '#/refund/entities/refund.entity';
+import { User } from '#/users/entities/user.entity';
 import {
     Entity,
     Column,
@@ -7,6 +11,9 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToMany,
+    JoinColumn,
+    OneToOne,
+    ManyToOne,
   } from 'typeorm';
   
   @Entity()
@@ -70,7 +77,16 @@ import {
       nullable: true,
     })
     deletedAt: Date;
-  
+
+    @OneToMany(() => Cart, (cart) => cart.booking)
+    carts?: Cart[];
+
+    @OneToMany(() => BookingDetail, (bookingdetail) => bookingdetail.booking)
+    bookingdetails?: BookingDetail[];
+
+    @ManyToOne(() => User, (user) => user.bookings)
+    @JoinColumn()
+    user: User;
   }
   
   

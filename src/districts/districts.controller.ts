@@ -1,4 +1,3 @@
-import { DistrictsService } from './districts.service';
 import {
   Controller,
   Get,
@@ -11,6 +10,7 @@ import {
   ParseUUIDPipe,
   Put,
 } from '@nestjs/common';
+import { DistrictsService } from './districts.service';
 import { CreateDistrictDto } from './dto/create-district.dto';
 import { UpdateDistrictDto } from './dto/update-district.dto';
 

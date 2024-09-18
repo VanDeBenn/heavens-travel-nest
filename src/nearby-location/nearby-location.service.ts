@@ -1,26 +1,115 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
+import { NearbyLocation } from './entities/nearby-location.entity';
 import { CreateNearbyLocationDto } from './dto/create-nearby-location.dto';
 import { UpdateNearbyLocationDto } from './dto/update-nearby-location.dto';
 
 @Injectable()
 export class NearbyLocationService {
-  create(createNearbyLocationDto: CreateNearbyLocationDto) {
-    return 'This action adds a new nearbyLocation';
+  constructor(
+    @InjectRepository(NearbyLocation)
+    private nearbylocationRepository: Repository<NearbyLocation>,
+  ) {}
+
+  // create new nearbylocation
+  async create(createNearbyLocationDto: CreateNearbyLocationDto) {
+    const dataNearbyLocation = new NearbyLocation();
+
+    const result = await this.nearbylocationRepository.insert(dataNearbyLocation);
+
+    return this.nearbylocationRepository.findOneOrFail({
+      where: {
+        id: result.identifiers[0].id,
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all nearbyLocation`;
+    return this.nearbylocationRepository.findAndCount({
+      relations: {
+        categoriesnearbylocation: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} nearbyLocation`;
+  async findOne(id: string) {
+    try {
+      return await this.nearbylocationRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
   }
 
-  update(id: number, updateNearbyLocationDto: UpdateNearbyLocationDto) {
-    return `This action updates a #${id} nearbyLocation`;
+  // update nearbylocation
+  async update(id: string, updateNearbyLocationDto: UpdateNearbyLocationDto) {
+    let dataNearbyLocation = new NearbyLocation();
+
+    try {
+      await this.nearbylocationRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    const result = await this.nearbylocationRepository.update(id, dataNearbyLocation);
+
+    return this.nearbylocationRepository.findOneOrFail({
+      where: {
+        id,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} nearbyLocation`;
+  // delete nearbylocation
+  async remove(id: string) {
+    try {
+      await this.nearbylocationRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    await this.nearbylocationRepository.delete(id);
   }
 }

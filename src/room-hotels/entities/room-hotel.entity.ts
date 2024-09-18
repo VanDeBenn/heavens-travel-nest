@@ -1,3 +1,7 @@
+import { BookingDetail } from '#/booking-detail/entities/booking-detail.entity';
+import { Cart } from '#/cart/entities/cart.entity';
+import { CategoriServiceAmenity } from '#/categories-service-amenities/entities/categories-service-amenity.entity';
+import { PhotoRoomHotel } from '#/foto-room-hotels/entities/foto-room-hotel.entity';
 import { Hotel } from '#/hotels/entities/hotel.entity';
 import {
   Entity,
@@ -9,6 +13,7 @@ import {
   CreateDateColumn,
   OneToMany,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -58,6 +63,19 @@ export class RoomHotel {
   })
   deletedAt: Date;
 
+  @OneToMany(() => BookingDetail, (bookingdetail) => bookingdetail.roomhotel)
+  bookingdetails?: BookingDetail[];
+  
+  @OneToMany(() => CategoriServiceAmenity, (categoriserviceamenity) => categoriserviceamenity.roomhotel)
+  categoriserviceamenities?: CategoriServiceAmenity[];
+  
+  @OneToMany(() => Cart, (cart) => cart.roomhotel)
+  carts?: Cart[];
+
+  @OneToMany(() => PhotoRoomHotel, (photoroomhotel) => photoroomhotel.roomhotel)
+  photoroomhotels?: PhotoRoomHotel[];
+
   @ManyToOne(() => Hotel, (hotel) => hotel.roomHotels)
+  @JoinColumn()
   hotel: Hotel;
 }

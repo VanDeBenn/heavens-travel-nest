@@ -1,34 +1,74 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
 import { CategoriesFaqsService } from './categories-faqs.service';
 import { CreateCategoriesFaqDto } from './dto/create-categories-faq.dto';
 import { UpdateCategoriesFaqDto } from './dto/update-categories-faq.dto';
 
-@Controller('categories-faqs')
+@Controller('categoriesfaqss')
 export class CategoriesFaqsController {
-  constructor(private readonly categoriesFaqsService: CategoriesFaqsService) {}
+  constructor(private readonly categoriesfaqssService: CategoriesFaqsService) {}
 
   @Post()
-  create(@Body() createCategoriesFaqDto: CreateCategoriesFaqDto) {
-    return this.categoriesFaqsService.create(createCategoriesFaqDto);
+  async create(@Body() createCategoriesFaqDto: CreateCategoriesFaqDto) {
+    return {
+      data: await this.categoriesfaqssService.create(createCategoriesFaqDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.categoriesFaqsService.findAll();
+  async findAll() {
+    const [data, count] = await this.categoriesfaqssService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoriesFaqsService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.categoriesfaqssService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoriesFaqDto: UpdateCategoriesFaqDto) {
-    return this.categoriesFaqsService.update(+id, updateCategoriesFaqDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateCategoriesFaqDto: UpdateCategoriesFaqDto,
+  ) {
+    return {
+      data: await this.categoriesfaqssService.update(id, updateCategoriesFaqDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoriesFaqsService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.categoriesfaqssService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

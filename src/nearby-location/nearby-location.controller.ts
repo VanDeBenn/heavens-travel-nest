@@ -1,34 +1,75 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
 import { NearbyLocationService } from './nearby-location.service';
 import { CreateNearbyLocationDto } from './dto/create-nearby-location.dto';
 import { UpdateNearbyLocationDto } from './dto/update-nearby-location.dto';
 
-@Controller('nearby-location')
+
+@Controller('nearbylocation')
 export class NearbyLocationController {
-  constructor(private readonly nearbyLocationService: NearbyLocationService) {}
+  constructor(private readonly nearbylocationService: NearbyLocationService) {}
 
   @Post()
-  create(@Body() createNearbyLocationDto: CreateNearbyLocationDto) {
-    return this.nearbyLocationService.create(createNearbyLocationDto);
+  async create(@Body() createNearbyLocationDto: CreateNearbyLocationDto) {
+    return {
+      data: await this.nearbylocationService.create(createNearbyLocationDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.nearbyLocationService.findAll();
+  async findAll() {
+    const [data, count] = await this.nearbylocationService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.nearbyLocationService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.nearbylocationService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNearbyLocationDto: UpdateNearbyLocationDto) {
-    return this.nearbyLocationService.update(+id, updateNearbyLocationDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateNearbyLocationDto: UpdateNearbyLocationDto,
+  ) {
+    return {
+      data: await this.nearbylocationService.update(id, updateNearbyLocationDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.nearbyLocationService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.nearbylocationService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

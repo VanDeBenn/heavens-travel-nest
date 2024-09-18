@@ -1,6 +1,12 @@
+import { CategoriesFaq } from '#/categories-faqs/entities/categories-faqs.entity';
+import { CategoriesNearbyLocation } from '#/categories-nearby-location/entities/categories-nearby-location.entity';
+import { CategoriServiceAmenity } from '#/categories-service-amenities/entities/categories-service-amenity.entity';
+import { CategoriSomehelpfulFact } from '#/categories-somehelpful-facts/entities/categories-somehelpful-fact.entity';
 import { District } from '#/districts/entities/district.entity';
+import { PhotoHotel } from '#/foto-hotels/entities/foto-hotel.entity';
+import { PropertyPolicy } from '#/property-policies/entities/property-policy.entity';
 import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
-import { User } from '#/users/entities/user.entity';
+import { Wishlist } from '#/wishlist/entities/wishlist.entity';
 import {
   Entity,
   Column,
@@ -52,10 +58,31 @@ export class Hotel {
   })
   deletedAt: Date;
 
-  @OneToMany(() => RoomHotel, (roomHotel) => roomHotel.hotel)
-  roomHotels: RoomHotel;
+  @OneToMany(() => Wishlist, (wishlist) => wishlist.hotel)
+  wishlists?: Wishlist[];
 
-  @ManyToOne(() => District, (district) => district.users)
-  @JoinColumn({ name: 'district_id' })
+  @OneToMany(() => CategoriSomehelpfulFact, (categorisomehelpfulfact) => categorisomehelpfulfact.hotel)
+  categorisomehelpfulfacts?: CategoriSomehelpfulFact[];
+  
+  @OneToMany(() => CategoriesNearbyLocation, (categoriesnearbylocation) => categoriesnearbylocation.hotel)
+  categoriesnearbylocations?: CategoriesNearbyLocation[];
+  
+  @OneToMany(() => CategoriesFaq, (categoriesfaq) => categoriesfaq.hotel)
+  categoriesfaqs?: CategoriesFaq[];
+  
+  @OneToMany(() => PhotoHotel, (photohotel) => photohotel.hotel)
+  photohotels?: PhotoHotel[];
+  
+  @OneToMany(() => CategoriServiceAmenity, (categoriserviceamenity) => categoriserviceamenity.hotel)
+  categoriserviceamenities?: CategoriServiceAmenity[];
+
+  @OneToMany(() => RoomHotel, (roomHotel) => roomHotel.hotel)
+  roomHotels?: RoomHotel[];
+
+  @OneToMany(() => PropertyPolicy, (propertypolicy) => propertypolicy.hotel)
+  propertypolicys?: PropertyPolicy[];
+
+  @ManyToOne(() => District, (district) => district.hotels)
+  @JoinColumn()
   district: District;
 }

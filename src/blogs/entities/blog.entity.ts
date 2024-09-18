@@ -46,10 +46,10 @@ export class Blog {
   deletedAt: Date;
 
   @ManyToOne(() => User, (user) => user.blogs)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn()
   user: User;
 
   @ManyToOne(() => Destination, (destination) => destination.blogs)
-  @JoinColumn({ name: 'destination_id' })
+  @JoinColumn()
   destination: Destination;
 }

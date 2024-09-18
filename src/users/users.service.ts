@@ -79,7 +79,7 @@ export class UsersService {
     dataUser.email = updateUserDto.email;
     dataUser.phoneNumber = updateUserDto.phoneNumber;
     dataUser.gender = updateUserDto.gender;
-    dataUser.birtDate = updateUserDto.birtDate;
+    dataUser.birthDate = updateUserDto.birtDate;
     dataUser.address = updateUserDto.address;
     dataUser.password = updateUserDto.password;
     dataUser.role = role;

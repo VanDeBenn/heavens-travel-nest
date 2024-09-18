@@ -1,3 +1,5 @@
+import { CategoriesFaq } from '#/categories-faqs/entities/categories-faqs.entity';
+import { CategoriServiceAmenity } from '#/categories-service-amenities/entities/categories-service-amenity.entity';
 import {
     Entity,
     Column,
@@ -7,6 +9,8 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToMany,
+    ManyToOne,
+    JoinColumn,
   } from 'typeorm';
   
   @Entity()
@@ -34,5 +38,9 @@ import {
     nullable: true,
   })
   deletedAt: Date;
+
+  @ManyToOne(() => CategoriServiceAmenity, (categoriserviceamenity) => categoriserviceamenity.serviceamenities)
+  @JoinColumn()
+  categoriserviceamenity: CategoriServiceAmenity;
   }
   

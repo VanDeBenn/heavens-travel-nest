@@ -1,34 +1,76 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CategoriesSomehelpfulFactsService } from './categories-somehelpful-facts.service';
-import { CreateCategoriesSomehelpfulFactDto } from './dto/create-categories-somehelpful-fact.dto';
-import { UpdateCategoriesSomehelpfulFactDto } from './dto/update-categories-somehelpful-fact.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
+import { CategoriSomehelpfulFactService } from './categories-somehelpful-facts.service';
+import { CreateCategoriSomehelpfulFactDto } from './dto/create-categories-somehelpful-fact.dto';
+import { UpdateCategoriSomehelpfulFactDto } from './dto/update-categories-somehelpful-fact.dto';
 
-@Controller('categories-somehelpful-facts')
-export class CategoriesSomehelpfulFactsController {
-  constructor(private readonly categoriesSomehelpfulFactsService: CategoriesSomehelpfulFactsService) {}
+
+
+@Controller('categorisomehelpfulfacts')
+export class CategoriSomehelpfulFactController {
+  constructor(private readonly categorisomehelpfulfactsService: CategoriSomehelpfulFactService) {}
 
   @Post()
-  create(@Body() createCategoriesSomehelpfulFactDto: CreateCategoriesSomehelpfulFactDto) {
-    return this.categoriesSomehelpfulFactsService.create(createCategoriesSomehelpfulFactDto);
+  async create(@Body() createCategoriSomehelpfulFactDto: CreateCategoriSomehelpfulFactDto) {
+    return {
+      data: await this.categorisomehelpfulfactsService.create(createCategoriSomehelpfulFactDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.categoriesSomehelpfulFactsService.findAll();
+  async findAll() {
+    const [data, count] = await this.categorisomehelpfulfactsService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoriesSomehelpfulFactsService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.categorisomehelpfulfactsService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoriesSomehelpfulFactDto: UpdateCategoriesSomehelpfulFactDto) {
-    return this.categoriesSomehelpfulFactsService.update(+id, updateCategoriesSomehelpfulFactDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateCategoriSomehelpfulFactDto: UpdateCategoriSomehelpfulFactDto,
+  ) {
+    return {
+      data: await this.categorisomehelpfulfactsService.update(id, updateCategoriSomehelpfulFactDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoriesSomehelpfulFactsService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.categorisomehelpfulfactsService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

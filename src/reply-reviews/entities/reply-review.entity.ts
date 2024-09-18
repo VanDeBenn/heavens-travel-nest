@@ -1,3 +1,5 @@
+import { Review } from '#/reviews/entities/review.entity';
+import { User } from '#/users/entities/user.entity';
 import {
     Entity,
     Column,
@@ -7,6 +9,8 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToMany,
+    ManyToOne,
+    JoinColumn,
   } from 'typeorm';
   
   @Entity()
@@ -34,5 +38,13 @@ import {
     nullable: true,
   })
   deletedAt: Date;
+
+  @ManyToOne(() => Review, (review) => review.replyreviews)
+  @JoinColumn()
+  review?: Review;
+
+  @ManyToOne(() => User, (user) => user.replyreviews)
+  @JoinColumn()
+  user?: User;
   }
   

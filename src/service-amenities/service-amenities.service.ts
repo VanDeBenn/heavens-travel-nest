@@ -1,26 +1,114 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
+import { ServiceAmenity } from './entities/service-amenity.entity';
 import { CreateServiceAmenityDto } from './dto/create-service-amenity.dto';
 import { UpdateServiceAmenityDto } from './dto/update-service-amenity.dto';
 
 @Injectable()
-export class ServiceAmenitiesService {
-  create(createServiceAmenityDto: CreateServiceAmenityDto) {
-    return 'This action adds a new serviceAmenity';
+export class ServiceAmenitysService {
+  constructor(
+    @InjectRepository(ServiceAmenity)
+    private serviceamenitysRepository: Repository<ServiceAmenity>,
+  ) {}
+
+  // create new serviceamenity
+  async create(createServiceAmenityDto: CreateServiceAmenityDto) {
+    const dataServiceAmenity = new ServiceAmenity();
+
+    const result = await this.serviceamenitysRepository.insert(dataServiceAmenity);
+
+    return this.serviceamenitysRepository.findOneOrFail({
+      where: {
+        id: result.identifiers[0].id,
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all serviceAmenities`;
+    return this.serviceamenitysRepository.findAndCount({
+      relations: {
+        categoriserviceamenity: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} serviceAmenity`;
+  async findOne(id: string) {
+    try {
+      return await this.serviceamenitysRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
   }
 
-  update(id: number, updateServiceAmenityDto: UpdateServiceAmenityDto) {
-    return `This action updates a #${id} serviceAmenity`;
+  // update serviceamenity
+  async update(id: string, updateServiceAmenityDto: UpdateServiceAmenityDto) {
+    let dataServiceAmenity = new ServiceAmenity();
+    try {
+      await this.serviceamenitysRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    const result = await this.serviceamenitysRepository.update(id, dataServiceAmenity);
+
+    return this.serviceamenitysRepository.findOneOrFail({
+      where: {
+        id,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} serviceAmenity`;
+  // delete serviceamenity
+  async remove(id: string) {
+    try {
+      await this.serviceamenitysRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    await this.serviceamenitysRepository.delete(id);
   }
 }

@@ -1,3 +1,4 @@
+import { City } from '#/cities/entities/city.entity';
 import { Destination } from '#/destinations/entities/destination.entity';
 import { Hotel } from '#/hotels/entities/hotel.entity';
 import { User } from '#/users/entities/user.entity';
@@ -10,6 +11,8 @@ import {
   VersionColumn,
   CreateDateColumn,
   OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -46,4 +49,8 @@ export class District {
 
   @OneToMany(() => Destination, (destination) => destination.district)
   destinations?: Destination[];
+
+  @ManyToOne(() => City, (city) => city.districts) 
+  @JoinColumn()
+  city: City;
 }

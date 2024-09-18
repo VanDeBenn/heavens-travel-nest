@@ -1,26 +1,117 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCountrysDto } from './dto/create-country.dto';
 import { UpdateCountryDto } from './dto/update-country.dto';
+import { Country } from './entities/country.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
-export class CountriesService {
-  create(createCountryDto: CreateCountrysDto) {
-    return 'This action adds a new country';
+export class CountrysService {
+  constructor(
+    @InjectRepository(Country)
+    private countrysRepository: Repository<Country>,
+  ) {}
+
+  // create new country
+  async create(createCountryDto: CreateCountrysDto) {
+    const dataCountry = new Country();
+    dataCountry.name = createCountryDto.name;
+
+    const result = await this.countrysRepository.insert(dataCountry);
+
+    return this.countrysRepository.findOneOrFail({
+      where: {
+        id: result.identifiers[0].id,
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all countries`;
+    return this.countrysRepository.findAndCount({
+      relations: {
+        provinces: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} country`;
+  async findOne(id: string) {
+    try {
+      return await this.countrysRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
   }
 
-  update(id: number, updateCountryDto: UpdateCountryDto) {
-    return `This action updates a #${id} country`;
+  // update country
+  async update(id: string, updateCountryDto: UpdateCountryDto) {
+    let dataCountry = new Country();
+    dataCountry.name = dataCountry.name;
+
+    try {
+      await this.countrysRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    const result = await this.countrysRepository.update(id, dataCountry);
+
+    return this.countrysRepository.findOneOrFail({
+      where: {
+        id,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} country`;
+  // delete country
+  async remove(id: string) {
+    try {
+      await this.countrysRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    await this.countrysRepository.delete(id);
   }
 }

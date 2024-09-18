@@ -28,7 +28,10 @@ export class CartsService {
   findAll() {
     return this.cartsRepository.findAndCount({
       relations: {
-        users: true,
+        booking: true,
+        user: true,
+        destination: true,
+        roomhotel: true,
       },
     });
   }
@@ -79,7 +82,7 @@ export class CartsService {
       }
     }
 
-    const result = await this.cartsRepository.update(id, updateCartDto);
+    const result = await this.cartsRepository.update(id, dataCart);
 
     return this.cartsRepository.findOneOrFail({
       where: {

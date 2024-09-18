@@ -81,7 +81,7 @@ export class RolesService {
       }
     }
 
-    const result = await this.rolesRepository.update(id, updateRoleDto);
+    const result = await this.rolesRepository.update(id, dataRole);
 
     return this.rolesRepository.findOneOrFail({
       where: {

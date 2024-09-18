@@ -1,34 +1,75 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { PropertyPoliciesService } from './property-policies.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
+import { PropertyPolicyService } from './property-policies.service';
 import { CreatePropertyPolicyDto } from './dto/create-property-policy.dto';
 import { UpdatePropertyPolicyDto } from './dto/update-property-policy.dto';
 
-@Controller('property-policies')
-export class PropertyPoliciesController {
-  constructor(private readonly propertyPoliciesService: PropertyPoliciesService) {}
+
+@Controller('propertypolicys')
+export class PropertyPolicyController {
+  constructor(private readonly propertypolicysService: PropertyPolicyService) {}
 
   @Post()
-  create(@Body() createPropertyPolicyDto: CreatePropertyPolicyDto) {
-    return this.propertyPoliciesService.create(createPropertyPolicyDto);
+  async create(@Body() createPropertyPolicyDto: CreatePropertyPolicyDto) {
+    return {
+      data: await this.propertypolicysService.create(createPropertyPolicyDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.propertyPoliciesService.findAll();
+  async findAll() {
+    const [data, count] = await this.propertypolicysService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.propertyPoliciesService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.propertypolicysService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePropertyPolicyDto: UpdatePropertyPolicyDto) {
-    return this.propertyPoliciesService.update(+id, updatePropertyPolicyDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updatePropertyPolicyDto: UpdatePropertyPolicyDto,
+  ) {
+    return {
+      data: await this.propertypolicysService.update(id, updatePropertyPolicyDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.propertyPoliciesService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.propertypolicysService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

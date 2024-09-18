@@ -1,34 +1,74 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { BookingDetailService } from './booking-detail.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
+import { BookingDetailsService } from './booking-detail.service';
 import { CreateBookingDetailDto } from './dto/create-booking-detail.dto';
 import { UpdateBookingDetailDto } from './dto/update-booking-detail.dto';
 
-@Controller('booking-detail')
-export class BookingDetailController {
-  constructor(private readonly bookingDetailService: BookingDetailService) {}
+@Controller('bookingdetails')
+export class BookingDetailsController {
+  constructor(private readonly bookingdetailsService: BookingDetailsService) {}
 
   @Post()
-  create(@Body() createBookingDetailDto: CreateBookingDetailDto) {
-    return this.bookingDetailService.create(createBookingDetailDto);
+  async create(@Body() createBookingDetailDto: CreateBookingDetailDto) {
+    return {
+      data: await this.bookingdetailsService.create(createBookingDetailDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.bookingDetailService.findAll();
+  async findAll() {
+    const [data, count] = await this.bookingdetailsService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bookingDetailService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.bookingdetailsService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBookingDetailDto: UpdateBookingDetailDto) {
-    return this.bookingDetailService.update(+id, updateBookingDetailDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateBookingDetailDto: UpdateBookingDetailDto,
+  ) {
+    return {
+      data: await this.bookingdetailsService.update(id, updateBookingDetailDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bookingDetailService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.bookingdetailsService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

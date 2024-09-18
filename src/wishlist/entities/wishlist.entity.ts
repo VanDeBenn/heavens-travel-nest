@@ -1,3 +1,6 @@
+import { Destination } from '#/destinations/entities/destination.entity';
+import { Hotel } from '#/hotels/entities/hotel.entity';
+import { User } from '#/users/entities/user.entity';
 import {
     Entity,
     Column,
@@ -7,6 +10,8 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToMany,
+    ManyToOne,
+    JoinColumn,
   } from 'typeorm';
   
   @Entity()
@@ -31,5 +36,18 @@ import {
     nullable: true,
   })
   deletedAt: Date;
+
+  @ManyToOne(() => User, (user) => user.wishlists)
+  @JoinColumn()
+  user: User;
+
+  @ManyToOne(() => Destination, (destination) => destination.wishlists)
+  @JoinColumn()
+  destination: Destination;
+
+  @ManyToOne(() => Hotel, (hotel) => hotel.wishlists)
+  @JoinColumn()
+  hotel: Hotel;
+  
   }
   

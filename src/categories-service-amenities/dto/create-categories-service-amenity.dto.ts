@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateCategoriesServiceAmenityDto{
+export class CreateCategoriServiceAmenityDto{
     @IsNotEmpty()
     title: string;
 }

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { FotoHotelsService } from './foto-hotels.service';
-import { FotoHotelsController } from './foto-hotels.controller';
+import { PhotoHotelsService } from './foto-hotels.service';
+import { PhotoHotelsController } from './foto-hotels.controller';
 import { PhotoHotel } from './entities/foto-hotel.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PhotoHotel])],
-  controllers: [FotoHotelsController],
-  providers: [FotoHotelsService],
+  controllers: [PhotoHotelsController],
+  providers: [PhotoHotelsService],
 })
 export class FotoHotelsModule {}

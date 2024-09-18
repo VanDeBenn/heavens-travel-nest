@@ -6,40 +6,69 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
 } from '@nestjs/common';
-import { FotoReportsService } from './foto-reports.service';
-import { CreatefotoReportDto } from './dto/create-foto-report.dto';
-import { UpdateFotoReportDto } from './dto/update-foto-report.dto';
+import { PhotoReportsService } from './foto-reports.service';
+import { UpdatePhotoReportDto } from './dto/update-foto-report.dto';
+import { CreatePhotoReportDto } from './dto/create-foto-report.dto';
 
-@Controller('foto-reports')
-export class FotoReportsController {
-  constructor(private readonly fotoReportsService: FotoReportsService) {}
+@Controller('photoreports')
+export class PhotoReportsController {
+  constructor(private readonly photoreportsService: PhotoReportsService) {}
 
   @Post()
-  create(@Body() createFotoReportDto: CreatefotoReportDto) {
-    return this.fotoReportsService.create(createFotoReportDto);
+  async create(@Body() createPhotoReportDto: CreatePhotoReportDto) {
+    return {
+      data: await this.photoreportsService.create(createPhotoReportDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.fotoReportsService.findAll();
+  async findAll() {
+    const [data, count] = await this.photoreportsService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.fotoReportsService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.photoreportsService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateFotoReportDto: UpdateFotoReportDto,
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updatePhotoReportDto: UpdatePhotoReportDto,
   ) {
-    return this.fotoReportsService.update(+id, updateFotoReportDto);
+    return {
+      data: await this.photoreportsService.update(id, updatePhotoReportDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.fotoReportsService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.photoreportsService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

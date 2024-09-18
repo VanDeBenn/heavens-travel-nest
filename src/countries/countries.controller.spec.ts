@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CountriesController } from './countries.controller';
-import { CountriesService } from './countries.service';
+import { CountrysController } from './countries.controller';
+import { CountrysService } from './countries.service';
 
 describe('CountriesController', () => {
-  let controller: CountriesController;
+  let controller: CountrysController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CountriesController],
-      providers: [CountriesService],
+      controllers: [CountrysController],
+      providers: [CountrysService],
     }).compile();
 
-    controller = module.get<CountriesController>(CountriesController);
+    controller = module.get<CountrysController>(CountrysController);
   });
 
   it('should be defined', () => {

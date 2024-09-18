@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ReplyReviewsService } from './reply-reviews.service';
-import { ReplyReviewsController } from './reply-reviews.controller';
+import { ReplyReviewService } from './reply-reviews.service';
+import { ReplyReviewController } from './reply-reviews.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ReplyReview } from './entities/reply-review.entity';
 
 @Module({
-  controllers: [ReplyReviewsController],
-  providers: [ReplyReviewsService]
+  imports: [TypeOrmModule.forFeature([ReplyReview])],
+  controllers: [ReplyReviewController],
+  providers: [ReplyReviewService]
 })
 export class ReplyReviewsModule {}

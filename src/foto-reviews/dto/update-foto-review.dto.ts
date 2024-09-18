@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/swagger';
-import { CreateFotoReviewDto } from './create-foto-review.dto';
+import { CreatePhotoReviewDto } from './create-foto-review.dto';
 
-export class UpdateFotoReviewDto extends PartialType(CreateFotoReviewDto) {}
+export class UpdatePhotoReviewDto extends PartialType(CreatePhotoReviewDto) {}

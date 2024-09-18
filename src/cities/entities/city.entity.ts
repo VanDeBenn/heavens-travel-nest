@@ -1,3 +1,5 @@
+import { District } from '#/districts/entities/district.entity';
+import { Province } from '#/provinces/entities/province.entity';
 import {
   Entity,
   Column,
@@ -7,6 +9,8 @@ import {
   VersionColumn,
   CreateDateColumn,
   OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -34,4 +38,11 @@ export class City {
     nullable: true,
   })
   deletedAt: Date;
+
+  @OneToMany(() => District, (district) => district.city)
+  districts?: District[];
+
+  @ManyToOne(() => Province, (province) => province.cities)
+  @JoinColumn()
+  province: Province;
 }

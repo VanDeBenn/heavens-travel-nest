@@ -15,6 +15,7 @@ export class DistrictsService {
   // create new district
   async create(createDistrictDto: CreateDistrictDto) {
     const dataDistrict = new District();
+    dataDistrict.name = createDistrictDto.name;
 
     const result = await this.districtsRepository.insert(dataDistrict);
 
@@ -27,7 +28,12 @@ export class DistrictsService {
 
   findAll() {
     return this.districtsRepository.findAndCount({
-      relations: {},
+      relations: {
+        users: true,
+        hotels: true,
+        destinations: true,
+        city: true,
+      },
     });
   }
 
@@ -56,6 +62,7 @@ export class DistrictsService {
   // update district
   async update(id: string, updateDistrictDto: UpdateDistrictDto) {
     let dataDistrict = new District();
+    dataDistrict.name = dataDistrict.name;
 
     try {
       await this.districtsRepository.findOneOrFail({
@@ -77,7 +84,7 @@ export class DistrictsService {
       }
     }
 
-    const result = await this.districtsRepository.update(id, updateDistrictDto);
+    const result = await this.districtsRepository.update(id, dataDistrict);
 
     return this.districtsRepository.findOneOrFail({
       where: {

@@ -1,34 +1,74 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ReplyReviewsService } from './reply-reviews.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
+import { ReplyReviewService } from './reply-reviews.service';
 import { CreateReplyReviewDto } from './dto/create-reply-review.dto';
 import { UpdateReplyReviewDto } from './dto/update-reply-review.dto';
 
-@Controller('reply-reviews')
-export class ReplyReviewsController {
-  constructor(private readonly replyReviewsService: ReplyReviewsService) {}
+@Controller('replyreviews')
+export class ReplyReviewController {
+  constructor(private readonly replyreviewsService: ReplyReviewService) {}
 
   @Post()
-  create(@Body() createReplyReviewDto: CreateReplyReviewDto) {
-    return this.replyReviewsService.create(createReplyReviewDto);
+  async create(@Body() createReplyReviewDto: CreateReplyReviewDto) {
+    return {
+      data: await this.replyreviewsService.create(createReplyReviewDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.replyReviewsService.findAll();
+  async findAll() {
+    const [data, count] = await this.replyreviewsService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.replyReviewsService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.replyreviewsService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReplyReviewDto: UpdateReplyReviewDto) {
-    return this.replyReviewsService.update(+id, updateReplyReviewDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateReplyReviewDto: UpdateReplyReviewDto,
+  ) {
+    return {
+      data: await this.replyreviewsService.update(id, updateReplyReviewDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.replyReviewsService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.replyreviewsService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

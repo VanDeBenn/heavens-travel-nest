@@ -1,26 +1,115 @@
-import { Injectable } from '@nestjs/common';
-import { CreateFotoRoomHotelDto } from './dto/create-foto-room-hotel.dto';
-import { UpdateFotoRoomHotelDto } from './dto/update-foto-room-hotel.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
+import { PhotoRoomHotel } from './entities/foto-room-hotel.entity';
+import { CreatePhotoRoomHotelDto } from './dto/create-foto-room-hotel.dto';
+import { UpdatePhotoRoomHotelDto } from './dto/update-foto-room-hotel.dto';
 
 @Injectable()
-export class FotoRoomHotelsService {
-  create(createFotoRoomHotelDto: CreateFotoRoomHotelDto) {
-    return 'This action adds a new fotoRoomHotel';
+export class PhotoRoomHotelsService {
+  constructor(
+    @InjectRepository(PhotoRoomHotel)
+    private photoroomhotelsRepository: Repository<PhotoRoomHotel>,
+  ) {}
+
+  // create new photoroomhotel
+  async create(createPhotoRoomHotelDto: CreatePhotoRoomHotelDto) {
+    const dataPhotoRoomHotel = new PhotoRoomHotel();
+
+    const result = await this.photoroomhotelsRepository.insert(dataPhotoRoomHotel);
+
+    return this.photoroomhotelsRepository.findOneOrFail({
+      where: {
+        id: result.identifiers[0].id,
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all fotoRoomHotels`;
+    return this.photoroomhotelsRepository.findAndCount({
+      relations: {
+        roomhotel: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} fotoRoomHotel`;
+  async findOne(id: string) {
+    try {
+      return await this.photoroomhotelsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
   }
 
-  update(id: number, updateFotoRoomHotelDto: UpdateFotoRoomHotelDto) {
-    return `This action updates a #${id} fotoRoomHotel`;
+  // update photoroomhotel
+  async update(id: string, updatePhotoRoomHotelDto: UpdatePhotoRoomHotelDto) {
+    let dataPhotoRoomHotel = new PhotoRoomHotel();
+
+    try {
+      await this.photoroomhotelsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    const result = await this.photoroomhotelsRepository.update(id, dataPhotoRoomHotel);
+
+    return this.photoroomhotelsRepository.findOneOrFail({
+      where: {
+        id,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} fotoRoomHotel`;
+  // delete photoroomhotel
+  async remove(id: string) {
+    try {
+      await this.photoroomhotelsRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Data not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
+
+    await this.photoroomhotelsRepository.delete(id);
   }
 }

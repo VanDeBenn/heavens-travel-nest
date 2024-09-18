@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { PropertyPoliciesService } from './property-policies.service';
-import { PropertyPoliciesController } from './property-policies.controller';
+import { PropertyPolicyService } from './property-policies.service';
+import { PropertyPolicyController } from './property-policies.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { PropertyPolicy } from './entities/property-policy.entity';
 
 @Module({
-  controllers: [PropertyPoliciesController],
-  providers: [PropertyPoliciesService]
+  imports: [TypeOrmModule.forFeature([PropertyPolicy])],
+  controllers: [PropertyPolicyController],
+  providers: [PropertyPolicyService]
 })
 export class PropertyPoliciesModule {}
