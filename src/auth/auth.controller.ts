@@ -85,6 +85,25 @@ export class AuthController {
     };
   }
 
+  @Post('verify-otp')
+  async verifyOtp(@Body() dto: { token: string; otp: number }) {
+    return {
+      data: await this.authService.verifyOtp(dto.token, dto.otp),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
+  }
+
+  @Post('send-otp')
+  async sendOtp(@Body() dto: { email: string }) {
+    const otp = await this.authService.generateOtp(dto.email);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'OTP sent successfully',
+      otp,
+    };
+  }
+
   @Put('reset-password')
   async resetPassword(@Body() dto) {
     return {

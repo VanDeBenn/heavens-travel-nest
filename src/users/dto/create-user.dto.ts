@@ -26,7 +26,7 @@ export class CreateUserDto {
   gender: string;
 
   @IsOptional()
-  birtDate: Date;
+  birthDate: Date;
 
   @IsOptional()
   address: string;

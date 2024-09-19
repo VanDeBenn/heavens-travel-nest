@@ -5,18 +5,16 @@ import {
   HttpException,
   Injectable,
   NotFoundException,
-  ParseUUIDPipe,
   UnauthorizedException,
 } from '@nestjs/common';
-import { hash, compare } from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '#/users/entities/user.entity';
-import * as bcrypt from 'bcrypt';
 import { MoreThan, Repository } from 'typeorm';
+import { randomInt, randomUUID } from 'crypto';
+import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from '#/users/dto/update-user.dto';
-import { randomUUID } from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +24,7 @@ export class AuthService {
     private roleService: RolesService,
     private usersService: UsersService,
     private jwtService: JwtService,
-    private mailservice: MailService,
+    private mailService: MailService,
   ) {}
 
   // signup
@@ -36,39 +34,32 @@ export class AuthService {
 
   // login
   async login(dto: { email: string; password: string }) {
-    const email = dto.email;
-    const password = dto.password;
+    const { email, password } = dto;
 
     const user = await this.usersService.findByEmail(email);
     if (!user) {
-      throw new HttpException('email not found', 404);
+      throw new HttpException('Email not found', 404);
     }
 
-    const userPassword = user.password;
-
-    const isPasswordValid = await bcrypt.compare(password, userPassword);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new HttpException('invalid password', 403);
+      throw new HttpException('Invalid password', 403);
     }
 
-    const payload = user;
-
-    const token = await this.generateUserTokens(email);
+    const tokens = await this.generateUserTokens(email);
 
     return {
-      token: token,
+      token: tokens,
     };
-
-    // return payload;
   }
 
   // logout
   async logout(dto: { email: string }) {
-    const email = dto.email;
+    const { email } = dto;
     const user = await this.usersService.findByEmail(email);
 
     if (!user) {
-      throw new UnauthorizedException('user not found');
+      throw new UnauthorizedException('User not found');
     }
 
     user.refreshToken = null;
@@ -78,16 +69,14 @@ export class AuthService {
 
   // change password
   async changePassword(
-    id,
-    dto: { email: string; currentPassword: string; newPassword: string },
+    id: string,
+    dto: { currentPassword: string; newPassword: string },
   ) {
-    const email = dto.email;
-    const currentPassword = dto.currentPassword;
-    const newPassword = dto.newPassword;
+    const { currentPassword, newPassword } = dto;
 
     const user = await this.usersService.findOne(id);
     if (!user) {
-      throw new HttpException('User not found...', 404);
+      throw new HttpException('User not found', 404);
     }
 
     const passwordMatch = await bcrypt.compare(currentPassword, user.password);
@@ -98,38 +87,55 @@ export class AuthService {
     const newHashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = newHashedPassword;
 
-    const result = await this.usersService.update(id, user);
+    await this.usersRepository.save(user);
     return this.usersService.findOne(id);
   }
 
+  // forgot password
   async forgotPassword(dto: { email: string }) {
     const email = dto.email;
 
     const user = await this.usersService.findByEmail(email);
     if (!user) {
-      throw new HttpException('user not found...', 404);
+      throw new HttpException('User not found', 404);
     }
 
-    const expiryDate = new Date();
-    expiryDate.setHours(expiryDate.getHours() + 1);
+    const resetToken = user.resetToken;
+
+    this.generateOtp(email);
+    return { email, resetToken };
+  }
+
+  // verify OTP
+  async verifyOtp(token: string, otp: number) {
+    await this.mailService.verifyOtp(token, otp);
+    return { token };
+  }
+
+  // generate OTP
+  async generateOtp(email: string) {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const otp = randomInt(1000, 9999);
     const resetToken = randomUUID();
+    const expiryDate = new Date();
+    expiryDate.setMinutes(expiryDate.getMinutes() + 10);
 
     user.resetToken = resetToken;
     user.expiryDate = expiryDate;
 
     await this.usersRepository.save(user);
+    await this.mailService.sendPasswordResetEmail(user.email, resetToken, otp);
 
-    this.mailservice.sendPasswordResetEmail(email, resetToken);
-
-    return {
-      token: resetToken,
-    };
+    return { token: resetToken };
   }
 
   // reset password
   async resetPassword(dto: { newPassword: string; resetToken: string }) {
-    const newPassword = dto.newPassword;
-    const resetToken = dto.resetToken;
+    const { newPassword, resetToken } = dto;
 
     const user = await this.usersRepository.findOne({
       where: {
@@ -150,8 +156,9 @@ export class AuthService {
     await this.usersRepository.save(user);
   }
 
+  // refresh tokens
   async refreshTokens(dto: { refreshToken: string }) {
-    const refreshToken = dto.refreshToken;
+    const { refreshToken } = dto;
 
     const user = await this.usersRepository.findOne({
       where: {
@@ -167,6 +174,7 @@ export class AuthService {
     return this.generateUserTokens(user.email);
   }
 
+  // generate tokens
   async generateUserTokens(email: string) {
     const user = await this.usersService.findByEmail(email);
     if (!user) {
@@ -179,7 +187,7 @@ export class AuthService {
       role: user.role,
     };
 
-    const accessToken = await this.jwtService.signAsync(payload, {
+    const accessToken = this.jwtService.sign(payload, {
       expiresIn: '10h',
     });
 
@@ -193,6 +201,7 @@ export class AuthService {
     };
   }
 
+  // store refresh token
   async storeRefreshToken(token: string, id: string) {
     const expiryDate = new Date();
     expiryDate.setDate(expiryDate.getDate() + 3);
