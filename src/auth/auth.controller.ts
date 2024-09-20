@@ -11,6 +11,7 @@ import {
   Put,
   Req,
   Request,
+  Res,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
@@ -19,7 +20,8 @@ import { CreateUserDto } from '#/users/dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '#/users/entities/user.entity';
 import { UpdateUserDto } from '#/users/dto/update-user.dto';
-import { AuthGuard } from './jwt-guard.auth';
+import { JWTGuard } from './jwt-guard.auth';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -38,6 +40,17 @@ export class AuthController {
     };
   }
 
+  @Get('/google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Req() req) {}
+
+  @Get('/google/callback')
+  @UseGuards(AuthGuard('google'))
+  googleAuthRedirect(@Req() req, @Res() res) {
+    const loginResponse = this.authService.googleLogin(req);
+    return res.redirect('http://localhost:3000/profile');
+  }
+
   @Post('login')
   async login(@Body() dto) {
     return {
@@ -47,7 +60,7 @@ export class AuthController {
     };
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JWTGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;

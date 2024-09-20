@@ -32,6 +32,48 @@ export class AuthService {
     return this.usersService.create(createUserDto);
   }
 
+  async googleLogin(req) {
+    if (!req.user) {
+      throw new UnauthorizedException('No user from Google');
+    }
+
+    const user = req.user.profile;
+
+    let dataUser = await this.usersService.findByEmail(user.emails[0].value);
+
+    if (!dataUser) {
+      const role = await this.roleService.findOne(
+        '73176062-1eda-44ca-9112-57f775f9affd',
+      );
+      const newUser = new User();
+      newUser.fullName = user.displayName;
+      newUser.email = user.emails[0].value;
+      newUser.role = role;
+      newUser.password = await bcrypt.hash(randomUUID(), 10);
+      await this.usersRepository.insert(newUser);
+
+      dataUser = await this.usersService.findByEmail(user.emails[0].value);
+    }
+
+    const payload = {
+      sub: dataUser.id,
+      email: user.emails[0].value,
+      role: '73176062-1eda-44ca-9112-57f775f9affd',
+    };
+
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: '10h',
+    });
+
+    const refreshToken = randomUUID();
+
+    this.storeRefreshToken(refreshToken, dataUser.id);
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
   // login
   async login(dto: { email: string; password: string }) {
     const { email, password } = dto;
@@ -94,6 +136,7 @@ export class AuthService {
   // forgot password
   async forgotPassword(dto: { email: string }) {
     const email = dto.email;
+    await this.generateOtp(email);
 
     const user = await this.usersService.findByEmail(email);
     if (!user) {
@@ -102,7 +145,6 @@ export class AuthService {
 
     const resetToken = user.resetToken;
 
-    this.generateOtp(email);
     return { email, resetToken };
   }
 

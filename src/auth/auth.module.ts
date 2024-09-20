@@ -8,6 +8,7 @@ import { JWT_SECRET } from './constants';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '#/users/entities/user.entity';
 import { MailService } from '#/service/mail.service';
+import { GoogleStrategy } from './google.strategy';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { MailService } from '#/service/mail.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, MailService],
+  providers: [AuthService, MailService, GoogleStrategy],
 })
 export class AuthModule {}

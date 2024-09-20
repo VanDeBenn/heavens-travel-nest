@@ -17,7 +17,7 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @Length(10, 15)
   @Matches(/^[0-9]+$/)
   phoneNumber: string;

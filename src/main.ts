@@ -18,6 +18,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000',
+      'http://localhost:3000/register',
       'http://172.17.0.111:3000',
       'http://172.17.0.91:3000',
     ],

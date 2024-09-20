@@ -32,7 +32,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   phoneNumber: string;
 
   @Column({
@@ -82,13 +82,13 @@ export class User {
 
   @OneToMany(() => Blog, (blog) => blog.user)
   blogs?: Blog[];
-  
+
   @OneToMany(() => Cart, (cart) => cart.user)
   carts?: Cart[];
 
   @OneToMany(() => Wishlist, (wishlist) => wishlist.user)
   wishlists?: Wishlist[];
-  
+
   @OneToMany(() => Booking, (booking) => booking.user)
   bookings?: Booking[];
 
@@ -100,8 +100,6 @@ export class User {
 
   @OneToMany(() => Report, (report) => report.user)
   reports?: Report[];
-  
-
 
   // @Column({ name: 'role_id' })
   // roleId: string;
