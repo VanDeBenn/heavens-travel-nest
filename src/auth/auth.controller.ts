@@ -1,3 +1,4 @@
+import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './../users/users.service';
 import {
   Body,
@@ -29,6 +30,7 @@ export class AuthController {
     @InjectRepository(User)
     private usersService: UsersService,
     private readonly authService: AuthService,
+    private jwtService: JwtService,
   ) {}
 
   @Post('signup')
@@ -46,8 +48,13 @@ export class AuthController {
 
   @Get('/google/callback')
   @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Req() req, @Res() res) {
-    const loginResponse = this.authService.googleLogin(req);
+  async googleAuthRedirect(@Req() req, @Res() res) {
+    const token = await this.authService.googleLogin(req);
+    const result = await this.jwtService.verifyAsync(token.accessToken);
+    res.cookie('access_token', token.accessToken);
+    res.cookie('refresh_token', token.refreshToken);
+    res.cookie('id', result.sub);
+
     return res.redirect('http://localhost:3000/profile');
   }
 

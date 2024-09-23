@@ -41,6 +41,7 @@ export class UsersService {
       relations: {
         role: true,
         blogs: true,
+        wishlists: true,
       },
     });
   }
@@ -50,6 +51,11 @@ export class UsersService {
       return await this.usersRepository.findOneOrFail({
         where: {
           id,
+        },
+        relations: {
+          role: true,
+          blogs: true,
+          wishlists: true,
         },
       });
     } catch (e) {
