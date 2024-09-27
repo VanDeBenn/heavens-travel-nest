@@ -50,6 +50,9 @@ import {
   
     @Column()
     paymentAmount: number;
+
+    @Column()
+    tokenTransaction: number;
   
     @Column()
     totalPrice: number;

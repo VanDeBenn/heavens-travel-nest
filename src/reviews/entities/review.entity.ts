@@ -25,7 +25,7 @@ import {
     rating: number;
 
     @Column()
-    Comment: string;
+    comment: string;
 
     @CreateDateColumn({
       type: 'timestamp with time zone',

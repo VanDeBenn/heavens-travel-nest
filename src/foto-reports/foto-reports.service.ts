@@ -7,6 +7,7 @@ import { CreatePhotoReportDto } from './dto/create-foto-report.dto';
 
 @Injectable()
 export class PhotoReportsService {
+  reportService: any;
   constructor(
     @InjectRepository(PhotoReport)
     private photoreportsRepository: Repository<PhotoReport>,
@@ -14,7 +15,11 @@ export class PhotoReportsService {
 
   // create new photoreport
   async create(createPhotoReportDto: CreatePhotoReportDto) {
+    const report = await this.reportService.findOne(createPhotoReportDto.reportId);
+
     const dataPhotoReport = new PhotoReport();
+    dataPhotoReport.pathPhoto = createPhotoReportDto.pathPhoto;
+    dataPhotoReport.report = report;
 
     const result = await this.photoreportsRepository.insert(dataPhotoReport);
 
@@ -57,7 +62,11 @@ export class PhotoReportsService {
 
   // update photoreport
   async update(id: string, updatePhotoReportDto: UpdatePhotoReportDto) {
+    const report = await this.reportService.findOne(updatePhotoReportDto.reportId);
+
     let dataPhotoReport = new PhotoReport();
+    dataPhotoReport.pathPhoto = updatePhotoReportDto.pathPhoto;
+    dataPhotoReport.report = report;
 
     try {
       await this.photoreportsRepository.findOneOrFail({

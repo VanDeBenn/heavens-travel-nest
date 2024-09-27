@@ -14,6 +14,9 @@ export class CreateDestinationDto {
   maxCapacity: number;
 
   @IsNotEmpty()
+  rating: number;
+
+  @IsNotEmpty()
   description: string;
 
   @IsNotEmpty()
@@ -21,4 +24,7 @@ export class CreateDestinationDto {
 
   @IsNotEmpty()
   pathLocation: string;
+ 
+  @IsNotEmpty()
+  districtId: string;
 }

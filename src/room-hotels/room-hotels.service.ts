@@ -7,6 +7,7 @@ import { UpdateRoomHotelDto } from './dto/update-room-hotel.dto';
 
 @Injectable()
 export class RoomHotelsService {
+  hotelService: any;
   constructor(
     @InjectRepository(RoomHotel)
     private roomhotelsRepository: Repository<RoomHotel>,
@@ -14,7 +15,18 @@ export class RoomHotelsService {
 
   // create new roomhotel
   async create(createRoomHotelDto: CreateRoomHotelDto) {
+    const hotel = await this.hotelService.findOne(createRoomHotelDto.hotelId);
+
     const dataRoomHotel = new RoomHotel();
+    dataRoomHotel.numberRoom = createRoomHotelDto.numberRoom;
+    dataRoomHotel.price = createRoomHotelDto.price;
+    dataRoomHotel.adult = createRoomHotelDto.adult;
+    dataRoomHotel.children = createRoomHotelDto.children;
+    dataRoomHotel.singleBed = createRoomHotelDto.singleBed;
+    dataRoomHotel.doubleBed = createRoomHotelDto.doubleBed;
+    dataRoomHotel.kingBed = createRoomHotelDto.kingBed;
+    dataRoomHotel.children = createRoomHotelDto.queenBed;
+    dataRoomHotel.hotel = hotel;
 
     const result = await this.roomhotelsRepository.insert(dataRoomHotel);
 
@@ -61,7 +73,18 @@ export class RoomHotelsService {
 
   // update roomhotel
   async update(id: string, updateRoomHotelDto: UpdateRoomHotelDto) {
+    const hotel = await this.hotelService.findOne(updateRoomHotelDto.hotelId);
+
     let dataRoomHotel = new RoomHotel();
+    dataRoomHotel.numberRoom = updateRoomHotelDto.numberRoom;
+    dataRoomHotel.price = updateRoomHotelDto.price;
+    dataRoomHotel.adult = updateRoomHotelDto.adult;
+    dataRoomHotel.children = updateRoomHotelDto.children;
+    dataRoomHotel.singleBed = updateRoomHotelDto.singleBed;
+    dataRoomHotel.doubleBed = updateRoomHotelDto.doubleBed;
+    dataRoomHotel.kingBed = updateRoomHotelDto.kingBed;
+    dataRoomHotel.children = updateRoomHotelDto.queenBed;
+    dataRoomHotel.hotel = hotel;
 
     try {
       await this.roomhotelsRepository.findOneOrFail({

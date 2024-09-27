@@ -1,8 +1,9 @@
 import { IsNotEmpty } from 'class-validator';
 
 export class CreateRoomHotelDto {
+  
   @IsNotEmpty()
-  type: string;
+  numberRoom: number;
 
   @IsNotEmpty()
   price: number;
@@ -24,5 +25,8 @@ export class CreateRoomHotelDto {
 
   @IsNotEmpty()
   kingBed: number;
+ 
+  @IsNotEmpty()
+  hotelId: string;
 
 }

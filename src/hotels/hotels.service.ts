@@ -16,6 +16,10 @@ export class HotelsService {
   async create(createHotelDto: CreateHotelDto) {
     const dataHotel = new Hotel();
     dataHotel.name = createHotelDto.name;
+    dataHotel.rating = createHotelDto.rating;
+    dataHotel.description = createHotelDto.description;
+    dataHotel.address = createHotelDto.address;
+    dataHotel.pathMapLocation = createHotelDto.pathMapLocation;
 
     const result = await this.hotelsRepository.insert(dataHotel);
 
@@ -35,7 +39,7 @@ export class HotelsService {
         categoriesfaqs: true,
         photohotels: true,
         categoriserviceamenities: true,
-        roomHotels: true,
+        roomhotels: true,
         propertypolicys: true,
         district: true,
       },
@@ -67,7 +71,11 @@ export class HotelsService {
   // update hotel
   async update(id: string, updateHotelDto: UpdateHotelDto) {
     let dataHotel = new Hotel();
-    dataHotel.name = dataHotel.name;
+    dataHotel.name = updateHotelDto.name;
+    dataHotel.rating = updateHotelDto.rating;
+    dataHotel.description = updateHotelDto.description;
+    dataHotel.address = updateHotelDto.address;
+    dataHotel.pathMapLocation = updateHotelDto.pathMapLocation;
 
     try {
       await this.hotelsRepository.findOneOrFail({

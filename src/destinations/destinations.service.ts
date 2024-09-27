@@ -7,6 +7,7 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
 export class DestinationsService {
+  districtService: any;
   constructor(
     @InjectRepository(Destination)
     private destinationsRepository: Repository<Destination>,
@@ -14,8 +15,18 @@ export class DestinationsService {
 
   // create new destination
   async create(createDestinationDto: CreateDestinationDto) {
+    const district = await this.districtService.findOne(createDestinationDto.districtId);
+
     const dataDestination = new Destination();
     dataDestination.name = createDestinationDto.name;
+    dataDestination.priceAdult;
+    dataDestination.priceChildren = createDestinationDto.priceChildren;
+    dataDestination.maxCapacity = createDestinationDto.maxCapacity;
+    dataDestination.rating = createDestinationDto.rating;
+    dataDestination.description = createDestinationDto.description;
+    dataDestination.address = createDestinationDto.address;
+    dataDestination.pathLocation = createDestinationDto.pathLocation;
+    dataDestination.district = district
 
     const result = await this.destinationsRepository.insert(dataDestination);
 
@@ -64,8 +75,18 @@ export class DestinationsService {
 
   // update destination
   async update(id: string, updateDestinationDto: UpdateDestinationDto) {
+    const district = await this.districtService.findOne(updateDestinationDto.districtId);
+
     let dataDestination = new Destination();
-    dataDestination.name = dataDestination.name;
+    dataDestination.name = updateDestinationDto.name;
+    dataDestination.priceAdult;
+    dataDestination.priceChildren = updateDestinationDto.priceChildren;
+    dataDestination.maxCapacity = updateDestinationDto.maxCapacity;
+    dataDestination.rating = updateDestinationDto.rating;
+    dataDestination.description = updateDestinationDto.description;
+    dataDestination.address = updateDestinationDto.address;
+    dataDestination.pathLocation = updateDestinationDto.pathLocation;
+    dataDestination.district = district;
 
     try {
       await this.destinationsRepository.findOneOrFail({

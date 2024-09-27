@@ -7,6 +7,7 @@ import { UpdatePhotoHotelDto } from './dto/update-foto-hotel.dto';
 
 @Injectable()
 export class PhotoHotelsService {
+  hotelService: any;
   constructor(
     @InjectRepository(PhotoHotel)
     private photohotelsRepository: Repository<PhotoHotel>,
@@ -14,7 +15,11 @@ export class PhotoHotelsService {
 
   // create new photohotel
   async create(createPhotoHotelDto: CreatePhotoHotelDto) {
+    const hotel = await this.hotelService.findOne(createPhotoHotelDto.hotelId);
+
     const dataPhotoHotel = new PhotoHotel();
+    dataPhotoHotel.pathPhoto = createPhotoHotelDto.pathPhoto;
+    dataPhotoHotel.hotel = hotel;
 
     const result = await this.photohotelsRepository.insert(dataPhotoHotel);
 
@@ -57,7 +62,11 @@ export class PhotoHotelsService {
 
   // update photohotel
   async update(id: string, updatePhotoHotelDto: UpdatePhotoHotelDto) {
+    const hotel = await this.hotelService.findOne(updatePhotoHotelDto.hotelId);
+
     let dataPhotoHotel = new PhotoHotel();
+    dataPhotoHotel.pathPhoto = updatePhotoHotelDto.pathPhoto;
+    dataPhotoHotel.hotel = hotel;
 
     try {
       await this.photohotelsRepository.findOneOrFail({

@@ -46,5 +46,6 @@ import {
   @ManyToOne(() => Hotel, (hotel) => hotel.categorisomehelpfulfacts)
   @JoinColumn()
   hotel: Hotel;
+    hotelId: any;
   }
   

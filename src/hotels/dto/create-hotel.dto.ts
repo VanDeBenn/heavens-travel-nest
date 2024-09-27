@@ -14,5 +14,5 @@ export class CreateHotelDto {
   address: string;
 
   @IsNotEmpty()
-  pathLocation: string;
+  pathMapLocation: string;
 }

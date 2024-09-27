@@ -7,6 +7,8 @@ import { UpdateCategoriesFaqDto } from './dto/update-categories-faq.dto';
 
 @Injectable()
 export class CategoriesFaqsService {
+  hotelService: any;
+  destinationService: any;
   constructor(
     @InjectRepository(CategoriesFaq)
     private categoriesfaqssRepository: Repository<CategoriesFaq>,
@@ -14,7 +16,13 @@ export class CategoriesFaqsService {
 
   // create new categoriesfaqs
   async create(createCategoriesFaqDto: CreateCategoriesFaqDto) {
+    const destination = await this.destinationService.findOne(createCategoriesFaqDto.detinationId);
+    const hotel = await this.hotelService.findOne(createCategoriesFaqDto.hotelId);
+
     const dataCategoriesFaq = new CategoriesFaq();
+    dataCategoriesFaq.title = createCategoriesFaqDto.title;
+    dataCategoriesFaq.destination = destination;
+    dataCategoriesFaq.hotel = hotel;
 
     const result = await this.categoriesfaqssRepository.insert(dataCategoriesFaq);
 
@@ -59,7 +67,13 @@ export class CategoriesFaqsService {
 
   // update categoriesfaqs
   async update(id: string, updateCategoriesFaqDto: UpdateCategoriesFaqDto) {
+    const destination = await this.destinationService.findOne(updateCategoriesFaqDto.detinationId);
+    const hotel = await this.hotelService.findOne(updateCategoriesFaqDto.hotelId);
+
     let dataCategoriesFaq = new CategoriesFaq();
+    dataCategoriesFaq.title = updateCategoriesFaqDto.title;
+    dataCategoriesFaq.destination = destination;
+    dataCategoriesFaq.hotel = hotel;
 
 
     try {

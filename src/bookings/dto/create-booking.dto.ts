@@ -1,4 +1,4 @@
-import { IsAlpha, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsAlpha, isNotEmpty, IsNotEmpty, IsNumber } from 'class-validator';
 
 
 export class CreateBookingDto {
@@ -30,6 +30,9 @@ export class CreateBookingDto {
   paymentAmount: number;
 
   @IsNotEmpty()
+  tokenTransaction:number;
+
+  @IsNotEmpty()
   totalPrice: number;
 
   @IsNotEmpty()
@@ -37,5 +40,11 @@ export class CreateBookingDto {
 
   @IsNotEmpty()
   fullFilment: string;
+  
+  @IsNotEmpty()
+  userId: string;
+  
+  @IsNotEmpty()
+  cartId: string;
 }
 

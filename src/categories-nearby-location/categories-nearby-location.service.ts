@@ -7,6 +7,7 @@ import { CreateCategoriesNearbyLocationDto } from './dto/create-categories-nearb
 
 @Injectable()
 export class CategoriesNearbyLocationsService {
+  hotelService: any;
   constructor(
     @InjectRepository(CategoriesNearbyLocation)
     private categoriesnearbylocationsRepository: Repository<CategoriesNearbyLocation>,
@@ -14,7 +15,11 @@ export class CategoriesNearbyLocationsService {
 
   // create new categoriesnearbylocation
   async create(createCategoriesNearbyLocationDto: CreateCategoriesNearbyLocationDto) {
+    const hotel = await this.hotelService.findOne(createCategoriesNearbyLocationDto.hotelId);
+
     const dataCategoriesNearbyLocation = new CategoriesNearbyLocation();
+    dataCategoriesNearbyLocation.title = createCategoriesNearbyLocationDto.title
+    dataCategoriesNearbyLocation.hotel = hotel;
 
     const result = await this.categoriesnearbylocationsRepository.insert(dataCategoriesNearbyLocation);
 
@@ -58,7 +63,11 @@ export class CategoriesNearbyLocationsService {
 
   // update categoriesnearbylocation
   async update(id: string, updateCategoriesNearbyLocationDto: UpdateCategoriesNearbyLocationDto) {
+    const hotel = await this.hotelService.findOne(updateCategoriesNearbyLocationDto.hotelId);
+
     let dataCategoriesNearbyLocation = new CategoriesNearbyLocation();
+    dataCategoriesNearbyLocation.title = updateCategoriesNearbyLocationDto.title
+    dataCategoriesNearbyLocation.hotel = hotel;
 
     try {
       await this.categoriesnearbylocationsRepository.findOneOrFail({

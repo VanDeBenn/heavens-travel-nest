@@ -7,6 +7,7 @@ import { UpdateCategoriSomehelpfulFactDto } from './dto/update-categories-somehe
 
 @Injectable()
 export class CategoriSomehelpfulFactService {
+  hotelService: any;
   constructor(
     @InjectRepository(CategoriSomehelpfulFact)
     private categorisomehelpfulfactsRepository: Repository<CategoriSomehelpfulFact>,
@@ -14,7 +15,11 @@ export class CategoriSomehelpfulFactService {
 
   // create new categorisomehelpfulfact
   async create(createCategoriSomehelpfulFactDto: CreateCategoriSomehelpfulFactDto) {
+    const hotel = await this.hotelService.findOne(createCategoriSomehelpfulFactDto.hotelId)
+
     const dataCategoriSomehelpfulFact = new CategoriSomehelpfulFact();
+    dataCategoriSomehelpfulFact.title = createCategoriSomehelpfulFactDto.title;
+    dataCategoriSomehelpfulFact.hotel = hotel;
 
     const result = await this.categorisomehelpfulfactsRepository.insert(dataCategoriSomehelpfulFact);
 
@@ -58,7 +63,11 @@ export class CategoriSomehelpfulFactService {
 
   // update categorisomehelpfulfact
   async update(id: string, updateCategoriSomehelpfulFactDto: UpdateCategoriSomehelpfulFactDto) {
+    const hotel = await this.hotelService.findOne(updateCategoriSomehelpfulFactDto.hotelId)
+
     let dataCategoriSomehelpfulFact = new CategoriSomehelpfulFact();
+    dataCategoriSomehelpfulFact.title = updateCategoriSomehelpfulFactDto.title;
+    dataCategoriSomehelpfulFact.hotel = hotel;
 
     try {
       await this.categorisomehelpfulfactsRepository.findOneOrFail({

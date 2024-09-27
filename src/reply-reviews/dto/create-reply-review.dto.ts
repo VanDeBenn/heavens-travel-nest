@@ -4,5 +4,11 @@ export class CreateReplyReviewDto {
 
   @IsNotEmpty()
   comment: string;
+
+  @IsNotEmpty()
+  userId: string;
+
+  @IsNotEmpty()
+  reviewId: string;
 }
 

@@ -8,5 +8,11 @@ export class CreateRefundDto {
   bankAccountNumber: string;
 
   @IsNotEmpty()
+  accountHolder: string;
+
+  @IsNotEmpty()
   refundReason: string;
+
+  @IsNotEmpty()
+  bookingId: string;
 }

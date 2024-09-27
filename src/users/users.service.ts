@@ -9,6 +9,7 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
+  districtService: any;
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
@@ -20,6 +21,7 @@ export class UsersService {
     const role = await this.roleService.findOne(createUserDto.roleId);
     const salt = await bcrypt.genSalt();
     const userPassword = await bcrypt.hash(createUserDto.password, salt);
+    const district = await this.districtService.findOne(createUserDto.districtId);
 
     const dataUser = new User();
     dataUser.fullName = createUserDto.fullName;
@@ -27,6 +29,7 @@ export class UsersService {
     dataUser.phoneNumber = createUserDto.phoneNumber;
     dataUser.password = userPassword;
     dataUser.role = role;
+    dataUser.district = district;
 
     const result = await this.usersRepository.insert(dataUser);
     return this.usersRepository.findOneOrFail({
@@ -80,6 +83,8 @@ export class UsersService {
   // update user
   async update(id: string, updateUserDto: UpdateUserDto) {
     const role = await this.roleService.findOne(updateUserDto.roleId);
+    const district = await this.districtService.findOne(updateUserDto.districtId);
+
     let dataUser = new User();
     dataUser.fullName = updateUserDto.fullName;
     dataUser.email = updateUserDto.email;
@@ -89,6 +94,7 @@ export class UsersService {
     dataUser.address = updateUserDto.address;
     dataUser.password = updateUserDto.password;
     dataUser.role = role;
+    dataUser.district = district;
 
     try {
       await this.usersRepository.findOneOrFail({

@@ -7,6 +7,8 @@ import { CategoriServiceAmenity } from './entities/categories-service-amenity.en
 
 @Injectable()
 export class CategoriServiceAmenitysService {
+  hotelService: any;
+  roomHotelService: any;
   constructor(
     @InjectRepository(CategoriServiceAmenity)
     private categoriserviceamenitysRepository: Repository<CategoriServiceAmenity>,
@@ -14,8 +16,13 @@ export class CategoriServiceAmenitysService {
 
   // create new categoriserviceamenity
   async create(createCategoriServiceAmenityDto: CreateCategoriServiceAmenityDto) {
-    const dataCategoriServiceAmenity = new CategoriServiceAmenity();
+    const hotel = await this.hotelService.findOne(createCategoriServiceAmenityDto.hotelId);
+    const roomHotel = await this.roomHotelService.findOne(createCategoriServiceAmenityDto.roomHotelId);
 
+    const dataCategoriServiceAmenity = new CategoriServiceAmenity();
+    dataCategoriServiceAmenity.title = createCategoriServiceAmenityDto.title;
+    dataCategoriServiceAmenity.hotel = hotel;
+    dataCategoriServiceAmenity.roomhotel = roomHotel;
 
     const result = await this.categoriserviceamenitysRepository.insert(dataCategoriServiceAmenity);
 
@@ -60,8 +67,13 @@ export class CategoriServiceAmenitysService {
 
   // update categoriserviceamenity
   async update(id: string, updateCategoriServiceAmenityDto: CreateCategoriServiceAmenityDto) {
-    let dataCategoriServiceAmenity = new CategoriServiceAmenity();
+    const hotel = await this.hotelService.findOne(updateCategoriServiceAmenityDto.hotelId);
+    const roomHotel = await this.roomHotelService.findOne(updateCategoriServiceAmenityDto.roomHotelId);
 
+    let dataCategoriServiceAmenity = new CategoriServiceAmenity();
+    dataCategoriServiceAmenity.title = updateCategoriServiceAmenityDto. title;
+    dataCategoriServiceAmenity.hotel = hotel;
+    dataCategoriServiceAmenity.roomhotel = roomHotel;
 
     try {
       await this.categoriserviceamenitysRepository.findOneOrFail({

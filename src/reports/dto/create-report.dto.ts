@@ -15,5 +15,11 @@ export class CreateReportDto {
 
   @IsNotEmpty()
   replyReport: string;
+
+  @IsNotEmpty()
+  userId: string;
+
+  @IsNotEmpty()
+  bookingDetailId: string;
 }
 

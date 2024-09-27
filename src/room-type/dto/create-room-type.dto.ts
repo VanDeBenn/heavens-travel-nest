@@ -1,9 +1,11 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateDistrictDto {
-  @IsNotEmpty()
-  name: string;
+export class CreateRoomTypeDto {
 
   @IsNotEmpty()
-  cityId: string;
+  name: string;
+ 
+  @IsNotEmpty()
+  roomHotelId: string;
+
 }

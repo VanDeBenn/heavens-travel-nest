@@ -6,5 +6,11 @@ export class CreateReviewDto {
 
   @IsNotEmpty()
   comment: string;
+
+  @IsNotEmpty()
+  userId: string;
+
+  @IsNotEmpty()
+  bookingDetailId: string;
 }
 

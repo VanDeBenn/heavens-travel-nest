@@ -7,6 +7,7 @@ import { CreatePropertyPolicyDto } from './dto/create-property-policy.dto';
 
 @Injectable()
 export class PropertyPolicyService {
+  hotelService: any;
   constructor(
     @InjectRepository(PropertyPolicy)
     private propertypolicysRepository: Repository<PropertyPolicy>,
@@ -14,7 +15,11 @@ export class PropertyPolicyService {
 
   // create new propertypolicy
   async create(createPropertyPolicyDto: CreatePropertyPolicyDto) {
+    const hotel = await this.hotelService.findOne(createPropertyPolicyDto.hotelId);
+
     const dataPropertyPolicy = new PropertyPolicy();
+    dataPropertyPolicy.title = createPropertyPolicyDto.title;
+    dataPropertyPolicy.hotel = hotel;
 
     const result = await this.propertypolicysRepository.insert(dataPropertyPolicy);
 
@@ -57,7 +62,11 @@ export class PropertyPolicyService {
 
   // update propertypolicy
   async update(id: string, updatePropertyPolicyDto: UpdatePropertyPolicyDto) {
+    const hotel = await this.hotelService.findOne(updatePropertyPolicyDto.hotelId);
+
     let dataPropertyPolicy = new PropertyPolicy();
+    dataPropertyPolicy.title = updatePropertyPolicyDto.title;
+    dataPropertyPolicy.hotel = hotel;
 
 
     try {

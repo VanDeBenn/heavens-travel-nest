@@ -41,6 +41,7 @@ import { CategoriesFaqsModule } from './categories-faqs/categories-faqs.module';
 import { FaqsModule } from './faqs/faqs.module';
 import { CategoriesNearbyLocationModule } from './categories-nearby-location/categories-nearby-location.module';
 import { NearbyLocationModule } from './nearby-location/nearby-location.module';
+import { RoomTypeModule } from './room-type/room-type.module';
 
 @Module({
   imports: [
@@ -160,6 +161,7 @@ import { NearbyLocationModule } from './nearby-location/nearby-location.module';
     FaqsModule,
     CategoriesNearbyLocationModule,
     NearbyLocationModule,
+    RoomTypeModule,
   ],
 })
 export class AppModule {}

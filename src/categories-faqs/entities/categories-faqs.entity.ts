@@ -52,6 +52,5 @@ import {
     @ManyToOne(() => Destination, (destination) => destination.categoriesfaqs)
     @JoinColumn()
     destination: Destination;
-    
 }
   

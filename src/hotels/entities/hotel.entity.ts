@@ -38,7 +38,7 @@ export class Hotel {
   address: string;
 
   @Column()
-  pathLocation: string;
+  pathMapLocation: string;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
@@ -76,8 +76,8 @@ export class Hotel {
   @OneToMany(() => CategoriServiceAmenity, (categoriserviceamenity) => categoriserviceamenity.hotel)
   categoriserviceamenities?: CategoriServiceAmenity[];
 
-  @OneToMany(() => RoomHotel, (roomHotel) => roomHotel.hotel)
-  roomHotels?: RoomHotel[];
+  @OneToMany(() => RoomHotel, (roomhotel) => roomhotel.hotel)
+  roomhotels?: RoomHotel[];
 
   @OneToMany(() => PropertyPolicy, (propertypolicy) => propertypolicy.hotel)
   propertypolicys?: PropertyPolicy[];

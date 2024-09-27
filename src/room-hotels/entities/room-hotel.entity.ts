@@ -3,6 +3,7 @@ import { Cart } from '#/cart/entities/cart.entity';
 import { CategoriServiceAmenity } from '#/categories-service-amenities/entities/categories-service-amenity.entity';
 import { PhotoRoomHotel } from '#/foto-room-hotels/entities/foto-room-hotel.entity';
 import { Hotel } from '#/hotels/entities/hotel.entity';
+import { RoomType } from '#/room-type/entities/room-type.entity';
 import {
   Entity,
   Column,
@@ -22,7 +23,7 @@ export class RoomHotel {
   id: string;
 
   @Column()
-  type: string;
+  numberRoom: number;
 
   @Column()
   price: number;
@@ -72,10 +73,13 @@ export class RoomHotel {
   @OneToMany(() => Cart, (cart) => cart.roomhotel)
   carts?: Cart[];
 
+  @OneToMany(() => RoomType, (roomtype) => roomtype.roomhotel)
+  roomtypes?: RoomType[];
+
   @OneToMany(() => PhotoRoomHotel, (photoroomhotel) => photoroomhotel.roomhotel)
   photoroomhotels?: PhotoRoomHotel[];
 
-  @ManyToOne(() => Hotel, (hotel) => hotel.roomHotels)
+  @ManyToOne(() => Hotel, (hotel) => hotel.roomhotels)
   @JoinColumn()
   hotel: Hotel;
 }

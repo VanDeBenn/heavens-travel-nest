@@ -7,6 +7,7 @@ import { UpdateNearbyLocationDto } from './dto/update-nearby-location.dto';
 
 @Injectable()
 export class NearbyLocationService {
+  categoriesNearbyLocationService: any;
   constructor(
     @InjectRepository(NearbyLocation)
     private nearbylocationRepository: Repository<NearbyLocation>,
@@ -14,7 +15,11 @@ export class NearbyLocationService {
 
   // create new nearbylocation
   async create(createNearbyLocationDto: CreateNearbyLocationDto) {
+    const categoriesNearbyLocation = await this.categoriesNearbyLocationService.findOne(createNearbyLocationDto.categoriesNearbyLocationId);
+
     const dataNearbyLocation = new NearbyLocation();
+    dataNearbyLocation.title = createNearbyLocationDto.title;
+    dataNearbyLocation.categoriesnearbylocation = categoriesNearbyLocation
 
     const result = await this.nearbylocationRepository.insert(dataNearbyLocation);
 
@@ -57,7 +62,11 @@ export class NearbyLocationService {
 
   // update nearbylocation
   async update(id: string, updateNearbyLocationDto: UpdateNearbyLocationDto) {
+    const categoriesNearbyLocation = await this.categoriesNearbyLocationService.findOne(updateNearbyLocationDto.categoriesNearbyLocationId);
+
     let dataNearbyLocation = new NearbyLocation();
+    dataNearbyLocation.title = updateNearbyLocationDto.title;
+    dataNearbyLocation.categoriesnearbylocation = categoriesNearbyLocation;
 
     try {
       await this.nearbylocationRepository.findOneOrFail({

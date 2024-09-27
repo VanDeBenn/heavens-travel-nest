@@ -1,29 +1,29 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateProvinceDto } from './dto/create-province.dto';
-import { UpdateProvinceDto } from './dto/update-province.dto';
-import { Province } from './entities/province.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { RoomType } from './entities/room-type.entity';
+import { CreateRoomTypeDto } from './dto/create-room-type.dto';
+import { UpdateRoomTypeDto } from './dto/update-room-type.dto';
 
 @Injectable()
-export class ProvinceService {
-  countryService: any;
+export class RoomTypeService {
+  roomHotelService: any;
   constructor(
-    @InjectRepository(Province)
-    private provincesRepository: Repository<Province>,
+    @InjectRepository(RoomType)
+    private roomtypesRepository: Repository<RoomType>,
   ) {}
 
-  // create new province
-  async create(createProvinceDto: CreateProvinceDto) {
-    const country = await this.countryService.findOne(createProvinceDto.countryId);
+  // create new roomtype
+  async create(createRoomTypeDto: CreateRoomTypeDto) {
+    const roomHotel = await this.roomHotelService.findOne(createRoomTypeDto.roomHotelId);
 
-    const dataProvince = new Province();
-    dataProvince.name = createProvinceDto.name;
-    dataProvince.country = country;
+    const dataRoomType = new RoomType();
+    dataRoomType.name = createRoomTypeDto.name;
+    dataRoomType.roomhotel = roomHotel;
 
-    const result = await this.provincesRepository.insert(dataProvince);
+    const result = await this.roomtypesRepository.insert(dataRoomType);
 
-    return this.provincesRepository.findOneOrFail({
+    return this.roomtypesRepository.findOneOrFail({
       where: {
         id: result.identifiers[0].id,
       },
@@ -31,17 +31,16 @@ export class ProvinceService {
   }
 
   findAll() {
-    return this.provincesRepository.findAndCount({
+    return this.roomtypesRepository.findAndCount({
       relations: {
-        cities: true,
-        country: true,
+        roomhotel: true,
       },
     });
   }
 
   async findOne(id: string) {
     try {
-      return await this.provincesRepository.findOneOrFail({
+      return await this.roomtypesRepository.findOneOrFail({
         where: {
           id,
         },
@@ -61,16 +60,16 @@ export class ProvinceService {
     }
   }
 
-  // update province
-  async update(id: string, updateProvinceDto: UpdateProvinceDto) {
-    const country = await this.countryService.findOne(updateProvinceDto.countryId);
+  // update roomtype
+  async update(id: string, updateRoomTypeDto: UpdateRoomTypeDto) {
+    const roomHotel = await this.roomHotelService.findOne(updateRoomTypeDto.roomHotelId);
 
-    let dataProvince = new Province();
-    dataProvince.name = updateProvinceDto.name;
-    dataProvince.country = country;
+    let dataRoomType = new RoomType();
+    dataRoomType.name = updateRoomTypeDto.name;
+    dataRoomType.roomhotel = roomHotel;
 
     try {
-      await this.provincesRepository.findOneOrFail({
+      await this.roomtypesRepository.findOneOrFail({
         where: {
           id,
         },
@@ -89,19 +88,19 @@ export class ProvinceService {
       }
     }
 
-    const result = await this.provincesRepository.update(id, dataProvince);
+    const result = await this.roomtypesRepository.update(id, dataRoomType);
 
-    return this.provincesRepository.findOneOrFail({
+    return this.roomtypesRepository.findOneOrFail({
       where: {
         id,
       },
     });
   }
 
-  // delete province
+  // delete roomtype
   async remove(id: string) {
     try {
-      await this.provincesRepository.findOneOrFail({
+      await this.roomtypesRepository.findOneOrFail({
         where: {
           id,
         },
@@ -120,6 +119,6 @@ export class ProvinceService {
       }
     }
 
-    await this.provincesRepository.delete(id);
+    await this.roomtypesRepository.delete(id);
   }
 }

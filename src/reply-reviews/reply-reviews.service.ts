@@ -7,6 +7,9 @@ import { UpdateReplyReviewDto } from './dto/update-reply-review.dto';
 
 @Injectable()
 export class ReplyReviewService {
+  userService: any;
+  bookingService: any;
+  reviewService: any;
   constructor(
     @InjectRepository(ReplyReview)
     private replyreviewsRepository: Repository<ReplyReview>,
@@ -14,8 +17,13 @@ export class ReplyReviewService {
 
   // create new replyreview
   async create(createReplyReviewDto: CreateReplyReviewDto) {
-    const dataReplyReview = new ReplyReview();
+    const user = await this.userService.findOne(createReplyReviewDto.userId);
+    const review = await this.reviewService.findOne(createReplyReviewDto.reviewId);
 
+    const dataReplyReview = new ReplyReview();
+    dataReplyReview.comment = createReplyReviewDto.comment;
+    dataReplyReview.user = user;
+    dataReplyReview.review = review;
 
     const result = await this.replyreviewsRepository.insert(dataReplyReview);
 
@@ -59,7 +67,14 @@ export class ReplyReviewService {
 
   // update replyreview
   async update(id: string, updateReplyReviewDto: UpdateReplyReviewDto) {
+    const user = await this.userService.findOne(updateReplyReviewDto.userId);
+    const review = await this.reviewService.findOne(updateReplyReviewDto.reviewId);
+
     let dataReplyReview = new ReplyReview();
+    dataReplyReview.comment = updateReplyReviewDto.comment;
+    dataReplyReview.user = user;
+    dataReplyReview.review = review;
+
 
     try {
       await this.replyreviewsRepository.findOneOrFail({

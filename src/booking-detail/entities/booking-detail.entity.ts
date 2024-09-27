@@ -34,7 +34,7 @@ export class BookingDetail {
   quantity: number;
 
   @Column()
-  price: number;
+  priceDetail: number;
 
   @Column({
     type: 'enum',
@@ -83,4 +83,5 @@ export class BookingDetail {
   @ManyToOne(() => Booking, (booking) => booking.bookingdetails)
   @JoinColumn()
   booking: Booking;
+  cart: any;
 }

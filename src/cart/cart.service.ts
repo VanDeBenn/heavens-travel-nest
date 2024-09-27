@@ -6,7 +6,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
-export class CartsService {
+export class CartService {
+  userService: any;
+  destinationService: any;
+  roomHotelService: any;
   constructor(
     @InjectRepository(Cart)
     private cartsRepository: Repository<Cart>,
@@ -14,7 +17,17 @@ export class CartsService {
 
   // create new cart
   async create(createCartDto: CreateCartDto) {
+    const user = await this.userService.findOne(createCartDto.userId);
+    const destination = await this.destinationService.findOne(createCartDto.destinationId)
+    const roomHotel = await this.roomHotelService.findOne(createCartDto.roomHotelId)
+
     const dataCart = new Cart();
+    dataCart.quantity = createCartDto.quantity;
+    dataCart.startDate = createCartDto.startDate;
+    dataCart.endDate = createCartDto.endDate;
+    dataCart.user = user;
+    dataCart.destination = destination;
+    dataCart.roomhotel = roomHotel;
 
     const result = await this.cartsRepository.insert(dataCart);
 
@@ -60,7 +73,17 @@ export class CartsService {
 
   // update cart
   async update(id: string, updateCartDto: UpdateCartDto) {
+    const user = await this.userService.findOne(updateCartDto.userId);
+    const destination = await this.destinationService.findOne(updateCartDto.destinationId)
+    const roomHotel = await this.roomHotelService.findOne(updateCartDto.roomHotelId)
+
     let dataCart = new Cart();
+    dataCart.quantity = updateCartDto.quantity;
+    dataCart.startDate = updateCartDto.startDate;
+    dataCart.endDate = updateCartDto.endDate;
+    dataCart.user = user;
+    dataCart.destination = destination;
+    dataCart.roomhotel = roomHotel;
 
     try {
       await this.cartsRepository.findOneOrFail({

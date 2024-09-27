@@ -12,9 +12,21 @@ export class CreateBookingDetailDto {
   quantity: number;
 
   @IsNotEmpty()
-  price: number;
+  priceDetail: number;
 
   @IsNotEmpty()
   orderStatus: string;
+ 
+  @IsNotEmpty()
+  cartId: string;
+ 
+  @IsNotEmpty()
+  destinationId: string;
+  
+  @IsNotEmpty()
+  roomHotelId: string;
+  
+  @IsNotEmpty()
+  bookingId: string;
 }
 

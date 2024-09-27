@@ -4,9 +4,13 @@ import { UpdateBlogDto } from './dto/update-blog.dto';
 import { Blog } from './entities/blog.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { User } from '#/users/entities/user.entity';
+import { Destination } from '#/destinations/entities/destination.entity';
 
 @Injectable()
 export class BlogsService {
+  usersService: any;
+  destinationService: any;
   constructor(
     @InjectRepository(Blog)
     private blogsRepository: Repository<Blog>,
@@ -14,7 +18,15 @@ export class BlogsService {
 
   // create new blog
   async create(createBlogDto: CreateBlogDto) {
+    const user = await this.usersService.findOne(createBlogDto.userId);
+    const destination = await this.destinationService.findOne(createBlogDto.destinationId);
+
     const dataBlog = new Blog();
+    dataBlog.title = createBlogDto.title;
+    dataBlog.description = createBlogDto.description;
+    dataBlog.pathPhoto = createBlogDto.pathPhoto;
+    dataBlog.user = user;
+    dataBlog.destination = destination
 
     const result = await this.blogsRepository.insert(dataBlog);
 
@@ -58,7 +70,15 @@ export class BlogsService {
 
   // update blog
   async update(id: string, updateBlogDto: UpdateBlogDto) {
+    const user = await this.usersService.findOne(updateBlogDto.userId);
+    const destination = await this.destinationService.findOne(updateBlogDto.destinationId);
+
     let dataBlog = new Blog();
+    dataBlog.title = updateBlogDto.title;
+    dataBlog.description = updateBlogDto.description;
+    dataBlog.pathPhoto = updateBlogDto.pathPhoto;
+    dataBlog.user = user;
+    dataBlog.destination = destination;
 
     try {
       await this.blogsRepository.findOneOrFail({

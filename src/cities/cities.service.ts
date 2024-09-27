@@ -7,6 +7,7 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
 export class CitysService {
+  serviceProvince: any;
   constructor(
     @InjectRepository(City)
     private citysRepository: Repository<City>,
@@ -14,8 +15,11 @@ export class CitysService {
 
   // create new city
   async create(createCityDto: CreateCityDto) {
+    const province = await this.serviceProvince.findOne(createCityDto.provinceId);
+
     const dataCity = new City();
     dataCity.name = createCityDto.name;
+    dataCity.province = province;
 
     const result = await this.citysRepository.insert(dataCity);
 
@@ -59,8 +63,11 @@ export class CitysService {
 
   // update city
   async update(id: string, updateCityDto: UpdateCityDto) {
+    const province = await this.serviceProvince.findOne(updateCityDto.provinceId);
+
     let dataCity = new City();
-    dataCity.name = dataCity.name;
+    dataCity.name = updateCityDto.name;
+    dataCity.province = province;
 
     try {
       await this.citysRepository.findOneOrFail({

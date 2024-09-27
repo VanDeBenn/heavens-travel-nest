@@ -10,18 +10,18 @@ import {
   ParseUUIDPipe,
   Put,
 } from '@nestjs/common';
-import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
-import { CartService } from './cart.service';
+import { RoomTypeService } from './room-type.service';
+import { UpdateRoomTypeDto } from './dto/update-room-type.dto';
+import { CreateRoomTypeDto } from './dto/create-room-type.dto';
 
-@Controller('carts')
-export class CartController {
-  constructor(private readonly cartsService: CartService) {}
+@Controller('roomtypes')
+export class RoomTypeController {
+  constructor(private readonly roomtypesService: RoomTypeService) {}
 
   @Post()
-  async create(@Body() createCartDto: CreateCartDto) {
+  async create(@Body() createRoomTypeDto: CreateRoomTypeDto) {
     return {
-      data: await this.cartsService.create(createCartDto),
+      data: await this.roomtypesService.create(createRoomTypeDto),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
@@ -29,7 +29,7 @@ export class CartController {
 
   @Get()
   async findAll() {
-    const [data, count] = await this.cartsService.findAll();
+    const [data, count] = await this.roomtypesService.findAll();
 
     return {
       data,
@@ -42,7 +42,7 @@ export class CartController {
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return {
-      data: await this.cartsService.findOne(id),
+      data: await this.roomtypesService.findOne(id),
       statusCode: HttpStatus.OK,
       message: 'success',
     };
@@ -51,10 +51,10 @@ export class CartController {
   @Put(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateCartDto: UpdateCartDto,
+    @Body() updateRoomTypeDto: UpdateRoomTypeDto,
   ) {
     return {
-      data: await this.cartsService.update(id, updateCartDto),
+      data: await this.roomtypesService.update(id, updateRoomTypeDto),
       statusCode: HttpStatus.OK,
       message: 'success',
     };
@@ -62,7 +62,7 @@ export class CartController {
 
   @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id: string) {
-    await this.cartsService.remove(id);
+    await this.roomtypesService.remove(id);
 
     return {
       statusCode: HttpStatus.OK,

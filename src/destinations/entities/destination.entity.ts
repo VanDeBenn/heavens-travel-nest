@@ -34,6 +34,9 @@ export class Destination {
   priceChildren: number;
 
   @Column()
+  rating: number;
+
+  @Column()
   maxCapacity: number;
 
   @Column()

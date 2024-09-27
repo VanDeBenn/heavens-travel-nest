@@ -1,4 +1,7 @@
-import { Review } from '#/reviews/entities/review.entity';
+import { BookingDetail } from '#/booking-detail/entities/booking-detail.entity';
+import { PhotoReview } from '#/foto-reviews/entities/foto-review.entity';
+import { ReplyReview } from '#/reply-reviews/entities/reply-review.entity';
+import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
 import { User } from '#/users/entities/user.entity';
 import {
     Entity,
@@ -9,17 +12,18 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToMany,
-    ManyToOne,
+    OneToOne,
     JoinColumn,
+    ManyToOne,
   } from 'typeorm';
   
   @Entity()
-  export class ReplyReview {
+  export class RoomType {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-  
-    @Column()
-    comment: string;
+
+     @Column()
+     name: string;
 
     @CreateDateColumn({
       type: 'timestamp with time zone',
@@ -39,12 +43,8 @@ import {
   })
   deletedAt: Date;
 
-  @ManyToOne(() => Review, (review) => review.replyreviews)
+  @ManyToOne(() => RoomHotel, (roomhotel) => roomhotel.roomtypes)
   @JoinColumn()
-  review?: Review;
-
-  @ManyToOne(() => User, (user) => user.replyreviews)
-  @JoinColumn()
-  user?: User;
+  roomhotel: RoomHotel;
   }
   

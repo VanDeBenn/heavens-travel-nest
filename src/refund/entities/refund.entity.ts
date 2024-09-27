@@ -25,6 +25,9 @@ export class Refund {
   bankAccountNumber: string;
 
   @Column()
+  accountHolder: string;
+
+  @Column()
   refundReason: string;
 
   @CreateDateColumn({
@@ -48,4 +51,5 @@ export class Refund {
   @OneToOne(() => BookingDetail, (bookingdetail) => bookingdetail.refund)
   @JoinColumn()
   bookingdetail: BookingDetail;
+  booking: any;
 }

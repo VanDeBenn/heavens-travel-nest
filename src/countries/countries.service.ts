@@ -59,7 +59,7 @@ export class CountrysService {
   // update country
   async update(id: string, updateCountryDto: UpdateCountryDto) {
     let dataCountry = new Country();
-    dataCountry.name = dataCountry.name;
+    dataCountry.name = updateCountryDto.name;
 
     try {
       await this.countrysRepository.findOneOrFail({

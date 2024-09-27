@@ -45,4 +45,7 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   roleId: string;
+
+  @IsNotEmpty()
+  districtId: string;
 }

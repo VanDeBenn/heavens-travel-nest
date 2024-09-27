@@ -7,6 +7,7 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
 export class FaqsService {
+  categoriesFaqService: any;
   constructor(
     @InjectRepository(Faq)
     private faqsRepository: Repository<Faq>,
@@ -14,7 +15,11 @@ export class FaqsService {
 
   // create new faq
   async create(createFaqDto: CreateFaqDto) {
+    const categoriesFaq = await this.categoriesFaqService.findOne(createFaqDto.categoriesFaqId);
+
     const dataFaq = new Faq();
+    dataFaq.title = createFaqDto.title;
+    dataFaq.categoriesfaq = categoriesFaq;
 
     const result = await this.faqsRepository.insert(dataFaq);
 
@@ -57,7 +62,11 @@ export class FaqsService {
 
   // update faq
   async update(id: string, updateFaqDto: UpdateFaqDto) {
+    const categoriesFaq = await this.categoriesFaqService.findOne(updateFaqDto.categoriesFaqId);
+
     let dataFaq = new Faq();
+    dataFaq.title = updateFaqDto.title;
+    dataFaq.categoriesfaq = categoriesFaq;
 
     try {
       await this.faqsRepository.findOneOrFail({

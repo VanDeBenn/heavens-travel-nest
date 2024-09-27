@@ -7,6 +7,7 @@ import { UpdateSomehelpfulFactDto } from './dto/update-somehelpful-fact.dto';
 
 @Injectable()
 export class SomehelpfulFactsService {
+  categoriSomehelpfulFactService: any;
   constructor(
     @InjectRepository(SomehelpfulFact)
     private somehelpfulFactsRepository: Repository<SomehelpfulFact>,
@@ -14,10 +15,13 @@ export class SomehelpfulFactsService {
 
   // create new somehelpfulFact
   async create(createSomehelpfulFactDto: CreateSomehelpfulFactDto) {
+    const categoriSomehelpfulFact = await this.categoriSomehelpfulFactService.findOne(createSomehelpfulFactDto.categoriSomehelpfulFact);
+
     const dataSomehelpfulFact = new SomehelpfulFact();
+    dataSomehelpfulFact.title = createSomehelpfulFactDto.title;
+    dataSomehelpfulFact.categorisomehelpfulfact = categoriSomehelpfulFact;
 
     const result = await this.somehelpfulFactsRepository.insert(dataSomehelpfulFact);
-
     return this.somehelpfulFactsRepository.findOneOrFail({
       where: {
         id: result.identifiers[0].id,
@@ -57,7 +61,11 @@ export class SomehelpfulFactsService {
 
   // update somehelpfulFact
   async update(id: string, updateSomehelpfulFactDto: UpdateSomehelpfulFactDto) {
+    const categoriSomehelpfulFact = await this.categoriSomehelpfulFactService.findOne(updateSomehelpfulFactDto.categoriSomehelpfulFact);
+
     let dataSomehelpfulFact = new SomehelpfulFact();
+    dataSomehelpfulFact.title = updateSomehelpfulFactDto.title;
+    dataSomehelpfulFact.categorisomehelpfulfact = categoriSomehelpfulFact;
 
     try {
       await this.somehelpfulFactsRepository.findOneOrFail({

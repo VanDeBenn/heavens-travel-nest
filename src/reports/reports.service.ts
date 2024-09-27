@@ -7,6 +7,8 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
 export class ReportsService {
+  userService: any;
+  bookingDetailService: any;
   constructor(
     @InjectRepository(Report)
     private reportsRepository: Repository<Report>,
@@ -14,7 +16,16 @@ export class ReportsService {
 
   // create new report
   async create(createReportDto: CreateReportDto) {
+    const user = await this.userService.findOne(createReportDto.userId);
+    const bookingDetail = await this.bookingDetailService.findOne(createReportDto.bookingDetailId);
+
     const dataReport = new Report();
+    dataReport.title = createReportDto.title;
+    dataReport.description = createReportDto.description;
+    dataReport.replyReport = createReportDto.replyReport,
+    dataReport.email = createReportDto.email;
+    dataReport.user = user;
+    dataReport.bookingdetail = bookingDetail;
 
     const result = await this.reportsRepository.insert(dataReport);
 
@@ -59,7 +70,16 @@ export class ReportsService {
 
   // update report
   async update(id: string, updateReportDto: UpdateReportDto) {
+    const user = await this.userService.findOne(updateReportDto.userId);
+    const bookingDetail = await this.bookingDetailService.findOne(updateReportDto.bookingDetailId);
+
     let dataReport = new Report();
+    dataReport.title = updateReportDto.title;
+    dataReport.description = updateReportDto.description;
+    dataReport.replyReport = updateReportDto.replyReport,
+    dataReport.email = updateReportDto.email;
+    dataReport.user = user;
+    dataReport.bookingdetail = bookingDetail;
 
     try {
       await this.reportsRepository.findOneOrFail({

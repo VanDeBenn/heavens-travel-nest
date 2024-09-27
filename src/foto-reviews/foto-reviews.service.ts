@@ -7,6 +7,7 @@ import { UpdatePhotoReviewDto } from './dto/update-foto-review.dto';
 
 @Injectable()
 export class PhotoReviewsService {
+  reviewService: any;
   constructor(
     @InjectRepository(PhotoReview)
     private photoreviewsRepository: Repository<PhotoReview>,
@@ -14,7 +15,11 @@ export class PhotoReviewsService {
 
   // create new photoreview
   async create(createPhotoReviewDto: CreatePhotoReviewDto) {
+    const review = await this.reviewService.findOne(createPhotoReviewDto.reviewId);
+
     const dataPhotoReview = new PhotoReview();
+    dataPhotoReview.pathPhoto = createPhotoReviewDto.pathPhoto;
+    dataPhotoReview.review = review;
 
     const result = await this.photoreviewsRepository.insert(dataPhotoReview);
 
@@ -57,7 +62,12 @@ export class PhotoReviewsService {
 
   // update photoreview
   async update(id: string, updatePhotoReviewDto: UpdatePhotoReviewDto) {
+    const review = await this.reviewService.findOne(updatePhotoReviewDto.reviewId);
+
     let dataPhotoReview = new PhotoReview();
+    dataPhotoReview.pathPhoto = updatePhotoReviewDto.pathPhoto;
+    dataPhotoReview.review = review;
+
     try {
       await this.photoreviewsRepository.findOneOrFail({
         where: {

@@ -7,6 +7,7 @@ import { UpdateServiceAmenityDto } from './dto/update-service-amenity.dto';
 
 @Injectable()
 export class ServiceAmenitysService {
+  categoriServiceAmenityService: any;
   constructor(
     @InjectRepository(ServiceAmenity)
     private serviceamenitysRepository: Repository<ServiceAmenity>,
@@ -14,7 +15,11 @@ export class ServiceAmenitysService {
 
   // create new serviceamenity
   async create(createServiceAmenityDto: CreateServiceAmenityDto) {
+    const categoriServiceAmenity = await this.categoriServiceAmenityService.findOne(createServiceAmenityDto.categoriServiceAmenityId);
+
     const dataServiceAmenity = new ServiceAmenity();
+    dataServiceAmenity.title = createServiceAmenityDto.title;
+    dataServiceAmenity.categoriserviceamenity = categoriServiceAmenity;
 
     const result = await this.serviceamenitysRepository.insert(dataServiceAmenity);
 
@@ -57,7 +62,12 @@ export class ServiceAmenitysService {
 
   // update serviceamenity
   async update(id: string, updateServiceAmenityDto: UpdateServiceAmenityDto) {
+    const categoriServiceAmenity = await this.categoriServiceAmenityService.findOne(updateServiceAmenityDto.categoriServiceAmenityId);
+
     let dataServiceAmenity = new ServiceAmenity();
+    dataServiceAmenity.title = updateServiceAmenityDto.title;
+    dataServiceAmenity.categoriserviceamenity = categoriServiceAmenity;
+
     try {
       await this.serviceamenitysRepository.findOneOrFail({
         where: {
