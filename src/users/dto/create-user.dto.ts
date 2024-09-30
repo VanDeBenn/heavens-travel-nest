@@ -46,6 +46,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   roleId: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   districtId: string;
 }

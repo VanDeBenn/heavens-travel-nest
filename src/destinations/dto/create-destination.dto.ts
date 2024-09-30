@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateDestinationDto {
   @IsNotEmpty()
@@ -24,7 +24,7 @@ export class CreateDestinationDto {
 
   @IsNotEmpty()
   pathLocation: string;
- 
-  @IsNotEmpty()
+
+  @IsOptional()
   districtId: string;
 }

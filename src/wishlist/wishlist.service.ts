@@ -18,8 +18,14 @@ export class WishlistService {
   // create new wishlist
   async create(createWishlistDto: CreateWishlistDto) {
     const user = await this.userService.findOne(createWishlistDto.userId);
-    const destination = await this.destinationService.findOne(createWishlistDto.destinationId);
-    const hotel = await this.hotelService.findOne(createWishlistDto.hotelId);
+
+    const destination = createWishlistDto.destinationId
+      ? await this.destinationService.findOne(createWishlistDto.destinationId)
+      : null;
+
+    const hotel = createWishlistDto.hotelId
+      ? await this.hotelService.findOne(createWishlistDto.hotelId)
+      : null;
 
     const dataWishlist = new Wishlist();
     dataWishlist.user = user;
@@ -70,8 +76,14 @@ export class WishlistService {
   // update wishlist
   async update(id: string, updateWishlistDto: UpdateWishlistDto) {
     const user = await this.userService.findOne(updateWishlistDto.userId);
-    const destination = await this.destinationService.findOne(updateWishlistDto.destinationId);
-    const hotel = await this.hotelService.findOne(updateWishlistDto.hotelId);
+
+    const destination = updateWishlistDto.destinationId
+      ? await this.destinationService.findOne(updateWishlistDto.destinationId)
+      : null;
+
+    const hotel = updateWishlistDto.hotelId
+      ? await this.hotelService.findOne(updateWishlistDto.hotelId)
+      : null;
 
     let dataWishlist = new Wishlist();
     dataWishlist.user = user;

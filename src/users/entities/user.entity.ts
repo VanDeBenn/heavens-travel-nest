@@ -110,5 +110,5 @@ export class User {
 
   @ManyToOne(() => District, (district) => district.users)
   @JoinColumn()
-  district: District;
+  district?: District;
 }

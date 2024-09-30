@@ -16,15 +16,11 @@ async function bootstrap() {
   app.use(CorrelationIdMiddleware());
   app.useLogger(logger);
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3000/register',
-      'http://172.17.0.111:3000',
-      'http://172.17.0.91:3000',
-    ],
+    origin: '*',
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

@@ -18,8 +18,14 @@ export class CartService {
   // create new cart
   async create(createCartDto: CreateCartDto) {
     const user = await this.userService.findOne(createCartDto.userId);
-    const destination = await this.destinationService.findOne(createCartDto.destinationId)
-    const roomHotel = await this.roomHotelService.findOne(createCartDto.roomHotelId)
+
+    const destination = createCartDto.destinationId
+      ? await this.destinationService.findOne(createCartDto.destinationId)
+      : null;
+
+    const roomHotel = createCartDto.roomHotelId
+      ? await this.roomHotelService.findOne(createCartDto.roomHotelId)
+      : null;
 
     const dataCart = new Cart();
     dataCart.quantity = createCartDto.quantity;
@@ -74,8 +80,14 @@ export class CartService {
   // update cart
   async update(id: string, updateCartDto: UpdateCartDto) {
     const user = await this.userService.findOne(updateCartDto.userId);
-    const destination = await this.destinationService.findOne(updateCartDto.destinationId)
-    const roomHotel = await this.roomHotelService.findOne(updateCartDto.roomHotelId)
+
+    const destination = updateCartDto.destinationId
+      ? await this.destinationService.findOne(updateCartDto.destinationId)
+      : null;
+
+    const roomHotel = updateCartDto.roomHotelId
+      ? await this.roomHotelService.findOne(updateCartDto.roomHotelId)
+      : null;
 
     let dataCart = new Cart();
     dataCart.quantity = updateCartDto.quantity;

@@ -65,7 +65,7 @@ export class Destination {
     nullable: true,
   })
   deletedAt: Date;
-  
+
   @OneToMany(() => Blog, (blog) => blog.destination)
   blogs?: Blog[];
 
@@ -75,16 +75,19 @@ export class Destination {
   @OneToMany(() => Cart, (cart) => cart.destination)
   carts?: Cart[];
 
-  @OneToMany(() => PhotoDestination, (photodestination) => photodestination.destination)
+  @OneToMany(
+    () => PhotoDestination,
+    (photodestination) => photodestination.destination,
+  )
   photodestinations?: PhotoDestination[];
-  
+
   @OneToMany(() => CategoriesFaq, (categoriesfaq) => categoriesfaq.destination)
   categoriesfaqs?: CategoriesFaq[];
-  
+
   @OneToMany(() => BookingDetail, (bookingdetail) => bookingdetail.destination)
   bookingdetails?: BookingDetail[];
-  
+
   @ManyToOne(() => District, (district) => district.destinations)
   @JoinColumn()
-  district: District;
+  district?: District;
 }

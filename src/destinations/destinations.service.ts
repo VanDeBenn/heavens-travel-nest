@@ -1,3 +1,4 @@
+import { DistrictsService } from '#/districts/districts.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateDestinationDto } from './dto/create-destination.dto';
 import { UpdateDestinationDto } from './dto/update-destination.dto';
@@ -7,26 +8,28 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
 export class DestinationsService {
-  districtService: any;
   constructor(
     @InjectRepository(Destination)
     private destinationsRepository: Repository<Destination>,
+    private districtsService: DistrictsService,
   ) {}
 
   // create new destination
   async create(createDestinationDto: CreateDestinationDto) {
-    const district = await this.districtService.findOne(createDestinationDto.districtId);
+    const district = await this.districtsService.findOne(
+      createDestinationDto.districtId,
+    );
 
     const dataDestination = new Destination();
     dataDestination.name = createDestinationDto.name;
-    dataDestination.priceAdult;
+    dataDestination.priceAdult = createDestinationDto.priceAdult;
     dataDestination.priceChildren = createDestinationDto.priceChildren;
     dataDestination.maxCapacity = createDestinationDto.maxCapacity;
     dataDestination.rating = createDestinationDto.rating;
     dataDestination.description = createDestinationDto.description;
     dataDestination.address = createDestinationDto.address;
     dataDestination.pathLocation = createDestinationDto.pathLocation;
-    dataDestination.district = district
+    dataDestination.district = district;
 
     const result = await this.destinationsRepository.insert(dataDestination);
 
@@ -75,11 +78,13 @@ export class DestinationsService {
 
   // update destination
   async update(id: string, updateDestinationDto: UpdateDestinationDto) {
-    const district = await this.districtService.findOne(updateDestinationDto.districtId);
+    const district = await this.districtsService.findOne(
+      updateDestinationDto.districtId,
+    );
 
     let dataDestination = new Destination();
     dataDestination.name = updateDestinationDto.name;
-    dataDestination.priceAdult;
+    dataDestination.priceAdult = updateDestinationDto.priceAdult;
     dataDestination.priceChildren = updateDestinationDto.priceChildren;
     dataDestination.maxCapacity = updateDestinationDto.maxCapacity;
     dataDestination.rating = updateDestinationDto.rating;
@@ -108,7 +113,10 @@ export class DestinationsService {
       }
     }
 
-    const result = await this.destinationsRepository.update(id, dataDestination);
+    const result = await this.destinationsRepository.update(
+      id,
+      dataDestination,
+    );
 
     return this.destinationsRepository.findOneOrFail({
       where: {
