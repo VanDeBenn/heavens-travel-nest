@@ -1,3 +1,4 @@
+import { ProvinceService } from './../provinces/provinces.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
@@ -7,15 +8,17 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
 export class CitysService {
-  serviceProvince: any;
   constructor(
     @InjectRepository(City)
     private citysRepository: Repository<City>,
+    private provinceService: ProvinceService,
   ) {}
 
   // create new city
   async create(createCityDto: CreateCityDto) {
-    const province = await this.serviceProvince.findOne(createCityDto.provinceId);
+    const province = await this.provinceService.findOne(
+      createCityDto.provinceId,
+    );
 
     const dataCity = new City();
     dataCity.name = createCityDto.name;
@@ -63,7 +66,9 @@ export class CitysService {
 
   // update city
   async update(id: string, updateCityDto: UpdateCityDto) {
-    const province = await this.serviceProvince.findOne(updateCityDto.provinceId);
+    const province = await this.provinceService.findOne(
+      updateCityDto.provinceId,
+    );
 
     let dataCity = new City();
     dataCity.name = updateCityDto.name;

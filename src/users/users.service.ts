@@ -6,14 +6,15 @@ import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RolesService } from '#/roles/roles.service';
 import * as bcrypt from 'bcrypt';
+import { DistrictsService } from '#/districts/districts.service';
 
 @Injectable()
 export class UsersService {
-  districtService: any;
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private roleService: RolesService,
+    private districtService: DistrictsService,
   ) {}
 
   // create new user
@@ -56,8 +57,8 @@ export class UsersService {
           role: true,
           district: true,
           blogs: true,
-          wishlists: true,
-          carts: true,
+          wishlists: { destination: true, hotel: true },
+          carts: { destination: true, roomhotel: true },
           bookings: true,
           reviews: true,
           replyreviews: true,

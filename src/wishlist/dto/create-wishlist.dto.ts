@@ -1,14 +1,12 @@
-import { IsAlpha, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsAlpha, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateWishlistDto {
-    @IsNotEmpty()
-    userId:string;
-    
-    @IsNotEmpty()
-    destinationId:string;
-    
-    @IsNotEmpty()
-    hotelId:string;
+  @IsNotEmpty()
+  userId: string;
 
+  @IsNotEmpty()
+  destinationId: string;
 
+  @IsOptional()
+  hotelId: string;
 }

@@ -1,3 +1,6 @@
+import { RoomHotelsService } from './../room-hotels/room-hotels.service';
+import { DestinationsService } from './../destinations/destinations.service';
+import { UsersService } from '#/users/users.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
@@ -7,24 +10,24 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
 export class CartService {
-  userService: any;
-  destinationService: any;
-  roomHotelService: any;
   constructor(
     @InjectRepository(Cart)
     private cartsRepository: Repository<Cart>,
+    private usersService: UsersService,
+    private destinationsService: DestinationsService,
+    private roomHotelsService: RoomHotelsService,
   ) {}
 
   // create new cart
   async create(createCartDto: CreateCartDto) {
-    const user = await this.userService.findOne(createCartDto.userId);
+    const user = await this.usersService.findOne(createCartDto.userId);
 
     const destination = createCartDto.destinationId
-      ? await this.destinationService.findOne(createCartDto.destinationId)
+      ? await this.destinationsService.findOne(createCartDto.destinationId)
       : null;
 
     const roomHotel = createCartDto.roomHotelId
-      ? await this.roomHotelService.findOne(createCartDto.roomHotelId)
+      ? await this.roomHotelsService.findOne(createCartDto.roomHotelId)
       : null;
 
     const dataCart = new Cart();
@@ -79,14 +82,14 @@ export class CartService {
 
   // update cart
   async update(id: string, updateCartDto: UpdateCartDto) {
-    const user = await this.userService.findOne(updateCartDto.userId);
+    const user = await this.usersService.findOne(updateCartDto.userId);
 
     const destination = updateCartDto.destinationId
-      ? await this.destinationService.findOne(updateCartDto.destinationId)
+      ? await this.destinationsService.findOne(updateCartDto.destinationId)
       : null;
 
     const roomHotel = updateCartDto.roomHotelId
-      ? await this.roomHotelService.findOne(updateCartDto.roomHotelId)
+      ? await this.roomHotelsService.findOne(updateCartDto.roomHotelId)
       : null;
 
     let dataCart = new Cart();

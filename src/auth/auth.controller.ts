@@ -55,7 +55,9 @@ export class AuthController {
     res.cookie('refresh_token', token.refreshToken);
     res.cookie('id', result.sub);
 
-    return res.redirect('http://localhost:3000/profile');
+    if (HttpStatus.NOT_FOUND) {
+      res.redirect('http://localhost:3000/profile');
+    } else res.redirect('http://localhost:3000/register');
   }
 
   @Post('login')

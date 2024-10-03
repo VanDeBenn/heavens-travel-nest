@@ -1,3 +1,4 @@
+import { DistrictsService } from '#/districts/districts.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateHotelDto } from './dto/create-hotel.dto';
 import { UpdateHotelDto } from './dto/update-hotel.dto';
@@ -10,16 +11,22 @@ export class HotelsService {
   constructor(
     @InjectRepository(Hotel)
     private hotelsRepository: Repository<Hotel>,
+    private districtsService: DistrictsService,
   ) {}
 
   // create new hotel
   async create(createHotelDto: CreateHotelDto) {
+    const district = await this.districtsService.findOne(
+      createHotelDto.districtId,
+    );
+
     const dataHotel = new Hotel();
     dataHotel.name = createHotelDto.name;
     dataHotel.rating = createHotelDto.rating;
     dataHotel.description = createHotelDto.description;
     dataHotel.address = createHotelDto.address;
     dataHotel.pathMapLocation = createHotelDto.pathMapLocation;
+    dataHotel.district = district;
 
     const result = await this.hotelsRepository.insert(dataHotel);
 
@@ -41,7 +48,7 @@ export class HotelsService {
         categoriserviceamenities: true,
         roomhotels: true,
         propertypolicys: true,
-        district: true,
+        district: { city: true },
       },
     });
   }

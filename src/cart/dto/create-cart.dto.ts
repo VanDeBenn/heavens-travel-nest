@@ -1,21 +1,21 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateCartDto {
-    @IsNotEmpty()
-    quantity: Number;
+  @IsNotEmpty()
+  quantity: Number;
 
-    @IsNotEmpty()
-    startDate: Date;
+  @IsNotEmpty()
+  startDate: Date;
 
-    @IsNotEmpty()
-    endDate: Date;
-    
-    @IsNotEmpty()
-    userId: string;
-    
-    @IsNotEmpty()
-    destinationId: string;
-    
-    @IsNotEmpty()
-    roomHotelId: string;
+  @IsNotEmpty()
+  endDate: Date;
+
+  @IsNotEmpty()
+  userId: string;
+
+  @IsNotEmpty()
+  destinationId: string;
+
+  @IsOptional()
+  roomHotelId: string;
 }

@@ -4,15 +4,18 @@ import { UpdateWishlistDto } from './dto/update-wishlist.dto';
 import { Wishlist } from './entities/wishlist.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { UsersService } from '#/users/users.service';
+import { HotelsService } from '#/hotels/hotels.service';
+import { DestinationsService } from '#/destinations/destinations.service';
 
 @Injectable()
 export class WishlistService {
-  userService: any;
-  destinationService: any;
-  hotelService: any;
   constructor(
     @InjectRepository(Wishlist)
     private wishlistsRepository: Repository<Wishlist>,
+    private userService: UsersService,
+    private destinationService: DestinationsService,
+    private hotelService: HotelsService,
   ) {}
 
   // create new wishlist
