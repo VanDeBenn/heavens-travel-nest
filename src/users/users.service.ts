@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RolesService } from '#/roles/roles.service';
 import * as bcrypt from 'bcrypt';
 import { DistrictsService } from '#/districts/districts.service';
+import { District } from '#/districts/entities/district.entity';
 
 @Injectable()
 export class UsersService {
@@ -87,9 +88,9 @@ export class UsersService {
   // update user
   async update(id: string, updateUserDto: UpdateUserDto) {
     const role = await this.roleService.findOne(updateUserDto.roleId);
-    // const district = await this.districtService.findOne(
-    //   updateUserDto.districtId,
-    // );
+    const district = await this.districtService.findOne(
+      updateUserDto.districtId,
+    );
 
     let dataUser = new User();
     dataUser.fullName = updateUserDto.fullName;
@@ -100,7 +101,7 @@ export class UsersService {
     dataUser.address = updateUserDto.address;
     dataUser.password = updateUserDto.password;
     dataUser.role = role;
-    // dataUser.district = district;
+    dataUser.district = district;
 
     try {
       await this.usersRepository.findOneOrFail({

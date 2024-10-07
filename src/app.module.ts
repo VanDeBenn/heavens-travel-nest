@@ -18,7 +18,7 @@ import { DistrictsModule } from './districts/districts.module';
 import { RoomHotelsModule } from './room-hotels/room-hotels.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { CartModule } from './cart/cart.module';
-import { CitiesModule } from './cities/cities.module';
+import { CitysModule } from './cities/cities.module';
 import { ProvincesModule } from './provinces/provinces.module';
 import { CountriesModule } from './countries/countries.module';
 import { FotoDestinationsModule } from './foto-destinations/foto-destinations.module';
@@ -137,7 +137,7 @@ import { RoomTypeModule } from './room-type/room-type.module';
     RoomHotelsModule,
     BookingsModule,
     CartModule,
-    CitiesModule,
+    CitysModule,
     ProvincesModule,
     CountriesModule,
     FotoDestinationsModule,

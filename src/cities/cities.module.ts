@@ -11,4 +11,4 @@ import { ProvincesModule } from '#/provinces/provinces.module';
   providers: [CitysService],
   exports: [CitysService],
 })
-export class CitiesModule {}
+export class CitysModule {}

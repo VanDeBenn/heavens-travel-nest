@@ -3,10 +3,10 @@ import { DistrictsService } from './districts.service';
 import { DistrictsController } from './districts.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { District } from './entities/district.entity';
-import { CitiesModule } from '#/cities/cities.module';
+import { CitysModule } from '#/cities/cities.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([District]), CitiesModule],
+  imports: [TypeOrmModule.forFeature([District]), CitysModule],
   controllers: [DistrictsController],
   providers: [DistrictsService],
   exports: [DistrictsService],

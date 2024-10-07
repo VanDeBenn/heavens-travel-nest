@@ -4,13 +4,16 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { RoomHotel } from './entities/room-hotel.entity';
 import { CreateRoomHotelDto } from './dto/create-room-hotel.dto';
 import { UpdateRoomHotelDto } from './dto/update-room-hotel.dto';
+import { HotelsService } from '#/hotels/hotels.service';
 
 @Injectable()
 export class RoomHotelsService {
-  hotelService: any;
+  
   constructor(
     @InjectRepository(RoomHotel)
     private roomhotelsRepository: Repository<RoomHotel>,
+    private hotelService: HotelsService,
+
   ) {}
 
   // create new roomhotel

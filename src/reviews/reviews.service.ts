@@ -4,14 +4,15 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { Review } from './entities/review.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { UsersService } from '#/users/users.service';
 
 @Injectable()
 export class ReviewsService {
-  userService: any;
   bookingDetailService: any;
   constructor(
     @InjectRepository(Review)
     private reviewsRepository: Repository<Review>,
+    private userService: UsersService,
   ) {}
 
   // create new review
