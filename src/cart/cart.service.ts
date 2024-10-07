@@ -1,7 +1,12 @@
 import { RoomHotelsService } from './../room-hotels/room-hotels.service';
 import { DestinationsService } from './../destinations/destinations.service';
 import { UsersService } from '#/users/users.service';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { Cart } from './entities/cart.entity';
@@ -17,6 +22,37 @@ export class CartService {
     private destinationsService: DestinationsService,
     private roomHotelsService: RoomHotelsService,
   ) {}
+
+  // Add to Cart function
+  async addToCart(userId: string, destinationId: string, roomHotelId: string) {
+    const user = await this.usersService.findOne(userId);
+    const destination = destinationId
+      ? await this.destinationsService.findOne(destinationId)
+      : null;
+
+    const roomHotel = roomHotelId
+      ? await this.roomHotelsService.findOne(roomHotelId)
+      : null;
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const cartItem = new Cart();
+    cartItem.user = user;
+    cartItem.destination = destination;
+    cartItem.roomhotel = roomHotel;
+
+    return await this.cartsRepository.save(cartItem);
+  }
+
+  // Existing getCartByUserId function
+  async getCartByUserId(userId: string) {
+    return await this.cartsRepository.find({
+      where: { user: { id: userId } },
+      relations: ['product'],
+    });
+  }
 
   // create new cart
   async create(createCartDto: CreateCartDto) {

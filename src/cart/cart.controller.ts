@@ -27,6 +27,23 @@ export class CartController {
     };
   }
 
+  // Add to Cart
+  @Post('add')
+  async addToCart(
+    @Body('userId') userId: string,
+    @Body('destinationId') destinationId: string,
+    @Body('roomHotelId') roomHotelId: string,
+  ) {
+    const addedCartItem = await this.cartsService.addToCart(
+      userId,
+      destinationId,
+      roomHotelId,
+    );
+    return {
+      message: 'Product added to cart',
+    };
+  }
+
   @Get()
   async findAll() {
     const [data, count] = await this.cartsService.findAll();

@@ -14,7 +14,7 @@ import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
 import { CitysService } from './cities.service';
 
-@Controller('citys')
+@Controller('cities')
 export class CitysController {
   constructor(private readonly citysService: CitysService) {}
 

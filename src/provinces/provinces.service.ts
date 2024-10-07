@@ -16,7 +16,9 @@ export class ProvinceService {
 
   // create new province
   async create(createProvinceDto: CreateProvinceDto) {
-    const country = await this.countryService.findOne(createProvinceDto.countryId);
+    const country = await this.countryService.findOne(
+      createProvinceDto.countryId,
+    );
 
     const dataProvince = new Province();
     dataProvince.name = createProvinceDto.name;
@@ -64,7 +66,9 @@ export class ProvinceService {
 
   // update province
   async update(id: string, updateProvinceDto: UpdateProvinceDto) {
-    const country = await this.countryService.findOne(updateProvinceDto.countryId);
+    const country = await this.countryService.findOne(
+      updateProvinceDto.countryId,
+    );
 
     let dataProvince = new Province();
     dataProvince.name = updateProvinceDto.name;

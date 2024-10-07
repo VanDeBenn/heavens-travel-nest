@@ -14,7 +14,7 @@ import { CreateCountrysDto } from './dto/create-country.dto';
 import { UpdateCountryDto } from './dto/update-country.dto';
 import { CountrysService } from './countries.service';
 
-@Controller('countrys')
+@Controller('countries')
 export class CountrysController {
   constructor(private readonly countrysService: CountrysService) {}
 
