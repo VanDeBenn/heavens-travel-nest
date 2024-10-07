@@ -4,13 +4,14 @@ import { UpdateFaqDto } from './dto/update-faq.dto';
 import { Faq } from './entities/faq.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { CategoriesFaqsService } from '#/categories-faqs/categories-faqs.service';
 
 @Injectable()
 export class FaqsService {
-  categoriesFaqService: any;
   constructor(
     @InjectRepository(Faq)
     private faqsRepository: Repository<Faq>,
+    private categoriesFaqService: CategoriesFaqsService,
   ) {}
 
   // create new faq

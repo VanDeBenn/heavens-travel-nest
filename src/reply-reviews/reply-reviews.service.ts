@@ -4,20 +4,22 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { ReplyReview } from './entities/reply-review.entity';
 import { CreateReplyReviewDto } from './dto/create-reply-review.dto';
 import { UpdateReplyReviewDto } from './dto/update-reply-review.dto';
+import { ReviewsService } from '#/reviews/reviews.service';
+import { UsersService } from '#/users/users.service';
 
 @Injectable()
 export class ReplyReviewService {
-  userService: any;
-  bookingService: any;
-  reviewService: any;
   constructor(
     @InjectRepository(ReplyReview)
     private replyreviewsRepository: Repository<ReplyReview>,
+    private userService: UsersService,
+    private reviewService: ReviewsService,
   ) {}
 
   // create new replyreview
   async create(createReplyReviewDto: CreateReplyReviewDto) {
     const user = await this.userService.findOne(createReplyReviewDto.userId);
+
     const review = await this.reviewService.findOne(createReplyReviewDto.reviewId);
 
     const dataReplyReview = new ReplyReview();

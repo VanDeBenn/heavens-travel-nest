@@ -17,13 +17,11 @@ export class ReviewsService {
   // create new review
   async create(createReviewDto: CreateReviewDto) {
     const user = await this.userService.findOne(createReviewDto.userId);
-    const bookingDetail = await this.bookingDetailService.findOne(createReviewDto.bookingDetailId);
 
     const dataReview = new Review();
     dataReview.rating = createReviewDto.rating;
     dataReview.comment = createReviewDto.comment;
     dataReview.user = user;
-    dataReview.bookingdetail = bookingDetail;
 
     const result = await this.reviewsRepository.insert(dataReview);
 
@@ -70,13 +68,11 @@ export class ReviewsService {
   // update review
   async update(id: string, updateReviewDto: UpdateReviewDto) {
     const user = await this.userService.findOne(updateReviewDto.userId);
-    const bookingDetail = await this.bookingDetailService.findOne(updateReviewDto.bookingDetailId);
 
     let dataReview = new Review();
     dataReview.rating = updateReviewDto.rating;
     dataReview.comment = updateReviewDto.comment;
     dataReview.user = user;
-    dataReview.bookingdetail = bookingDetail;
 
     try {
       await this.reviewsRepository.findOneOrFail({

@@ -4,19 +4,22 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { CategoriesFaq } from './entities/categories-faqs.entity';
 import { CreateCategoriesFaqDto } from './dto/create-categories-faq.dto';
 import { UpdateCategoriesFaqDto } from './dto/update-categories-faq.dto';
+import { DestinationsService } from '#/destinations/destinations.service';
+import { HotelsService } from '#/hotels/hotels.service';
 
 @Injectable()
 export class CategoriesFaqsService {
-  hotelService: any;
-  destinationService: any;
   constructor(
     @InjectRepository(CategoriesFaq)
     private categoriesfaqssRepository: Repository<CategoriesFaq>,
+    private destinationService: DestinationsService,
+    private hotelService: HotelsService,
   ) {}
 
   // create new categoriesfaqs
   async create(createCategoriesFaqDto: CreateCategoriesFaqDto) {
     const destination = await this.destinationService.findOne(createCategoriesFaqDto.detinationId);
+
     const hotel = await this.hotelService.findOne(createCategoriesFaqDto.hotelId);
 
     const dataCategoriesFaq = new CategoriesFaq();
@@ -68,6 +71,7 @@ export class CategoriesFaqsService {
   // update categoriesfaqs
   async update(id: string, updateCategoriesFaqDto: UpdateCategoriesFaqDto) {
     const destination = await this.destinationService.findOne(updateCategoriesFaqDto.detinationId);
+
     const hotel = await this.hotelService.findOne(updateCategoriesFaqDto.hotelId);
 
     let dataCategoriesFaq = new CategoriesFaq();

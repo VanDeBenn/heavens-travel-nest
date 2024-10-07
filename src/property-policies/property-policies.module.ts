@@ -7,6 +7,7 @@ import { PropertyPolicy } from './entities/property-policy.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([PropertyPolicy])],
   controllers: [PropertyPolicyController],
-  providers: [PropertyPolicyService]
+  providers: [PropertyPolicyService],
+  exports: [PropertyPolicyService],
 })
 export class PropertyPoliciesModule {}

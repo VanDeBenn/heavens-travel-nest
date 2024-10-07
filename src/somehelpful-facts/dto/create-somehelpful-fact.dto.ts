@@ -5,5 +5,5 @@ export class CreateSomehelpfulFactDto {
     title: string;
     
     @IsNotEmpty()
-    categoriSomehelpfulFact: string;
+    categoriSomehelpfulFactId: string;
 }

@@ -8,5 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [TypeOrmModule.forFeature([Refund])],
   controllers: [RefundController],
   providers: [RefundService],
+  exports: [RefundService],
 })
 export class RefundModule {}

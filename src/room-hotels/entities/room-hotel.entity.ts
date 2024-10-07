@@ -1,4 +1,5 @@
 import { BookingDetail } from '#/booking-detail/entities/booking-detail.entity';
+import { Booking } from '#/bookings/entities/booking.entity';
 import { Cart } from '#/cart/entities/cart.entity';
 import { CategoriServiceAmenity } from '#/categories-service-amenities/entities/categories-service-amenity.entity';
 import { PhotoRoomHotel } from '#/foto-room-hotels/entities/foto-room-hotel.entity';
@@ -64,8 +65,8 @@ export class RoomHotel {
   })
   deletedAt: Date;
 
-  @OneToMany(() => BookingDetail, (bookingdetail) => bookingdetail.roomhotel)
-  bookingdetails?: BookingDetail[];
+  @OneToMany(() => Booking, (booking) => booking.roomhotel)
+  bookings?: Booking[];
   
   @OneToMany(() => CategoriServiceAmenity, (categoriserviceamenity) => categoriserviceamenity.roomhotel)
   categoriserviceamenities?: CategoriServiceAmenity[];

@@ -40,7 +40,6 @@ export class RoomHotelsService {
   findAll() {
     return this.roomhotelsRepository.findAndCount({
       relations: {
-        bookingdetails: true,
         categoriserviceamenities: true,
         carts: true,
         photoroomhotels: true,

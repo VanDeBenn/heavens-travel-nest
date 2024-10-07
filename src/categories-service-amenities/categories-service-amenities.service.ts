@@ -4,19 +4,22 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { CreateCategoriServiceAmenityDto } from './dto/create-categories-service-amenity.dto';
 import { CategoriServiceAmenity } from './entities/categories-service-amenity.entity';
+import { HotelsService } from '#/hotels/hotels.service';
+import { RoomHotelsService } from '#/room-hotels/room-hotels.service';
 
 @Injectable()
 export class CategoriServiceAmenitysService {
-  hotelService: any;
-  roomHotelService: any;
   constructor(
     @InjectRepository(CategoriServiceAmenity)
     private categoriserviceamenitysRepository: Repository<CategoriServiceAmenity>,
+    private hotelService: HotelsService,
+    private roomHotelService: RoomHotelsService,
   ) {}
 
   // create new categoriserviceamenity
   async create(createCategoriServiceAmenityDto: CreateCategoriServiceAmenityDto) {
     const hotel = await this.hotelService.findOne(createCategoriServiceAmenityDto.hotelId);
+
     const roomHotel = await this.roomHotelService.findOne(createCategoriServiceAmenityDto.roomHotelId);
 
     const dataCategoriServiceAmenity = new CategoriServiceAmenity();
@@ -68,6 +71,7 @@ export class CategoriServiceAmenitysService {
   // update categoriserviceamenity
   async update(id: string, updateCategoriServiceAmenityDto: CreateCategoriServiceAmenityDto) {
     const hotel = await this.hotelService.findOne(updateCategoriServiceAmenityDto.hotelId);
+
     const roomHotel = await this.roomHotelService.findOne(updateCategoriServiceAmenityDto.roomHotelId);
 
     let dataCategoriServiceAmenity = new CategoriServiceAmenity();

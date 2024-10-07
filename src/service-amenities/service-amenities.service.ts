@@ -4,13 +4,15 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { ServiceAmenity } from './entities/service-amenity.entity';
 import { CreateServiceAmenityDto } from './dto/create-service-amenity.dto';
 import { UpdateServiceAmenityDto } from './dto/update-service-amenity.dto';
+import { CategoriServiceAmenitysService } from '#/categories-service-amenities/categories-service-amenities.service';
 
 @Injectable()
 export class ServiceAmenitysService {
-  categoriServiceAmenityService: any;
+ 
   constructor(
     @InjectRepository(ServiceAmenity)
     private serviceamenitysRepository: Repository<ServiceAmenity>,
+    private categoriServiceAmenityService: CategoriServiceAmenitysService,
   ) {}
 
   // create new serviceamenity

@@ -4,20 +4,20 @@ import { UpdateReportDto } from './dto/update-report.dto';
 import { Report } from './entities/report.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { UsersService } from '#/users/users.service';
 
 @Injectable()
 export class ReportsService {
-  userService: any;
-  bookingDetailService: any;
+ 
   constructor(
     @InjectRepository(Report)
     private reportsRepository: Repository<Report>,
+    private userService: UsersService,
   ) {}
 
   // create new report
   async create(createReportDto: CreateReportDto) {
     const user = await this.userService.findOne(createReportDto.userId);
-    const bookingDetail = await this.bookingDetailService.findOne(createReportDto.bookingDetailId);
 
     const dataReport = new Report();
     dataReport.title = createReportDto.title;
@@ -25,7 +25,6 @@ export class ReportsService {
     dataReport.replyReport = createReportDto.replyReport,
     dataReport.email = createReportDto.email;
     dataReport.user = user;
-    dataReport.bookingdetail = bookingDetail;
 
     const result = await this.reportsRepository.insert(dataReport);
 
@@ -71,7 +70,6 @@ export class ReportsService {
   // update report
   async update(id: string, updateReportDto: UpdateReportDto) {
     const user = await this.userService.findOne(updateReportDto.userId);
-    const bookingDetail = await this.bookingDetailService.findOne(updateReportDto.bookingDetailId);
 
     let dataReport = new Report();
     dataReport.title = updateReportDto.title;
@@ -79,8 +77,6 @@ export class ReportsService {
     dataReport.replyReport = updateReportDto.replyReport,
     dataReport.email = updateReportDto.email;
     dataReport.user = user;
-    dataReport.bookingdetail = bookingDetail;
-
     try {
       await this.reportsRepository.findOneOrFail({
         where: {

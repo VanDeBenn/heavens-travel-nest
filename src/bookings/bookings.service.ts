@@ -4,21 +4,34 @@ import { UpdateBookingDto } from './dto/update-booking.dto';
 import { Booking } from './entities/booking.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { UsersService } from '#/users/users.service';
+import { CartService } from '#/cart/cart.service';
+import { BookingDetailsService } from '#/booking-detail/booking-detail.service';
+import { BookingDetail } from '#/booking-detail/entities/booking-detail.entity';
+import { DestinationsService } from '#/destinations/destinations.service';
+import { RoomHotelsService } from '#/room-hotels/room-hotels.service';
 
 @Injectable()
 export class BookingsService {
-  roleService: any;
-  userService: any;
-  cartService: any;
   constructor(
     @InjectRepository(Booking)
     private bookingsRepository: Repository<Booking>,
+    private userService: UsersService,
+    private destinationService: DestinationsService,
+    private roomHotelService: RoomHotelsService,
   ) {}
 
   // create new booking
   async create(createBookingDto: CreateBookingDto) {
     const user = await this.userService.findOne(createBookingDto.userId);
-    const cart = await this.cartService.findOne(createBookingDto.cartId);
+
+    const destination = createBookingDto.destinationId? await this.destinationService.findOne(createBookingDto.destinationId): null;
+    
+    const roomHotel = createBookingDto.roomHotelId? await this.roomHotelService.findOne(createBookingDto.roomHotelId): null;
+
+    if (!destination && !roomHotel) {
+      throw new Error('Error: Harus ada salah satu dari destination atau roomHotel yang diisi.');
+    }
 
     const dataBooking = new Booking();
     dataBooking.customerName = createBookingDto.customerName;
@@ -35,7 +48,7 @@ export class BookingsService {
     dataBooking.statusPayment = createBookingDto.statusPayment;
     dataBooking.fullFilment = createBookingDto.fullFilment;
     dataBooking.user = user;
-    dataBooking.carts = cart;
+    dataBooking.roomhotel = roomHotel;
 
     const result = await this.bookingsRepository.insert(dataBooking);
 
@@ -81,7 +94,6 @@ export class BookingsService {
   // update booking
   async update(id: string, updateBookingDto: UpdateBookingDto) {
     const user = await this.userService.findOne(updateBookingDto.userId);
-    const cart = await this.cartService.findOne(updateBookingDto.cartId);
 
     let dataBooking = new Booking();
     dataBooking.customerName = updateBookingDto.customerName;
@@ -98,7 +110,6 @@ export class BookingsService {
     dataBooking.statusPayment = updateBookingDto.statusPayment;
     dataBooking.fullFilment = updateBookingDto.fullFilment;
     dataBooking.user = user;
-    dataBooking.carts = cart;
 
     try {
       await this.bookingsRepository.findOneOrFail({

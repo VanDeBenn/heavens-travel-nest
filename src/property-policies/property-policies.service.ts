@@ -4,13 +4,14 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { PropertyPolicy } from './entities/property-policy.entity';
 import { UpdatePropertyPolicyDto } from './dto/update-property-policy.dto';
 import { CreatePropertyPolicyDto } from './dto/create-property-policy.dto';
+import { HotelsService } from '#/hotels/hotels.service';
 
 @Injectable()
 export class PropertyPolicyService {
-  hotelService: any;
   constructor(
     @InjectRepository(PropertyPolicy)
     private propertypolicysRepository: Repository<PropertyPolicy>,
+    private hotelService: HotelsService,
   ) {}
 
   // create new propertypolicy

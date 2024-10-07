@@ -16,9 +16,7 @@ export class CitysService {
 
   // create new city
   async create(createCityDto: CreateCityDto) {
-    const province = await this.provinceService.findOne(
-      createCityDto.provinceId,
-    );
+    const province = await this.provinceService.findOne(createCityDto.provinceId);
 
     const dataCity = new City();
     dataCity.name = createCityDto.name;

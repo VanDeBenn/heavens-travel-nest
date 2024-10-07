@@ -4,13 +4,14 @@ import { UpdateDistrictDto } from './dto/update-district.dto';
 import { District } from './entities/district.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { CitysService } from '#/cities/cities.service';
 
 @Injectable()
 export class DistrictsService {
-  cityService: any;
   constructor(
     @InjectRepository(District)
     private districtsRepository: Repository<District>,
+    private cityService: CitysService,
   ) {}
 
   // create new district

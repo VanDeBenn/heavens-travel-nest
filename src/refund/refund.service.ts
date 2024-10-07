@@ -4,25 +4,25 @@ import { UpdateRefundDto } from './dto/update-refund.dto';
 import { Refund } from './entities/refund.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { BookingDetailsService } from '#/booking-detail/booking-detail.service';
 
 @Injectable()
 export class RefundService {
-  bookingService: any;
   constructor(
     @InjectRepository(Refund)
     private refundsRepository: Repository<Refund>,
+    //private bookingDetailService: BookingDetailsService,
   ) {}
 
   // create new refund
   async create(createRefundDto: CreateRefundDto) {
-    const booking = await this.bookingService.findOne(createRefundDto.bookingId);
+   // const bookingDetail = await this.bookingDetailService.findOne(createRefundDto.bookingId);
 
     const dataRefund = new Refund();
     dataRefund.nameofBank = createRefundDto.nameofBank;
     dataRefund.bankAccountNumber = createRefundDto.bankAccountNumber;
     dataRefund.accountHolder = createRefundDto.accountHolder;
     dataRefund.refundReason = createRefundDto.refundReason;
-    dataRefund.booking = booking;
 
     const result = await this.refundsRepository.insert(dataRefund);
 
@@ -65,14 +65,13 @@ export class RefundService {
 
   // update refund
   async update(id: string, updateRefundDto: UpdateRefundDto) {
-    const booking = await this.bookingService.findOne(updateRefundDto.bookingId);
+
 
     let dataRefund = new Refund();
     dataRefund.nameofBank = updateRefundDto.nameofBank;
     dataRefund.bankAccountNumber = updateRefundDto.bankAccountNumber;
     dataRefund.accountHolder = updateRefundDto.accountHolder;
     dataRefund.refundReason = updateRefundDto.refundReason;
-    dataRefund.booking = booking;
 
     try {
       await this.refundsRepository.findOneOrFail({

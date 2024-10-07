@@ -4,13 +4,14 @@ import { UpdateProvinceDto } from './dto/update-province.dto';
 import { Province } from './entities/province.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { CountrysService } from '#/countries/countries.service';
 
 @Injectable()
 export class ProvinceService {
-  countryService: any;
   constructor(
     @InjectRepository(Province)
     private provincesRepository: Repository<Province>,
+    private countryService: CountrysService,
   ) {}
 
   // create new province

@@ -4,18 +4,20 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { SomehelpfulFact } from './entities/somehelpful-fact.entity';
 import { CreateSomehelpfulFactDto } from './dto/create-somehelpful-fact.dto';
 import { UpdateSomehelpfulFactDto } from './dto/update-somehelpful-fact.dto';
+import { CategoriSomehelpfulFactService } from '#/categories-somehelpful-facts/categories-somehelpful-facts.service';
 
 @Injectable()
 export class SomehelpfulFactsService {
-  categoriSomehelpfulFactService: any;
+  
   constructor(
     @InjectRepository(SomehelpfulFact)
     private somehelpfulFactsRepository: Repository<SomehelpfulFact>,
+    private categoriSomehelpfulFactService: CategoriSomehelpfulFactService,
   ) {}
 
   // create new somehelpfulFact
   async create(createSomehelpfulFactDto: CreateSomehelpfulFactDto) {
-    const categoriSomehelpfulFact = await this.categoriSomehelpfulFactService.findOne(createSomehelpfulFactDto.categoriSomehelpfulFact);
+    const categoriSomehelpfulFact = await this.categoriSomehelpfulFactService.findOne(createSomehelpfulFactDto.categoriSomehelpfulFactId);
 
     const dataSomehelpfulFact = new SomehelpfulFact();
     dataSomehelpfulFact.title = createSomehelpfulFactDto.title;
@@ -61,7 +63,7 @@ export class SomehelpfulFactsService {
 
   // update somehelpfulFact
   async update(id: string, updateSomehelpfulFactDto: UpdateSomehelpfulFactDto) {
-    const categoriSomehelpfulFact = await this.categoriSomehelpfulFactService.findOne(updateSomehelpfulFactDto.categoriSomehelpfulFact);
+    const categoriSomehelpfulFact = await this.categoriSomehelpfulFactService.findOne(updateSomehelpfulFactDto.categoriSomehelpfulFactId);
 
     let dataSomehelpfulFact = new SomehelpfulFact();
     dataSomehelpfulFact.title = updateSomehelpfulFactDto.title;

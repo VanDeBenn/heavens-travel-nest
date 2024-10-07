@@ -4,13 +4,14 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { PhotoDestination } from './entities/foto-destination.entity';
 import { CreatePhotoDestinationDto } from './dto/create-foto-destination.dto';
 import { UpdatePhotoDestinationDto } from './dto/update-foto-destination.dto';
+import { DestinationsService } from '#/destinations/destinations.service';
 
 @Injectable()
 export class PhotoDestinationsService {
-  destinationService: any;
   constructor(
     @InjectRepository(PhotoDestination)
     private photodestinationsRepository: Repository<PhotoDestination>,
+    private destinationService: DestinationsService,
   ) {}
 
   // create new photodestination

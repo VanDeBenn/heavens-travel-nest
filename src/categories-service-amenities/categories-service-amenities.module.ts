@@ -7,6 +7,7 @@ import { CategoriServiceAmenity } from './entities/categories-service-amenity.en
 @Module({
   imports: [TypeOrmModule.forFeature([CategoriServiceAmenity])],
   controllers: [CategoriServiceAmenitysController],
-  providers: [CategoriServiceAmenitysService]
+  providers: [CategoriServiceAmenitysService],
+  exports: [CategoriServiceAmenitysService]
 })
 export class CategoriesServiceAmenitiesModule {}

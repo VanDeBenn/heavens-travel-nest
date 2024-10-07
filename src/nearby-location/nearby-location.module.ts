@@ -7,6 +7,7 @@ import { NearbyLocation } from './entities/nearby-location.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([NearbyLocation])],
   controllers: [NearbyLocationController],
-  providers: [NearbyLocationService]
+  providers: [NearbyLocationService],
+  exports: [NearbyLocationService],
 })
 export class NearbyLocationModule {}

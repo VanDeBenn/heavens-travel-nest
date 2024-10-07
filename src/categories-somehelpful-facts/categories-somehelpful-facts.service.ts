@@ -4,13 +4,14 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { CategoriSomehelpfulFact } from './entities/categories-somehelpful-fact.entity';
 import { CreateCategoriSomehelpfulFactDto } from './dto/create-categories-somehelpful-fact.dto';
 import { UpdateCategoriSomehelpfulFactDto } from './dto/update-categories-somehelpful-fact.dto';
+import { HotelsService } from '#/hotels/hotels.service';
 
 @Injectable()
 export class CategoriSomehelpfulFactService {
-  hotelService: any;
   constructor(
     @InjectRepository(CategoriSomehelpfulFact)
     private categorisomehelpfulfactsRepository: Repository<CategoriSomehelpfulFact>,
+    private hotelService: HotelsService,
   ) {}
 
   // create new categorisomehelpfulfact

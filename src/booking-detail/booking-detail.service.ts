@@ -5,35 +5,28 @@ import { BookingDetail } from './entities/booking-detail.entity';
 import { CreateBookingDetailDto } from './dto/create-booking-detail.dto';
 import { UpdateBookingDetailDto } from './dto/update-booking-detail.dto';
 import { Destination } from '#/destinations/entities/destination.entity';
+import { DestinationsService } from '#/destinations/destinations.service';
+import { RoomHotelsService } from '#/room-hotels/room-hotels.service';
+import { BookingsService } from '#/bookings/bookings.service';
 
 @Injectable()
 export class BookingDetailsService {
-  cartService: any;
-  roomHotelService: any;
-  bookingService: any;
-  destinationService: any;
   constructor(
     @InjectRepository(BookingDetail)
     private rolesRepository: Repository<BookingDetail>,
+    private bookingService: BookingsService,
   ) {}
 
   // create new role
   async create(createBookingDetailDto: CreateBookingDetailDto) {
-    const cart = await this.cartService.findOne(createBookingDetailDto.cartId);
-    const destination = await this.destinationService.findOne(createBookingDetailDto.destinationId);
-    const roomHotel = await this.roomHotelService.findOne(createBookingDetailDto.roomHotelId);
+
     const booking = await this.bookingService.findOne(createBookingDetailDto.bookingId);
 
     const dataBookingDetail = new BookingDetail();
-    dataBookingDetail.startDate = createBookingDetailDto. startDate;
-    dataBookingDetail.endDate = createBookingDetailDto. endDate;
-    dataBookingDetail.quantity = createBookingDetailDto.quantity;
     dataBookingDetail.priceDetail = createBookingDetailDto.priceDetail;
+    dataBookingDetail.totalPrice = createBookingDetailDto.totalPrice;
     dataBookingDetail.orderStatus = createBookingDetailDto.orderStatus;
-    dataBookingDetail.cart = cart;
-    dataBookingDetail.roomhotel = roomHotel;
     dataBookingDetail.booking = booking;
-    dataBookingDetail.destination = destination
     
     const result = await this.rolesRepository.insert(dataBookingDetail);
 
@@ -50,8 +43,6 @@ export class BookingDetailsService {
         refund: true,
         review: true,
         report: true,
-        destination: true,
-        roomhotel: true,
         booking: true,
       },
     });
@@ -81,21 +72,13 @@ export class BookingDetailsService {
 
   // update role
   async update(id: string, updateBookingDetailDto: UpdateBookingDetailDto) {
-    const cart = await this.cartService.findOne(updateBookingDetailDto.cartId);
-    const destination = await this.destinationService.findOne(updateBookingDetailDto.destinationId);
-    const roomHotel = await this.roomHotelService.findOne(updateBookingDetailDto.roomHotelId);
     const booking = await this.bookingService.findOne(updateBookingDetailDto.bookingId);
 
     let dataBookingDetail = new BookingDetail();
-    dataBookingDetail.startDate = updateBookingDetailDto. startDate;
-    dataBookingDetail.endDate = updateBookingDetailDto. endDate;
-    dataBookingDetail.quantity = updateBookingDetailDto.quantity;
     dataBookingDetail.priceDetail = updateBookingDetailDto.priceDetail;
+    dataBookingDetail.totalPrice = updateBookingDetailDto.totalPrice;
     dataBookingDetail.orderStatus = updateBookingDetailDto.orderStatus;
-    dataBookingDetail.cart = cart;
-    dataBookingDetail.roomhotel = roomHotel;
     dataBookingDetail.booking = booking;
-    dataBookingDetail.destination = destination
 
 
     try {

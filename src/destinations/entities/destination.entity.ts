@@ -1,5 +1,6 @@
 import { Blog } from '#/blogs/entities/blog.entity';
 import { BookingDetail } from '#/booking-detail/entities/booking-detail.entity';
+import { Booking } from '#/bookings/entities/booking.entity';
 import { Cart } from '#/cart/entities/cart.entity';
 import { CategoriesFaq } from '#/categories-faqs/entities/categories-faqs.entity';
 import { District } from '#/districts/entities/district.entity';
@@ -84,8 +85,8 @@ export class Destination {
   @OneToMany(() => CategoriesFaq, (categoriesfaq) => categoriesfaq.destination)
   categoriesfaqs?: CategoriesFaq[];
 
-  @OneToMany(() => BookingDetail, (bookingdetail) => bookingdetail.destination)
-  bookingdetails?: BookingDetail[];
+  @OneToMany(() => Booking, (booking) => booking.destination)
+  bookings?: Booking[];
 
   @ManyToOne(() => District, (district) => district.destinations)
   @JoinColumn()

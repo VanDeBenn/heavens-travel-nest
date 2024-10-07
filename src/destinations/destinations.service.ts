@@ -48,7 +48,7 @@ export class DestinationsService {
         carts: true,
         photodestinations: true,
         categoriesfaqs: true,
-        bookingdetails: true,
+        bookings: true,
         district: true,
       },
     });

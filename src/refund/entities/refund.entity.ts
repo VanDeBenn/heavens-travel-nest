@@ -51,5 +51,4 @@ export class Refund {
   @OneToOne(() => BookingDetail, (bookingdetail) => bookingdetail.refund)
   @JoinColumn()
   bookingdetail: BookingDetail;
-  booking: any;
 }

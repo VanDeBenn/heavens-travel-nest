@@ -25,16 +25,10 @@ export class BookingDetail {
   id: string;
 
   @Column()
-  startDate: Date;
-
-  @Column()
-  endDate: Date;
-
-  @Column()
-  quantity: number;
-
-  @Column()
   priceDetail: number;
+
+  @Column()
+  totalPrice: number;
 
   @Column({
     type: 'enum',
@@ -72,16 +66,7 @@ export class BookingDetail {
   @JoinColumn()
   report: Report;
 
-  @ManyToOne(() => Destination, (destination) => destination.bookingdetails)
-  @JoinColumn()
-  destination: Destination;
-
-  @ManyToOne(() => RoomHotel, (roomhotel) => roomhotel.bookingdetails)
-  @JoinColumn()
-  roomhotel: RoomHotel;
-
   @ManyToOne(() => Booking, (booking) => booking.bookingdetails)
   @JoinColumn()
   booking: Booking;
-  cart: any;
 }

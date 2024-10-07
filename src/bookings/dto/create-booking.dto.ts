@@ -1,4 +1,4 @@
-import { IsAlpha, isNotEmpty, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsAlpha, isNotEmpty, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 
 export class CreateBookingDto {
@@ -19,6 +19,18 @@ export class CreateBookingDto {
 
   @IsNotEmpty()
   guestPhoneNumber: number;
+
+  @IsNotEmpty()
+  startDate: Date;
+
+  @IsNotEmpty()
+  endDate: Date;
+
+  @IsNotEmpty()
+  quantity: number;
+
+  @IsNotEmpty()
+  priceDetail: number;
 
   @IsNotEmpty()
   paymentType: string;
@@ -44,7 +56,13 @@ export class CreateBookingDto {
   @IsNotEmpty()
   userId: string;
   
-  @IsNotEmpty()
+  @IsOptional()
   cartId: string;
+  
+  @IsNotEmpty()
+  destinationId: string;
+  
+  @IsNotEmpty()
+  roomHotelId: string;
 }
 

@@ -4,13 +4,14 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { NearbyLocation } from './entities/nearby-location.entity';
 import { CreateNearbyLocationDto } from './dto/create-nearby-location.dto';
 import { UpdateNearbyLocationDto } from './dto/update-nearby-location.dto';
+import { CategoriesNearbyLocationsService } from '#/categories-nearby-location/categories-nearby-location.service';
 
 @Injectable()
 export class NearbyLocationService {
-  categoriesNearbyLocationService: any;
   constructor(
     @InjectRepository(NearbyLocation)
     private nearbylocationRepository: Repository<NearbyLocation>,
+    private categoriesNearbyLocationService: CategoriesNearbyLocationsService
   ) {}
 
   // create new nearbylocation

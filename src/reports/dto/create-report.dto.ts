@@ -18,8 +18,5 @@ export class CreateReportDto {
 
   @IsNotEmpty()
   userId: string;
-
-  @IsNotEmpty()
-  bookingDetailId: string;
 }
 

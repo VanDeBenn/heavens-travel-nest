@@ -1,6 +1,8 @@
 import { BookingDetail } from '#/booking-detail/entities/booking-detail.entity';
 import { Cart } from '#/cart/entities/cart.entity';
+import { Destination } from '#/destinations/entities/destination.entity';
 import { Refund } from '#/refund/entities/refund.entity';
+import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
 import { User } from '#/users/entities/user.entity';
 import {
     Entity,
@@ -18,6 +20,9 @@ import {
   
   @Entity()
   export class Booking  {
+    findOne(bookingId: string) {
+      throw new Error('Method not implemented.');
+    }
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -38,6 +43,15 @@ import {
   
     @Column()
     guestPhoneNumber: number;
+
+    @Column()
+    endDate: Date;
+
+    @Column()
+    quantity: number;
+
+    @Column()
+    priceDetail: number;
   
     @Column({
       type: 'enum',
@@ -90,6 +104,14 @@ import {
     @ManyToOne(() => User, (user) => user.bookings)
     @JoinColumn()
     user: User;
+
+    @ManyToOne(() => Destination, (destination) => destination.bookings)
+    @JoinColumn()
+    destination: Destination;
+  
+    @ManyToOne(() => RoomHotel, (roomhotel) => roomhotel.bookings)
+    @JoinColumn()
+    roomhotel: RoomHotel;
   }
   
   
