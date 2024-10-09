@@ -8,12 +8,10 @@ import { HotelsService } from '#/hotels/hotels.service';
 
 @Injectable()
 export class RoomHotelsService {
-  
   constructor(
     @InjectRepository(RoomHotel)
     private roomhotelsRepository: Repository<RoomHotel>,
     private hotelService: HotelsService,
-
   ) {}
 
   // create new roomhotel
@@ -44,7 +42,7 @@ export class RoomHotelsService {
     return this.roomhotelsRepository.findAndCount({
       relations: {
         categoriserviceamenities: true,
-        carts: true,
+        // carts: true,
         photoroomhotels: true,
         hotel: true,
       },

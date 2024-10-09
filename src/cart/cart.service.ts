@@ -15,6 +15,7 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
 export class CartService {
+  destinationsRepository: any;
   constructor(
     @InjectRepository(Cart)
     private cartsRepository: Repository<Cart>,
@@ -23,56 +24,26 @@ export class CartService {
     private roomHotelsService: RoomHotelsService,
   ) {}
 
-  // Add to Cart function
-  async addToCart(userId: string, destinationId: string, roomHotelId: string) {
-    const user = await this.usersService.findOne(userId);
-    const destination = destinationId
-      ? await this.destinationsService.findOne(destinationId)
-      : null;
-
-    const roomHotel = roomHotelId
-      ? await this.roomHotelsService.findOne(roomHotelId)
-      : null;
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    const cartItem = new Cart();
-    cartItem.user = user;
-    cartItem.destination = destination;
-    cartItem.roomhotel = roomHotel;
-
-    return await this.cartsRepository.save(cartItem);
-  }
-
-  // Existing getCartByUserId function
-  async getCartByUserId(userId: string) {
-    return await this.cartsRepository.find({
-      where: { user: { id: userId } },
-      relations: ['product'],
-    });
-  }
-
   // create new cart
-  async create(createCartDto: CreateCartDto) {
-    const user = await this.usersService.findOne(createCartDto.userId);
+  async create(id: string) {
+    const user = await this.usersService.findOne(id);
 
-    const destination = createCartDto.destinationId
-      ? await this.destinationsService.findOne(createCartDto.destinationId)
-      : null;
+    // const destination = createCartDto.destinationId
+    //   ? await this.destinationsService.findOne(createCartDto.destinationId)
+    //   : null;
 
-    const roomHotel = createCartDto.roomHotelId
-      ? await this.roomHotelsService.findOne(createCartDto.roomHotelId)
-      : null;
+    // const roomHotel = createCartDto.roomHotelId
+    //   ? await this.roomHotelsService.findOne(createCartDto.roomHotelId)
+    //   : null;
 
     const dataCart = new Cart();
-    dataCart.quantity = createCartDto.quantity;
-    dataCart.startDate = createCartDto.startDate;
-    dataCart.endDate = createCartDto.endDate;
+    // dataCart.quantityAdult = createCartDto.quantityAdult;
+    // dataCart.quantityChildren = createCartDto.quantityChildren;
+    // dataCart.startDate = createCartDto.startDate;
+    // dataCart.endDate = createCartDto.endDate;
     dataCart.user = user;
-    dataCart.destination = destination;
-    dataCart.roomhotel = roomHotel;
+    // dataCart.destination = destination;
+    // dataCart.roomhotel = roomHotel;
 
     const result = await this.cartsRepository.insert(dataCart);
 
@@ -83,13 +54,47 @@ export class CartService {
     });
   }
 
+  async addDestinationToCart(dto: {
+    userId: string;
+    cartId: string;
+    destinationId: string;
+  }) {
+    // Temukan user
+    const user = await this.usersService.findOne(dto.userId);
+    if (!user) throw new Error('User not found');
+
+    // Temukan cart berdasarkan id dan userId
+    const cart = await this.cartsRepository.findOne({
+      where: { id: dto.cartId, user: { id: dto.userId } },
+      relations: ['destination'],
+    });
+    if (!cart) throw new Error('Cart not found');
+
+    // Temukan destination
+    const destination = await this.destinationsService.findOne(
+      dto.destinationId,
+    );
+    if (!destination) throw new Error('Destination not found');
+
+    // Periksa apakah destination sudah ada di cart
+    if (cart.destination.some((d) => d.id === destination.id)) {
+      throw new Error('Destination already in cart');
+    }
+
+    // Tambahkan destination ke cart
+    cart.destination.push(destination);
+
+    // Simpan cart yang sudah diperbarui
+    return this.cartsRepository.save(cart);
+  }
+
   findAll() {
     return this.cartsRepository.findAndCount({
       relations: {
         booking: true,
         user: true,
         destination: true,
-        roomhotel: true,
+        // roomhotel: true,
       },
     });
   }
@@ -120,21 +125,22 @@ export class CartService {
   async update(id: string, updateCartDto: UpdateCartDto) {
     const user = await this.usersService.findOne(updateCartDto.userId);
 
-    const destination = updateCartDto.destinationId
-      ? await this.destinationsService.findOne(updateCartDto.destinationId)
-      : null;
+    // const destination = updateCartDto.destinationId
+    //   ? await this.destinationsService.findOne(updateCartDto.destinationId)
+    //   : null;
 
-    const roomHotel = updateCartDto.roomHotelId
-      ? await this.roomHotelsService.findOne(updateCartDto.roomHotelId)
-      : null;
+    // const roomHotel = updateCartDto.roomHotelId
+    //   ? await this.roomHotelsService.findOne(updateCartDto.roomHotelId)
+    //   : null;
 
     let dataCart = new Cart();
-    dataCart.quantity = updateCartDto.quantity;
-    dataCart.startDate = updateCartDto.startDate;
-    dataCart.endDate = updateCartDto.endDate;
+    // dataCart.quantityAdult = updateCartDto.quantityAdult;
+    // dataCart.quantityChildren = updateCartDto.quantityChildren;
+    // dataCart.startDate = updateCartDto.startDate;
+    // dataCart.endDate = updateCartDto.endDate;
     dataCart.user = user;
-    dataCart.destination = destination;
-    dataCart.roomhotel = roomHotel;
+    // dataCart.destination = destination;
+    // dataCart.roomhotel = roomHotel;
 
     try {
       await this.cartsRepository.findOneOrFail({

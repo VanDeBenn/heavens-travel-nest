@@ -19,28 +19,11 @@ export class CartController {
   constructor(private readonly cartsService: CartService) {}
 
   @Post()
-  async create(@Body() createCartDto: CreateCartDto) {
+  async create(@Body() id: string) {
     return {
-      data: await this.cartsService.create(createCartDto),
+      data: await this.cartsService.create(id),
       statusCode: HttpStatus.CREATED,
       message: 'success',
-    };
-  }
-
-  // Add to Cart
-  @Post('add')
-  async addToCart(
-    @Body('userId') userId: string,
-    @Body('destinationId') destinationId: string,
-    @Body('roomHotelId') roomHotelId: string,
-  ) {
-    const addedCartItem = await this.cartsService.addToCart(
-      userId,
-      destinationId,
-      roomHotelId,
-    );
-    return {
-      message: 'Product added to cart',
     };
   }
 
@@ -54,6 +37,14 @@ export class CartController {
       statusCode: HttpStatus.OK,
       message: 'success',
     };
+  }
+
+  @Post(':id/destination')
+  async addDestinationToCart(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto,
+  ) {
+    return this.cartsService.addDestinationToCart(dto);
   }
 
   @Get(':id')

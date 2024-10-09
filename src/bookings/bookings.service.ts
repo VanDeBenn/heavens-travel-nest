@@ -25,12 +25,18 @@ export class BookingsService {
   async create(createBookingDto: CreateBookingDto) {
     const user = await this.userService.findOne(createBookingDto.userId);
 
-    const destination = createBookingDto.destinationId? await this.destinationService.findOne(createBookingDto.destinationId): null;
-    
-    const roomHotel = createBookingDto.roomHotelId? await this.roomHotelService.findOne(createBookingDto.roomHotelId): null;
+    const destination = createBookingDto.destinationId
+      ? await this.destinationService.findOne(createBookingDto.destinationId)
+      : null;
+
+    const roomHotel = createBookingDto.roomHotelId
+      ? await this.roomHotelService.findOne(createBookingDto.roomHotelId)
+      : null;
 
     if (!destination && !roomHotel) {
-      throw new Error('Error: Harus ada salah satu dari destination atau roomHotel yang diisi.');
+      throw new Error(
+        'Error: Harus ada salah satu dari destination atau roomHotel yang diisi.',
+      );
     }
 
     const dataBooking = new Booking();
@@ -49,6 +55,7 @@ export class BookingsService {
     dataBooking.fullFilment = createBookingDto.fullFilment;
     dataBooking.user = user;
     dataBooking.roomhotel = roomHotel;
+    dataBooking.destination = destination;
 
     const result = await this.bookingsRepository.insert(dataBooking);
 
@@ -165,4 +172,3 @@ export class BookingsService {
     await this.bookingsRepository.delete(id);
   }
 }
-

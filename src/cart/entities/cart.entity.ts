@@ -22,14 +22,17 @@ export class Cart {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: true })
-  quantity: Number;
+  // @Column({ nullable: true })
+  // quantityAdult: number;
 
-  @Column({ nullable: true })
-  startDate: Date;
+  // @Column({ nullable: true })
+  // quantityChildren: number;
 
-  @Column({ nullable: true })
-  endDate: Date;
+  // @Column({ nullable: true })
+  // startDate: Date;
+
+  // @Column({ nullable: true })
+  // endDate: Date;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
@@ -53,15 +56,15 @@ export class Cart {
   @JoinColumn()
   booking: Booking;
 
-  @ManyToOne(() => User, (user) => user.carts)
+  @OneToOne(() => User, (user) => user.carts)
   @JoinColumn()
   user: User;
 
-  @ManyToOne(() => Destination, (destination) => destination.carts)
+  @OneToMany(() => Destination, (destination) => destination.carts)
   @JoinColumn()
-  destination: Destination;
+  destination: Destination[];
 
-  @ManyToOne(() => RoomHotel, (roomhotel) => roomhotel.carts)
+  @OneToMany(() => RoomHotel, (roomhotel) => roomhotel.carts)
   @JoinColumn()
-  roomhotel: RoomHotel;
+  roomhotel: RoomHotel[];
 }

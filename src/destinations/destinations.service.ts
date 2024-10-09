@@ -5,6 +5,8 @@ import { UpdateDestinationDto } from './dto/update-destination.dto';
 import { Destination } from './entities/destination.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { CartService } from '#/cart/cart.service';
+import { UsersService } from '#/users/users.service';
 
 @Injectable()
 export class DestinationsService {
@@ -12,6 +14,7 @@ export class DestinationsService {
     @InjectRepository(Destination)
     private destinationsRepository: Repository<Destination>,
     private districtsService: DistrictsService,
+    private userService: UsersService,
   ) {}
 
   // create new destination

@@ -34,6 +34,18 @@ export class Destination {
   @Column()
   priceChildren: number;
 
+  @Column({ nullable: true })
+  quantityAdult: number;
+
+  @Column({ nullable: true })
+  quantityChildren: number;
+
+  @Column({ nullable: true })
+  startDate: Date;
+
+  @Column({ nullable: true })
+  endDate: Date;
+
   @Column()
   rating: number;
 
@@ -73,8 +85,8 @@ export class Destination {
   @OneToMany(() => Wishlist, (wishlist) => wishlist.destination)
   wishlists?: Wishlist[];
 
-  @OneToMany(() => Cart, (cart) => cart.destination)
-  carts?: Cart[];
+  @ManyToOne(() => Cart, (cart) => cart.destination)
+  carts?: Cart;
 
   @OneToMany(
     () => PhotoDestination,

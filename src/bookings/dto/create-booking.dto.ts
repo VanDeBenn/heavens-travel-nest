@@ -1,68 +1,66 @@
-import { IsAlpha, isNotEmpty, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
-
+import { IsAlpha, isNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateBookingDto {
-  @IsNotEmpty()
+  @IsOptional()
   customerName: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   customerEmail: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   CustomerPhoneNumber: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   guestName: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   guestEmail: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   guestPhoneNumber: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   startDate: Date;
 
-  @IsNotEmpty()
+  @IsOptional()
   endDate: Date;
 
-  @IsNotEmpty()
+  @IsOptional()
   quantity: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   priceDetail: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   paymentType: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   paymentDueDate: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   paymentAmount: number;
 
-  @IsNotEmpty()
-  tokenTransaction:number;
+  @IsOptional()
+  tokenTransaction: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   totalPrice: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   statusPayment: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   fullFilment: string;
-  
-  @IsNotEmpty()
+
+  @IsOptional()
   userId: string;
-  
+
   @IsOptional()
   cartId: string;
-  
-  @IsNotEmpty()
+
+  @IsOptional()
   destinationId: string;
-  
-  @IsNotEmpty()
+
+  @IsOptional()
   roomHotelId: string;
 }
-

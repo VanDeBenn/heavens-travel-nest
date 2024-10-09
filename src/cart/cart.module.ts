@@ -16,5 +16,6 @@ import { RoomHotelsModule } from '#/room-hotels/room-hotels.module';
   ],
   controllers: [CartController],
   providers: [CartService],
+  exports: [CartService],
 })
 export class CartModule {}

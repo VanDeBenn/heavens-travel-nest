@@ -67,12 +67,15 @@ export class RoomHotel {
 
   @OneToMany(() => Booking, (booking) => booking.roomhotel)
   bookings?: Booking[];
-  
-  @OneToMany(() => CategoriServiceAmenity, (categoriserviceamenity) => categoriserviceamenity.roomhotel)
+
+  @OneToMany(
+    () => CategoriServiceAmenity,
+    (categoriserviceamenity) => categoriserviceamenity.roomhotel,
+  )
   categoriserviceamenities?: CategoriServiceAmenity[];
-  
-  @OneToMany(() => Cart, (cart) => cart.roomhotel)
-  carts?: Cart[];
+
+  @ManyToOne(() => Cart, (cart) => cart.roomhotel)
+  carts?: Cart;
 
   @OneToMany(() => RoomType, (roomtype) => roomtype.roomhotel)
   roomtypes?: RoomType[];
