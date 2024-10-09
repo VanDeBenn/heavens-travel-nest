@@ -19,6 +19,7 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 
 @Entity()
@@ -83,7 +84,7 @@ export class User {
   @OneToMany(() => Blog, (blog) => blog.user)
   blogs?: Blog[];
 
-  @OneToMany(() => Cart, (cart) => cart.user)
+  @OneToOne(() => Cart, (cart) => cart.user)
   carts?: Cart[];
 
   @OneToMany(() => Wishlist, (wishlist) => wishlist.user)

@@ -23,6 +23,7 @@ import { User } from '#/users/entities/user.entity';
 import { UpdateUserDto } from '#/users/dto/update-user.dto';
 import { JWTGuard } from './jwt-guard.auth';
 import { AuthGuard } from '@nestjs/passport';
+import { CartService } from '#/cart/cart.service';
 
 @Controller('auth')
 export class AuthController {
@@ -30,11 +31,13 @@ export class AuthController {
     @InjectRepository(User)
     private usersService: UsersService,
     private readonly authService: AuthService,
+    private cartService: CartService,
     private jwtService: JwtService,
   ) {}
 
   @Post('signup')
   async signup(@Body() createUserDto: CreateUserDto) {
+    console.log('signup controller called');
     return {
       data: await this.authService.signup(createUserDto),
       statusCode: HttpStatus.CREATED,

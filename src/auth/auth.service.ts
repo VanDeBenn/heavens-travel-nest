@@ -15,21 +15,27 @@ import { MoreThan, Repository } from 'typeorm';
 import { randomInt, randomUUID } from 'crypto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from '#/users/dto/update-user.dto';
+import { CartService } from '#/cart/cart.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    private roleService: RolesService,
     private usersService: UsersService,
+    private roleService: RolesService,
     private jwtService: JwtService,
     private mailService: MailService,
+    private cartService: CartService,
   ) {}
 
   // signup
   async signup(createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
+    const res = await this.usersService.create(createUserDto);
+    const id = res.id;
+
+    const cart = await this.cartService.create(id);
+    return res;
   }
 
   async googleLogin(req) {
@@ -88,7 +94,7 @@ export class AuthService {
       throw new HttpException('Invalid password', 403);
     }
 
-    const tokens = await this.generateUserTokens(email);
+    const tokens = await this.generateTokens(email);
 
     return {
       token: tokens,
@@ -213,11 +219,11 @@ export class AuthService {
       throw new UnauthorizedException('Refresh Token is invalid or expired');
     }
 
-    return this.generateUserTokens(user.email);
+    return this.generateTokens(user.email);
   }
 
   // generate tokens
-  async generateUserTokens(email: string) {
+  async generateTokens(email: string) {
     const user = await this.usersService.findByEmail(email);
     if (!user) {
       throw new HttpException('User not found', 404);

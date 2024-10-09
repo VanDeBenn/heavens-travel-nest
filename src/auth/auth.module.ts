@@ -9,15 +9,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '#/users/entities/user.entity';
 import { MailService } from '#/service/mail.service';
 import { GoogleStrategy } from './google.strategy';
+import { CartModule } from '#/cart/cart.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     UsersModule,
     RolesModule,
+    CartModule,
     JwtModule.register({
       secret: JWT_SECRET,
-      signOptions: { expiresIn: '24h' },
+      signOptions: { expiresIn: '3d' },
     }),
   ],
   controllers: [AuthController],
