@@ -40,11 +40,19 @@ export class WishlistController {
   }
 
   @Post(':id/destination')
-  async addDestinationToCart(
+  async addDestinationToWishlist(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto,
   ) {
     return this.wishlistService.addDestinationToWishlist(dto);
+  }
+
+  @Post(':id/hotel')
+  async addHotelToWishlist(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto,
+  ) {
+    return this.wishlistService.addHotelToWishlist(dto);
   }
 
   @Get(':id')

@@ -25,7 +25,7 @@ export class HotelsService {
     dataHotel.rating = createHotelDto.rating;
     dataHotel.description = createHotelDto.description;
     dataHotel.address = createHotelDto.address;
-    dataHotel.pathMapLocation = createHotelDto.pathMapLocation;
+    dataHotel.pathLocation = createHotelDto.pathLocation;
     dataHotel.district = district;
 
     const result = await this.hotelsRepository.insert(dataHotel);
@@ -82,7 +82,7 @@ export class HotelsService {
     dataHotel.rating = updateHotelDto.rating;
     dataHotel.description = updateHotelDto.description;
     dataHotel.address = updateHotelDto.address;
-    dataHotel.pathMapLocation = updateHotelDto.pathMapLocation;
+    dataHotel.pathLocation = updateHotelDto.pathLocation;
 
     try {
       await this.hotelsRepository.findOneOrFail({

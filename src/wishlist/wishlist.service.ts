@@ -72,6 +72,32 @@ export class WishlistService {
     return this.wishlistsRepository.save(wishlist);
   }
 
+  async addHotelToWishlist(dto: {
+    userId: string;
+    wishlistId: string;
+    hotelId: string;
+  }) {
+    const user = await this.userService.findOne(dto.userId);
+    if (!user) throw new Error('User not found');
+
+    const wishlist = await this.wishlistsRepository.findOne({
+      where: { id: dto.wishlistId, user: { id: dto.userId } },
+      relations: { hotel: true },
+    });
+    if (!wishlist) throw new Error('Cart not found');
+
+    const hotel = await this.hotelService.findOne(dto.hotelId);
+    if (!hotel) throw new Error('Hotel not found');
+
+    if (wishlist.hotel.some((d) => d.id === hotel.id)) {
+      throw new Error('Hotel already in wishlist');
+    }
+
+    wishlist.hotel.push(hotel);
+
+    return this.wishlistsRepository.save(wishlist);
+  }
+
   findAll() {
     return this.wishlistsRepository.findAndCount({
       relations: {

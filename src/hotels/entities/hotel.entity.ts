@@ -38,7 +38,7 @@ export class Hotel {
   address: string;
 
   @Column()
-  pathMapLocation: string;
+  pathLocation: string;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
