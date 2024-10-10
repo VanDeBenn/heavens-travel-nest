@@ -39,6 +39,14 @@ export class WishlistController {
     };
   }
 
+  @Post(':id/destination')
+  async addDestinationToCart(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto,
+  ) {
+    return this.wishlistService.addDestinationToWishlist(dto);
+  }
+
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return {

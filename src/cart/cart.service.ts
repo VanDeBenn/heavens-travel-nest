@@ -59,32 +59,52 @@ export class CartService {
     cartId: string;
     destinationId: string;
   }) {
-    // Temukan user
     const user = await this.usersService.findOne(dto.userId);
     if (!user) throw new Error('User not found');
 
-    // Temukan cart berdasarkan id dan userId
     const cart = await this.cartsRepository.findOne({
       where: { id: dto.cartId, user: { id: dto.userId } },
-      relations: ['destination'],
+      relations: { destination: true },
     });
     if (!cart) throw new Error('Cart not found');
 
-    // Temukan destination
     const destination = await this.destinationsService.findOne(
       dto.destinationId,
     );
     if (!destination) throw new Error('Destination not found');
 
-    // Periksa apakah destination sudah ada di cart
     if (cart.destination.some((d) => d.id === destination.id)) {
       throw new Error('Destination already in cart');
     }
 
-    // Tambahkan destination ke cart
     cart.destination.push(destination);
 
-    // Simpan cart yang sudah diperbarui
+    return this.cartsRepository.save(cart);
+  }
+
+  async addRoomHotelToCart(dto: {
+    userId: string;
+    cartId: string;
+    roomHotelId: string;
+  }) {
+    const user = await this.usersService.findOne(dto.userId);
+    if (!user) throw new Error('User not found');
+
+    const cart = await this.cartsRepository.findOne({
+      where: { id: dto.cartId, user: { id: dto.userId } },
+      relations: { roomHotel: true },
+    });
+    if (!cart) throw new Error('Cart not found');
+
+    const roomHotel = await this.roomHotelsService.findOne(dto.roomHotelId);
+    if (!roomHotel) throw new Error('Room Hotel not found');
+
+    if (cart.roomHotel.some((d) => d.id === roomHotel.id)) {
+      throw new Error('Room Hotel already in cart');
+    }
+
+    cart.roomHotel.push(roomHotel);
+
     return this.cartsRepository.save(cart);
   }
 

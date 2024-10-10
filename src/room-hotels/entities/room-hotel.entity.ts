@@ -23,28 +23,28 @@ export class RoomHotel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: true })
   numberRoom: number;
 
   @Column()
   price: number;
 
-  @Column()
+  @Column({ nullable: true })
   adult: number;
 
-  @Column()
+  @Column({ nullable: true })
   children: number;
 
-  @Column()
+  @Column({ nullable: true })
   singleBed: number;
 
-  @Column()
+  @Column({ nullable: true })
   doubleBed: number;
 
-  @Column()
+  @Column({ nullable: true })
   queenBed: number;
 
-  @Column()
+  @Column({ nullable: true })
   kingBed: number;
 
   @CreateDateColumn({

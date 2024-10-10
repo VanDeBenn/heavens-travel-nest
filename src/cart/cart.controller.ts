@@ -47,6 +47,14 @@ export class CartController {
     return this.cartsService.addDestinationToCart(dto);
   }
 
+  @Post(':id/room-hotel')
+  async addRoomHotelToCart(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto,
+  ) {
+    return this.cartsService.addRoomHotelToCart(dto);
+  }
+
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return {

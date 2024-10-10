@@ -14,7 +14,7 @@ import { RoomHotelsService } from './room-hotels.service';
 import { CreateRoomHotelDto } from './dto/create-room-hotel.dto';
 import { UpdateRoomHotelDto } from './dto/update-room-hotel.dto';
 
-@Controller('roomhotels')
+@Controller('room-hotels')
 export class RoomHotelsController {
   constructor(private readonly roomhotelsService: RoomHotelsService) {}
 

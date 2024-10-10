@@ -55,15 +55,15 @@ export class UsersService {
           id,
         },
         relations: {
-          role: true,
-          district: true,
           blogs: true,
-          wishlists: { destination: true, hotel: true },
-          carts: { destination: true, roomHotel: true },
           bookings: true,
-          reviews: true,
+          carts: { destination: true, roomHotel: true },
+          district: true,
           replyreviews: true,
           reports: true,
+          reviews: true,
+          role: true,
+          wishlists: { destination: true, hotel: true },
         },
       });
     } catch (e) {

@@ -44,6 +44,34 @@ export class WishlistService {
     });
   }
 
+  async addDestinationToWishlist(dto: {
+    userId: string;
+    wishlistId: string;
+    destinationId: string;
+  }) {
+    const user = await this.userService.findOne(dto.userId);
+    if (!user) throw new Error('User not found');
+
+    const wishlist = await this.wishlistsRepository.findOne({
+      where: { id: dto.wishlistId, user: { id: dto.userId } },
+      relations: { destination: true },
+    });
+    if (!wishlist) throw new Error('Cart not found');
+
+    const destination = await this.destinationService.findOne(
+      dto.destinationId,
+    );
+    if (!destination) throw new Error('Destination not found');
+
+    if (wishlist.destination.some((d) => d.id === destination.id)) {
+      throw new Error('Destination already in wishlist');
+    }
+
+    wishlist.destination.push(destination);
+
+    return this.wishlistsRepository.save(wishlist);
+  }
+
   findAll() {
     return this.wishlistsRepository.findAndCount({
       relations: {
