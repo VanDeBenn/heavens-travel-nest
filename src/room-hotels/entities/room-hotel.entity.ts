@@ -74,7 +74,7 @@ export class RoomHotel {
   )
   categoriserviceamenities?: CategoriServiceAmenity[];
 
-  @ManyToOne(() => Cart, (cart) => cart.roomhotel)
+  @ManyToOne(() => Cart, (cart) => cart.roomHotel)
   carts?: Cart;
 
   @OneToMany(() => RoomType, (roomtype) => roomtype.roomhotel)

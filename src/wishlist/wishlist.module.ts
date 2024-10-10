@@ -16,5 +16,6 @@ import { HotelsModule } from '#/hotels/hotels.module';
   ],
   controllers: [WishlistController],
   providers: [WishlistService],
+  exports: [WishlistService, TypeOrmModule],
 })
 export class WishlistModule {}

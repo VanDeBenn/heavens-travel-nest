@@ -19,9 +19,9 @@ export class WishlistController {
   constructor(private readonly wishlistService: WishlistService) {}
 
   @Post()
-  async create(@Body() createWishlistDto: CreateWishlistDto) {
+  async create(@Body() id: string) {
     return {
-      data: await this.wishlistService.create(createWishlistDto),
+      data: await this.wishlistService.create(id),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };

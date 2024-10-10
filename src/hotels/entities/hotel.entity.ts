@@ -58,22 +58,31 @@ export class Hotel {
   })
   deletedAt: Date;
 
-  @OneToMany(() => Wishlist, (wishlist) => wishlist.hotel)
-  wishlists?: Wishlist[];
+  @ManyToOne(() => Wishlist, (wishlist) => wishlist.hotel)
+  wishlists?: Wishlist;
 
-  @OneToMany(() => CategoriSomehelpfulFact, (categorisomehelpfulfact) => categorisomehelpfulfact.hotel)
+  @OneToMany(
+    () => CategoriSomehelpfulFact,
+    (categorisomehelpfulfact) => categorisomehelpfulfact.hotel,
+  )
   categorisomehelpfulfacts?: CategoriSomehelpfulFact[];
-  
-  @OneToMany(() => CategoriesNearbyLocation, (categoriesnearbylocation) => categoriesnearbylocation.hotel)
+
+  @OneToMany(
+    () => CategoriesNearbyLocation,
+    (categoriesnearbylocation) => categoriesnearbylocation.hotel,
+  )
   categoriesnearbylocations?: CategoriesNearbyLocation[];
-  
+
   @OneToMany(() => CategoriesFaq, (categoriesfaq) => categoriesfaq.hotel)
   categoriesfaqs?: CategoriesFaq[];
-  
+
   @OneToMany(() => PhotoHotel, (photohotel) => photohotel.hotel)
   photohotels?: PhotoHotel[];
-  
-  @OneToMany(() => CategoriServiceAmenity, (categoriserviceamenity) => categoriserviceamenity.hotel)
+
+  @OneToMany(
+    () => CategoriServiceAmenity,
+    (categoriserviceamenity) => categoriserviceamenity.hotel,
+  )
   categoriserviceamenities?: CategoriServiceAmenity[];
 
   @OneToMany(() => RoomHotel, (roomhotel) => roomhotel.hotel)

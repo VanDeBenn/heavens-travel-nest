@@ -37,7 +37,6 @@ export class AuthController {
 
   @Post('signup')
   async signup(@Body() createUserDto: CreateUserDto) {
-    console.log('signup controller called');
     return {
       data: await this.authService.signup(createUserDto),
       statusCode: HttpStatus.CREATED,

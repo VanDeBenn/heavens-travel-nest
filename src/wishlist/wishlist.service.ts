@@ -19,21 +19,21 @@ export class WishlistService {
   ) {}
 
   // create new wishlist
-  async create(createWishlistDto: CreateWishlistDto) {
-    const user = await this.userService.findOne(createWishlistDto.userId);
+  async create(id: string) {
+    const user = await this.userService.findOne(id);
 
-    const destination = createWishlistDto.destinationId
-      ? await this.destinationService.findOne(createWishlistDto.destinationId)
-      : null;
+    // const destination = createWishlistDto.destinationId
+    //   ? await this.destinationService.findOne(createWishlistDto.destinationId)
+    //   : null;
 
-    const hotel = createWishlistDto.hotelId
-      ? await this.hotelService.findOne(createWishlistDto.hotelId)
-      : null;
+    // const hotel = createWishlistDto.hotelId
+    //   ? await this.hotelService.findOne(createWishlistDto.hotelId)
+    //   : null;
 
     const dataWishlist = new Wishlist();
     dataWishlist.user = user;
-    dataWishlist.destination = destination;
-    dataWishlist.hotel = hotel;
+    // dataWishlist.destination = destination;
+    // dataWishlist.hotel = hotel;
 
     const result = await this.wishlistsRepository.insert(dataWishlist);
 
@@ -80,18 +80,18 @@ export class WishlistService {
   async update(id: string, updateWishlistDto: UpdateWishlistDto) {
     const user = await this.userService.findOne(updateWishlistDto.userId);
 
-    const destination = updateWishlistDto.destinationId
-      ? await this.destinationService.findOne(updateWishlistDto.destinationId)
-      : null;
+    // const destination = updateWishlistDto.destinationId
+    //   ? await this.destinationService.findOne(updateWishlistDto.destinationId)
+    //   : null;
 
-    const hotel = updateWishlistDto.hotelId
-      ? await this.hotelService.findOne(updateWishlistDto.hotelId)
-      : null;
+    // const hotel = updateWishlistDto.hotelId
+    //   ? await this.hotelService.findOne(updateWishlistDto.hotelId)
+    //   : null;
 
     let dataWishlist = new Wishlist();
     dataWishlist.user = user;
-    dataWishlist.destination = destination;
-    dataWishlist.hotel = hotel;
+    // dataWishlist.destination = destination;
+    // dataWishlist.hotel = hotel;
 
     try {
       await this.wishlistsRepository.findOneOrFail({

@@ -10,13 +10,17 @@ import { User } from '#/users/entities/user.entity';
 import { MailService } from '#/service/mail.service';
 import { GoogleStrategy } from './google.strategy';
 import { CartModule } from '#/cart/cart.module';
+import { WishlistModule } from '#/wishlist/wishlist.module';
+import { Cart } from '#/cart/entities/cart.entity';
+import { Wishlist } from '#/wishlist/entities/wishlist.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Cart, Wishlist]),
     UsersModule,
     RolesModule,
     CartModule,
+    WishlistModule,
     JwtModule.register({
       secret: JWT_SECRET,
       signOptions: { expiresIn: '3d' },

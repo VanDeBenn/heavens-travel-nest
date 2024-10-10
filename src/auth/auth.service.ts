@@ -16,26 +16,30 @@ import { randomInt, randomUUID } from 'crypto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from '#/users/dto/update-user.dto';
 import { CartService } from '#/cart/cart.service';
+import { WishlistService } from '#/wishlist/wishlist.service';
+import { Cart } from '#/cart/entities/cart.entity';
+import { Wishlist } from '#/wishlist/entities/wishlist.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    @InjectRepository(Cart)
+    private cartsRepository: Repository<Cart>,
+    @InjectRepository(Wishlist)
+    private wishlistsRepository: Repository<Wishlist>,
     private usersService: UsersService,
     private roleService: RolesService,
     private jwtService: JwtService,
     private mailService: MailService,
     private cartService: CartService,
+    private wishlistService: WishlistService,
   ) {}
 
   // signup
   async signup(createUserDto: CreateUserDto): Promise<User> {
-    const res = await this.usersService.create(createUserDto);
-    const id = res.id;
-
-    const cart = await this.cartService.create(id);
-    return res;
+    return await this.usersService.create(createUserDto);
   }
 
   async googleLogin(req) {
@@ -95,6 +99,20 @@ export class AuthService {
     }
 
     const tokens = await this.generateTokens(email);
+
+    const cart = await this.cartsRepository.findOne({
+      where: { user: { email: dto.email } },
+    });
+    if (!cart) {
+      await this.cartService.create(user.id);
+    }
+
+    const wishlist = await this.wishlistsRepository.findOne({
+      where: { user: { email: dto.email } },
+    });
+    if (!wishlist) {
+      await this.wishlistService.create(user.id);
+    }
 
     return {
       token: tokens,

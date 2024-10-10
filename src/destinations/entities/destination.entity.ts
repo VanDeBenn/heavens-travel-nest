@@ -82,8 +82,8 @@ export class Destination {
   @OneToMany(() => Blog, (blog) => blog.destination)
   blogs?: Blog[];
 
-  @OneToMany(() => Wishlist, (wishlist) => wishlist.destination)
-  wishlists?: Wishlist[];
+  @ManyToOne(() => Wishlist, (wishlist) => wishlist.destination)
+  wishlists?: Wishlist;
 
   @ManyToOne(() => Cart, (cart) => cart.destination)
   carts?: Cart;

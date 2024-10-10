@@ -2,52 +2,51 @@ import { Destination } from '#/destinations/entities/destination.entity';
 import { Hotel } from '#/hotels/entities/hotel.entity';
 import { User } from '#/users/entities/user.entity';
 import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-    DeleteDateColumn,
-    VersionColumn,
-    CreateDateColumn,
-    OneToMany,
-    ManyToOne,
-    JoinColumn,
-  } from 'typeorm';
-  
-  @Entity()
-  export class Wishlist{
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-  
-    @CreateDateColumn({
-      type: 'timestamp with time zone',
-      nullable: false,
-    })
-    createdAt: Date;
-  
-    @UpdateDateColumn({
-      type: 'timestamp with time zone',
-      nullable: false,
-    })
-    updatedAt: Date;
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  VersionColumn,
+  CreateDateColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+  OneToOne,
+} from 'typeorm';
 
-    @DeleteDateColumn({
+@Entity()
+export class Wishlist {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @CreateDateColumn({
+    type: 'timestamp with time zone',
+    nullable: false,
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp with time zone',
+    nullable: false,
+  })
+  updatedAt: Date;
+
+  @DeleteDateColumn({
     type: 'timestamp with time zone',
     nullable: true,
   })
   deletedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.wishlists)
+  @OneToOne(() => User, (user) => user.wishlists)
   @JoinColumn()
   user: User;
 
-  @ManyToOne(() => Destination, (destination) => destination.wishlists)
+  @OneToMany(() => Destination, (destination) => destination.wishlists)
   @JoinColumn()
-  destination: Destination;
+  destination: Destination[];
 
-  @ManyToOne(() => Hotel, (hotel) => hotel.wishlists)
+  @OneToMany(() => Hotel, (hotel) => hotel.wishlists)
   @JoinColumn()
-  hotel: Hotel;
-  
-  }
-  
+  hotel: Hotel[];
+}

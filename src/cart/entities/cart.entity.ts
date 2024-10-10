@@ -22,18 +22,6 @@ export class Cart {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // @Column({ nullable: true })
-  // quantityAdult: number;
-
-  // @Column({ nullable: true })
-  // quantityChildren: number;
-
-  // @Column({ nullable: true })
-  // startDate: Date;
-
-  // @Column({ nullable: true })
-  // endDate: Date;
-
   @CreateDateColumn({
     type: 'timestamp with time zone',
     nullable: false,
@@ -64,7 +52,7 @@ export class Cart {
   @JoinColumn()
   destination: Destination[];
 
-  @OneToMany(() => RoomHotel, (roomhotel) => roomhotel.carts)
+  @OneToMany(() => RoomHotel, (roomHotel) => roomHotel.carts)
   @JoinColumn()
-  roomhotel: RoomHotel[];
+  roomHotel: RoomHotel[];
 }
