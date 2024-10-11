@@ -108,6 +108,44 @@ export class CartService {
     return this.cartsRepository.save(cart);
   }
 
+  async removeDestinationFromCart(dto: {
+    userId: string;
+    cartId: string;
+    destinationId: string;
+  }) {
+    const cart = await this.findOne(dto.cartId);
+    if (!cart.destination) {
+      throw new Error('No destinations found in the wishlist');
+    }
+
+    const destination = cart.destination.findIndex(
+      (d) => d.id === dto.destinationId,
+    );
+    if (destination === -1) {
+      throw new Error('Destination not found in wishlist');
+    }
+
+    cart.destination.splice(destination, 1);
+    return this.cartsRepository.save(cart);
+  }
+
+  async removeRoomHotelFromCart(dto: {
+    userId: string;
+    cartId: string;
+    roomHotelId: string;
+  }) {
+    const cart = await this.findOne(dto.cartId);
+
+    const roomHotel = cart.roomHotel.findIndex((h) => h.id === dto.roomHotelId);
+
+    if (roomHotel === -1) {
+      throw new Error('RoomHotel not found in cart');
+    }
+
+    cart.roomHotel.splice(roomHotel, 1);
+    return this.cartsRepository.save(cart);
+  }
+
   findAll() {
     return this.cartsRepository.findAndCount({
       relations: {
@@ -125,6 +163,7 @@ export class CartService {
         where: {
           id,
         },
+        relations: { destination: true, roomHotel: true },
       });
     } catch (e) {
       if (e instanceof EntityNotFoundError) {

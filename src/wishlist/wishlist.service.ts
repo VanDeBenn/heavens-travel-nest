@@ -108,14 +108,14 @@ export class WishlistService {
       throw new Error('No destinations found in the wishlist');
     }
 
-    const destinationIndex = wishlist.destination.findIndex(
+    const destination = wishlist.destination.findIndex(
       (d) => d.id === dto.destinationId,
     );
-    if (destinationIndex === -1) {
+    if (destination === -1) {
       throw new Error('Destination not found in wishlist');
     }
 
-    wishlist.destination.splice(destinationIndex, 1);
+    wishlist.destination.splice(destination, 1);
     return this.wishlistsRepository.save(wishlist);
   }
 
@@ -126,13 +126,13 @@ export class WishlistService {
   }) {
     const wishlist = await this.findOne(dto.wishlistId);
 
-    const hotelIndex = wishlist.hotel.findIndex((h) => h.id === dto.hotelId);
+    const hotel = wishlist.hotel.findIndex((h) => h.id === dto.hotelId);
 
-    if (hotelIndex === -1) {
+    if (hotel === -1) {
       throw new Error('Hotel not found in wishlist');
     }
 
-    wishlist.hotel.splice(hotelIndex, 1);
+    wishlist.hotel.splice(hotel, 1);
     return this.wishlistsRepository.save(wishlist);
   }
 

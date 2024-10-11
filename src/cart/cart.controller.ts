@@ -55,6 +55,24 @@ export class CartController {
     return this.cartsService.addRoomHotelToCart(dto);
   }
 
+  @Delete(':id/destination/:destinationId')
+  async removeDestinationFromCart(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('destinationId', ParseUUIDPipe) destinationId: string,
+    @Body() dto,
+  ) {
+    return this.cartsService.removeDestinationFromCart(dto);
+  }
+
+  @Delete(':id/room-hotel/:roomHotelId')
+  async removeHotelFromWishlist(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('roomHotelId', ParseUUIDPipe) roomHotelId: string,
+    @Body() dto,
+  ) {
+    return this.cartsService.removeRoomHotelFromCart(dto);
+  }
+
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return {
