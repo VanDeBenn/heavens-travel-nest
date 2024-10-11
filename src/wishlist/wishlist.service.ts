@@ -98,6 +98,44 @@ export class WishlistService {
     return this.wishlistsRepository.save(wishlist);
   }
 
+  async removeDestinationFromWishlist(dto: {
+    userId: string;
+    wishlistId: string;
+    destinationId: string;
+  }) {
+    const wishlist = await this.findOne(dto.wishlistId);
+    if (!wishlist.destination) {
+      throw new Error('No destinations found in the wishlist');
+    }
+
+    const destinationIndex = wishlist.destination.findIndex(
+      (d) => d.id === dto.destinationId,
+    );
+    if (destinationIndex === -1) {
+      throw new Error('Destination not found in wishlist');
+    }
+
+    wishlist.destination.splice(destinationIndex, 1);
+    return this.wishlistsRepository.save(wishlist);
+  }
+
+  async removeHotelFromWishlist(dto: {
+    userId: string;
+    wishlistId: string;
+    hotelId: string;
+  }) {
+    const wishlist = await this.findOne(dto.wishlistId);
+
+    const hotelIndex = wishlist.hotel.findIndex((h) => h.id === dto.hotelId);
+
+    if (hotelIndex === -1) {
+      throw new Error('Hotel not found in wishlist');
+    }
+
+    wishlist.hotel.splice(hotelIndex, 1);
+    return this.wishlistsRepository.save(wishlist);
+  }
+
   findAll() {
     return this.wishlistsRepository.findAndCount({
       relations: {
@@ -114,6 +152,7 @@ export class WishlistService {
         where: {
           id,
         },
+        relations: { destination: true, hotel: true },
       });
     } catch (e) {
       if (e instanceof EntityNotFoundError) {
