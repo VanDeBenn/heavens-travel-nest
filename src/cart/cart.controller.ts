@@ -55,7 +55,7 @@ export class CartController {
     return this.cartsService.addRoomHotelToCart(dto);
   }
 
-  @Delete(':id/destination/:destinationId')
+  @Delete(':id/:destinationId')
   async removeDestinationFromCart(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('destinationId', ParseUUIDPipe) destinationId: string,
@@ -64,7 +64,7 @@ export class CartController {
     return this.cartsService.removeDestinationFromCart(dto);
   }
 
-  @Delete(':id/room-hotel/:roomHotelId')
+  @Delete(':id/:roomHotelId')
   async removeHotelFromWishlist(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('roomHotelId', ParseUUIDPipe) roomHotelId: string,

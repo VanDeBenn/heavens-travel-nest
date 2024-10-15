@@ -27,6 +27,16 @@ export class ProvinceController {
     };
   }
 
+  @Get('/ini')
+  async getProvinsi() {
+    try {
+      const provinsiData = await this.provincesService.getProvinsi();
+      return provinsiData.data;
+    } catch (error) {
+      return { message: 'Failed to fetch data', error: error.message };
+    }
+  }
+
   @Get()
   async findAll() {
     const [data, count] = await this.provincesService.findAll();

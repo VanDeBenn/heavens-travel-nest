@@ -16,7 +16,9 @@ export class CitysService {
 
   // create new city
   async create(createCityDto: CreateCityDto) {
-    const province = await this.provinceService.findOne(createCityDto.provinceId);
+    const province = await this.provinceService.findOne(
+      createCityDto.provinceId,
+    );
 
     const dataCity = new City();
     dataCity.name = createCityDto.name;
@@ -34,7 +36,6 @@ export class CitysService {
   findAll() {
     return this.citysRepository.findAndCount({
       relations: {
-        districts: true,
         province: true,
       },
     });
@@ -45,6 +46,9 @@ export class CitysService {
       return await this.citysRepository.findOneOrFail({
         where: {
           id,
+        },
+        relations: {
+          districts: true,
         },
       });
     } catch (e) {

@@ -27,6 +27,11 @@ export class CountrysController {
     };
   }
 
+  @Get('fetch')
+  async fetchCountries() {
+    return await this.countrysService.fetchAndStoreCountries();
+  }
+
   @Get()
   async findAll() {
     const [data, count] = await this.countrysService.findAll();

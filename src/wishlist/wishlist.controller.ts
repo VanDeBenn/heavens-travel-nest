@@ -55,7 +55,7 @@ export class WishlistController {
     return this.wishlistService.addHotelToWishlist(dto);
   }
 
-  @Delete(':id/destination/:destinationId')
+  @Delete(':id/:destinationId')
   async removeDestinationFromWishlist(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('destinationId', ParseUUIDPipe) destinationId: string,
@@ -64,7 +64,7 @@ export class WishlistController {
     return this.wishlistService.removeDestinationFromWishlist(dto);
   }
 
-  @Delete(':id/hotel/:hotelId')
+  @Delete(':id/:hotelId')
   async removeHotelFromWishlist(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('hotelId', ParseUUIDPipe) hotelId: string,

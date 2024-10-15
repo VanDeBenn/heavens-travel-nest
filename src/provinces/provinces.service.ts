@@ -5,6 +5,8 @@ import { Province } from './entities/province.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { CountrysService } from '#/countries/countries.service';
+import { lastValueFrom } from 'rxjs';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class ProvinceService {
@@ -12,7 +14,22 @@ export class ProvinceService {
     @InjectRepository(Province)
     private provincesRepository: Repository<Province>,
     private countryService: CountrysService,
+    private readonly httpService: HttpService,
   ) {}
+
+  async getProvinsi(): Promise<any> {
+    const url = 'https://ibnux.github.io/data-indonesia/provinsi.json';
+
+    try {
+      console.log(`Fetching data from: ${url}`);
+      const response = await lastValueFrom(this.httpService.get(url));
+      console.log('Response data:', response);
+      return response;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      throw new Error('Failed to fetch data from external API');
+    }
+  }
 
   // create new province
   async create(createProvinceDto: CreateProvinceDto) {
@@ -36,7 +53,6 @@ export class ProvinceService {
   findAll() {
     return this.provincesRepository.findAndCount({
       relations: {
-        cities: true,
         country: true,
       },
     });
@@ -47,6 +63,9 @@ export class ProvinceService {
       return await this.provincesRepository.findOneOrFail({
         where: {
           id,
+        },
+        relations: {
+          cities: true,
         },
       });
     } catch (e) {
