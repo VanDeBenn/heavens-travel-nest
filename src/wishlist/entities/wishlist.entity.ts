@@ -38,15 +38,15 @@ export class Wishlist {
   })
   deletedAt: Date;
 
-  @OneToOne(() => User, (user) => user.wishlists)
+  @ManyToOne(() => User, (user) => user.wishlists)
   @JoinColumn()
   user: User;
 
-  @OneToMany(() => Destination, (destination) => destination.wishlists)
+  @ManyToOne(() => Destination, (destination) => destination.wishlists)
   @JoinColumn()
-  destination: Destination[];
+  destination: Destination;
 
-  @OneToMany(() => Hotel, (hotel) => hotel.wishlists)
+  @ManyToOne(() => Hotel, (hotel) => hotel.wishlists)
   @JoinColumn()
-  hotel: Hotel[];
+  hotel: Hotel;
 }

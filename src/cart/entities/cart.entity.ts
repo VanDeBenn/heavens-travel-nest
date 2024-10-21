@@ -23,7 +23,10 @@ export class Cart {
   id: string;
 
   @Column({ nullable: true })
-  quantity: Number;
+  quantityAdult: Number;
+
+  @Column({ nullable: true })
+  quantityChildren: Number;
 
   @Column({ nullable: true })
   startDate: Date;

@@ -15,7 +15,6 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
 export class CartService {
-  destinationsRepository: any;
   constructor(
     @InjectRepository(Cart)
     private cartsRepository: Repository<Cart>,
@@ -83,13 +82,13 @@ export class CartService {
   // }
 
   // Add to Cart function
-  async addToCart(userId: string, destinationId: string, roomHotelId: string) {
-    const user = await this.usersService.findOne(userId);
-    const destination = destinationId
-      ? await this.destinationsService.findOne(destinationId)
+  async addToCart(createCartDto: CreateCartDto) {
+    const user = await this.usersService.findOne(createCartDto.userId);
+    const destination = createCartDto.destinationId
+      ? await this.destinationsService.findOne(createCartDto.destinationId)
       : null;
-    const roomHotel = roomHotelId
-      ? await this.roomHotelsService.findOne(roomHotelId)
+    const roomHotel = createCartDto.roomHotelId
+      ? await this.roomHotelsService.findOne(createCartDto.roomHotelId)
       : null;
     if (!user) {
       throw new NotFoundException('User not found');
@@ -98,6 +97,11 @@ export class CartService {
     cartItem.user = user;
     cartItem.destination = destination;
     cartItem.roomHotel = roomHotel;
+    cartItem.quantityAdult = createCartDto.quantityAdult;
+    cartItem.quantityChildren = createCartDto.quantityChildren;
+    cartItem.startDate = createCartDto.startDate;
+    cartItem.endDate = createCartDto.endDate;
+
     return await this.cartsRepository.save(cartItem);
   }
 

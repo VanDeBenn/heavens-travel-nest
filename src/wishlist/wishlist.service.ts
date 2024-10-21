@@ -19,21 +19,21 @@ export class WishlistService {
   ) {}
 
   // create new wishlist
-  async create(id: string) {
-    const user = await this.userService.findOne(id);
+  async create(createWishlistDto: CreateWishlistDto) {
+    const user = await this.userService.findOne(createWishlistDto.userId);
 
-    // const destination = createWishlistDto.destinationId
-    //   ? await this.destinationService.findOne(createWishlistDto.destinationId)
-    //   : null;
+    const destination = createWishlistDto.destinationId
+      ? await this.destinationService.findOne(createWishlistDto.destinationId)
+      : null;
 
-    // const hotel = createWishlistDto.hotelId
-    //   ? await this.hotelService.findOne(createWishlistDto.hotelId)
-    //   : null;
+    const hotel = createWishlistDto.hotelId
+      ? await this.hotelService.findOne(createWishlistDto.hotelId)
+      : null;
 
     const dataWishlist = new Wishlist();
     dataWishlist.user = user;
-    // dataWishlist.destination = destination;
-    // dataWishlist.hotel = hotel;
+    dataWishlist.destination = destination;
+    dataWishlist.hotel = hotel;
 
     const result = await this.wishlistsRepository.insert(dataWishlist);
 
@@ -44,97 +44,99 @@ export class WishlistService {
     });
   }
 
-  async addDestinationToWishlist(dto: {
-    userId: string;
-    wishlistId: string;
-    destinationId: string;
-  }) {
-    const user = await this.userService.findOne(dto.userId);
-    if (!user) throw new Error('User not found');
 
-    const wishlist = await this.wishlistsRepository.findOne({
-      where: { id: dto.wishlistId, user: { id: dto.userId } },
-      relations: { destination: true },
-    });
-    if (!wishlist) throw new Error('Cart not found');
 
-    const destination = await this.destinationService.findOne(
-      dto.destinationId,
-    );
-    if (!destination) throw new Error('Destination not found');
+  // async addDestinationToWishlist(dto: {
+  //   userId: string;
+  //   wishlistId: string;
+  //   destinationId: string;
+  // }) {
+  //   const user = await this.userService.findOne(dto.userId);
+  //   if (!user) throw new Error('User not found');
 
-    if (wishlist.destination.some((d) => d.id === destination.id)) {
-      throw new Error('Destination already in wishlist');
-    }
+  //   const wishlist = await this.wishlistsRepository.findOne({
+  //     where: { id: dto.wishlistId, user: { id: dto.userId } },
+  //     relations: { destination: true },
+  //   });
+  //   if (!wishlist) throw new Error('Cart not found');
 
-    wishlist.destination.push(destination);
+  //   const destination = await this.destinationService.findOne(
+  //     dto.destinationId,
+  //   );
+  //   if (!destination) throw new Error('Destination not found');
 
-    return this.wishlistsRepository.save(wishlist);
-  }
+  //   if (wishlist.destination.some((d) => d.id === destination.id)) {
+  //     throw new Error('Destination already in wishlist');
+  //   }
 
-  async addHotelToWishlist(dto: {
-    userId: string;
-    wishlistId: string;
-    hotelId: string;
-  }) {
-    const user = await this.userService.findOne(dto.userId);
-    if (!user) throw new Error('User not found');
+  //   wishlist.destination.push(destination);
 
-    const wishlist = await this.wishlistsRepository.findOne({
-      where: { id: dto.wishlistId, user: { id: dto.userId } },
-      relations: { hotel: true },
-    });
-    if (!wishlist) throw new Error('Cart not found');
+  //   return this.wishlistsRepository.save(wishlist);
+  // }
 
-    const hotel = await this.hotelService.findOne(dto.hotelId);
-    if (!hotel) throw new Error('Hotel not found');
+  // async addHotelToWishlist(dto: {
+  //   userId: string;
+  //   wishlistId: string;
+  //   hotelId: string;
+  // }) {
+  //   const user = await this.userService.findOne(dto.userId);
+  //   if (!user) throw new Error('User not found');
 
-    if (wishlist.hotel.some((d) => d.id === hotel.id)) {
-      throw new Error('Hotel already in wishlist');
-    }
+  //   const wishlist = await this.wishlistsRepository.findOne({
+  //     where: { id: dto.wishlistId, user: { id: dto.userId } },
+  //     relations: { hotel: true },
+  //   });
+  //   if (!wishlist) throw new Error('Cart not found');
 
-    wishlist.hotel.push(hotel);
+  //   const hotel = await this.hotelService.findOne(dto.hotelId);
+  //   if (!hotel) throw new Error('Hotel not found');
 
-    return this.wishlistsRepository.save(wishlist);
-  }
+  //   if (wishlist.hotel.some((d) => d.id === hotel.id)) {
+  //     throw new Error('Hotel already in wishlist');
+  //   }
 
-  async removeDestinationFromWishlist(dto: {
-    userId: string;
-    wishlistId: string;
-    destinationId: string;
-  }) {
-    const wishlist = await this.findOne(dto.wishlistId);
-    if (!wishlist.destination) {
-      throw new Error('No destinations found in the wishlist');
-    }
+  //   wishlist.hotel.push(hotel);
 
-    const destination = wishlist.destination.findIndex(
-      (d) => d.id === dto.destinationId,
-    );
-    if (destination === -1) {
-      throw new Error('Destination not found in wishlist');
-    }
+  //   return this.wishlistsRepository.save(wishlist);
+  // }
 
-    wishlist.destination.splice(destination, 1);
-    return this.wishlistsRepository.save(wishlist);
-  }
+  // async removeDestinationFromWishlist(dto: {
+  //   userId: string;
+  //   wishlistId: string;
+  //   destinationId: string;
+  // }) {
+  //   const wishlist = await this.findOne(dto.wishlistId);
+  //   if (!wishlist.destination) {
+  //     throw new Error('No destinations found in the wishlist');
+  //   }
 
-  async removeHotelFromWishlist(dto: {
-    userId: string;
-    wishlistId: string;
-    hotelId: string;
-  }) {
-    const wishlist = await this.findOne(dto.wishlistId);
+  //   const destination = wishlist.destination.findIndex(
+  //     (d) => d.id === dto.destinationId,
+  //   );
+  //   if (destination === -1) {
+  //     throw new Error('Destination not found in wishlist');
+  //   }
 
-    const hotel = wishlist.hotel.findIndex((h) => h.id === dto.hotelId);
+  //   wishlist.destination.splice(destination, 1);
+  //   return this.wishlistsRepository.save(wishlist);
+  // }
 
-    if (hotel === -1) {
-      throw new Error('Hotel not found in wishlist');
-    }
+  // async removeHotelFromWishlist(dto: {
+  //   userId: string;
+  //   wishlistId: string;
+  //   hotelId: string;
+  // }) {
+  //   const wishlist = await this.findOne(dto.wishlistId);
 
-    wishlist.hotel.splice(hotel, 1);
-    return this.wishlistsRepository.save(wishlist);
-  }
+  //   const hotel = wishlist.hotel.findIndex((h) => h.id === dto.hotelId);
+
+  //   if (hotel === -1) {
+  //     throw new Error('Hotel not found in wishlist');
+  //   }
+
+  //   wishlist.hotel.splice(hotel, 1);
+  //   return this.wishlistsRepository.save(wishlist);
+  // }
 
   findAll() {
     return this.wishlistsRepository.findAndCount({

@@ -19,9 +19,9 @@ export class WishlistController {
   constructor(private readonly wishlistService: WishlistService) {}
 
   @Post()
-  async create(@Body() id: string) {
+  async create(@Body() createWishlistDto: CreateWishlistDto) {
     return {
-      data: await this.wishlistService.create(id),
+      data: await this.wishlistService.create(createWishlistDto),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
@@ -39,39 +39,39 @@ export class WishlistController {
     };
   }
 
-  @Post(':id/destination')
-  async addDestinationToWishlist(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() dto,
-  ) {
-    return this.wishlistService.addDestinationToWishlist(dto);
-  }
+  // @Post(':id/destination')
+  // async addDestinationToWishlist(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Body() dto,
+  // ) {
+  //   return this.wishlistService.addDestinationToWishlist(dto);
+  // }
 
-  @Post(':id/hotel')
-  async addHotelToWishlist(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() dto,
-  ) {
-    return this.wishlistService.addHotelToWishlist(dto);
-  }
+  // @Post(':id/hotel')
+  // async addHotelToWishlist(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Body() dto,
+  // ) {
+  //   return this.wishlistService.addHotelToWishlist(dto);
+  // }
 
-  @Delete(':id/:destinationId')
-  async removeDestinationFromWishlist(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Param('destinationId', ParseUUIDPipe) destinationId: string,
-    @Body() dto,
-  ) {
-    return this.wishlistService.removeDestinationFromWishlist(dto);
-  }
+  // @Delete(':id/:destinationId')
+  // async removeDestinationFromWishlist(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Param('destinationId', ParseUUIDPipe) destinationId: string,
+  //   @Body() dto,
+  // ) {
+  //   return this.wishlistService.removeDestinationFromWishlist(dto);
+  // }
 
-  @Delete(':id/:hotelId')
-  async removeHotelFromWishlist(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Param('hotelId', ParseUUIDPipe) hotelId: string,
-    @Body() dto,
-  ) {
-    return this.wishlistService.removeHotelFromWishlist(dto);
-  }
+  // @Delete(':id/:hotelId')
+  // async removeHotelFromWishlist(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Param('hotelId', ParseUUIDPipe) hotelId: string,
+  //   @Body() dto,
+  // ) {
+  //   return this.wishlistService.removeHotelFromWishlist(dto);
+  // }
 
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {

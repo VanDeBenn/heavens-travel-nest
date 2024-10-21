@@ -41,16 +41,8 @@ export class CartController {
 
   // Add to Cart
   @Post('add')
-  async addToCart(
-    @Body('userId') userId: string,
-    @Body('destinationId') destinationId: string,
-    @Body('roomHotelId') roomHotelId: string,
-  ) {
-    const addedCartItem = await this.cartsService.addToCart(
-      userId,
-      destinationId,
-      roomHotelId,
-    );
+  async addToCart(@Body() createCartDto: CreateCartDto) {
+    const addedCartItem = await this.cartsService.addToCart(createCartDto);
     return {
       message: 'Product added to cart',
     };
