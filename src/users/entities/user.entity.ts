@@ -84,7 +84,7 @@ export class User {
   @OneToMany(() => Blog, (blog) => blog.user)
   blogs?: Blog[];
 
-  @OneToOne(() => Cart, (cart) => cart.user)
+  @OneToMany(() => Cart, (cart) => cart.user)
   carts?: Cart[];
 
   @OneToOne(() => Wishlist, (wishlist) => wishlist.user)

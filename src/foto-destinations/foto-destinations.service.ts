@@ -16,13 +16,17 @@ export class PhotoDestinationsService {
 
   // create new photodestination
   async create(createPhotoDestinationDto: CreatePhotoDestinationDto) {
-    const destination = await this.destinationService.findOne(createPhotoDestinationDto.destinationId);
+    const destination = await this.destinationService.findOne(
+      createPhotoDestinationDto.destinationId,
+    );
 
     const dataPhotoDestination = new PhotoDestination();
     dataPhotoDestination.pathPhoto = createPhotoDestinationDto.pathPhoto;
     dataPhotoDestination.destination = destination;
 
-    const result = await this.photodestinationsRepository.insert(dataPhotoDestination);
+    const result = await this.photodestinationsRepository.insert(
+      dataPhotoDestination,
+    );
 
     return this.photodestinationsRepository.findOneOrFail({
       where: {
@@ -62,8 +66,13 @@ export class PhotoDestinationsService {
   }
 
   // update photodestination
-  async update(id: string, updatePhotoDestinationDto: UpdatePhotoDestinationDto) {
-    const destination = await this.destinationService.findOne(updatePhotoDestinationDto.destinationId);
+  async update(
+    id: string,
+    updatePhotoDestinationDto: UpdatePhotoDestinationDto,
+  ) {
+    const destination = await this.destinationService.findOne(
+      updatePhotoDestinationDto.destinationId,
+    );
 
     let dataPhotoDestination = new PhotoDestination();
     dataPhotoDestination.pathPhoto = updatePhotoDestinationDto.pathPhoto;
@@ -89,7 +98,10 @@ export class PhotoDestinationsService {
       }
     }
 
-    const result = await this.photodestinationsRepository.update(id, dataPhotoDestination);
+    const result = await this.photodestinationsRepository.update(
+      id,
+      dataPhotoDestination,
+    );
 
     return this.photodestinationsRepository.findOneOrFail({
       where: {

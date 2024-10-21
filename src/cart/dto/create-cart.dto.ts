@@ -1,17 +1,17 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateCartDto {
-  // @IsNotEmpty()
-  // quantityAdult: number;
+  @IsNotEmpty()
+  quantityAdult: number;
 
-  // @IsNotEmpty()
-  // quantityChildren: number;
+  @IsNotEmpty()
+  quantityChildren: number;
 
-  // @IsNotEmpty()
-  // startDate: Date;
+  @IsNotEmpty()
+  startDate: Date;
 
-  // @IsNotEmpty()
-  // endDate: Date;
+  @IsNotEmpty()
+  endDate: Date;
 
   @IsNotEmpty()
   userId: string;

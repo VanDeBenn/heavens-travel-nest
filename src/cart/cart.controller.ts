@@ -39,39 +39,56 @@ export class CartController {
     };
   }
 
-  @Post(':id/destination')
-  async addDestinationToCart(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() dto,
+  // Add to Cart
+  @Post('add')
+  async addToCart(
+    @Body('userId') userId: string,
+    @Body('destinationId') destinationId: string,
+    @Body('roomHotelId') roomHotelId: string,
   ) {
-    return this.cartsService.addDestinationToCart(dto);
+    const addedCartItem = await this.cartsService.addToCart(
+      userId,
+      destinationId,
+      roomHotelId,
+    );
+    return {
+      message: 'Product added to cart',
+    };
   }
 
-  @Post(':id/room-hotel')
-  async addRoomHotelToCart(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() dto,
-  ) {
-    return this.cartsService.addRoomHotelToCart(dto);
-  }
+  // @Post(':id/destination')
+  // async addDestinationToCart(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Body() dto,
+  // ) {
+  //   return this.cartsService.addDestinationToCart(dto);
+  // }
 
-  @Delete(':id/:destinationId')
-  async removeDestinationFromCart(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Param('destinationId', ParseUUIDPipe) destinationId: string,
-    @Body() dto,
-  ) {
-    return this.cartsService.removeDestinationFromCart(dto);
-  }
+  // @Post(':id/room-hotel')
+  // async addRoomHotelToCart(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Body() dto,
+  // ) {
+  //   return this.cartsService.addRoomHotelToCart(dto);
+  // }
 
-  @Delete(':id/:roomHotelId')
-  async removeHotelFromWishlist(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Param('roomHotelId', ParseUUIDPipe) roomHotelId: string,
-    @Body() dto,
-  ) {
-    return this.cartsService.removeRoomHotelFromCart(dto);
-  }
+  // @Delete(':id/:destinationId')
+  // async removeDestinationFromCart(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Param('destinationId', ParseUUIDPipe) destinationId: string,
+  //   @Body() dto,
+  // ) {
+  //   return this.cartsService.removeDestinationFromCart(dto);
+  // }
+
+  // @Delete(':id/:roomHotelId')
+  // async removeHotelFromWishlist(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Param('roomHotelId', ParseUUIDPipe) roomHotelId: string,
+  //   @Body() dto,
+  // ) {
+  //   return this.cartsService.removeRoomHotelFromCart(dto);
+  // }
 
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {

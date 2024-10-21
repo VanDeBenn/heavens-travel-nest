@@ -22,14 +22,16 @@ export class BlogsService {
   async create(createBlogDto: CreateBlogDto) {
     const user = await this.usersService.findOne(createBlogDto.userId);
 
-    const destination = await this.destinationService.findOne(createBlogDto.destinationId);
+    const destination = await this.destinationService.findOne(
+      createBlogDto.destinationId,
+    );
 
     const dataBlog = new Blog();
     dataBlog.title = createBlogDto.title;
     dataBlog.description = createBlogDto.description;
     dataBlog.pathPhoto = createBlogDto.pathPhoto;
     dataBlog.user = user;
-    dataBlog.destination = destination
+    dataBlog.destination = destination;
 
     const result = await this.blogsRepository.insert(dataBlog);
 
@@ -75,7 +77,9 @@ export class BlogsService {
   async update(id: string, updateBlogDto: UpdateBlogDto) {
     const user = await this.usersService.findOne(updateBlogDto.userId);
 
-    const destination = await this.destinationService.findOne(updateBlogDto.destinationId);
+    const destination = await this.destinationService.findOne(
+      updateBlogDto.destinationId,
+    );
 
     let dataBlog = new Blog();
     dataBlog.title = updateBlogDto.title;
@@ -138,3 +142,5 @@ export class BlogsService {
     await this.blogsRepository.delete(id);
   }
 }
+
+//

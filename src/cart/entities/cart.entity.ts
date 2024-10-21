@@ -22,6 +22,15 @@ export class Cart {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ nullable: true })
+  quantity: Number;
+
+  @Column({ nullable: true })
+  startDate: Date;
+
+  @Column({ nullable: true })
+  endDate: Date;
+
   @CreateDateColumn({
     type: 'timestamp with time zone',
     nullable: false,
@@ -44,15 +53,15 @@ export class Cart {
   @JoinColumn()
   booking: Booking;
 
-  @OneToOne(() => User, (user) => user.carts)
+  @ManyToOne(() => User, (user) => user.carts)
   @JoinColumn()
   user: User;
 
-  @OneToMany(() => Destination, (destination) => destination.carts)
+  @ManyToOne(() => Destination, (destination) => destination.carts)
   @JoinColumn()
-  destination: Destination[];
+  destination: Destination;
 
-  @OneToMany(() => RoomHotel, (roomHotel) => roomHotel.carts)
+  @ManyToOne(() => RoomHotel, (roomHotel) => roomHotel.carts)
   @JoinColumn()
-  roomHotel: RoomHotel[];
+  roomHotel: RoomHotel;
 }

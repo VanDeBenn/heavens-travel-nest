@@ -85,8 +85,8 @@ export class Destination {
   @ManyToOne(() => Wishlist, (wishlist) => wishlist.destination)
   wishlists?: Wishlist;
 
-  @ManyToOne(() => Cart, (cart) => cart.destination)
-  carts?: Cart;
+  @OneToMany(() => Cart, (cart) => cart.destination)
+  carts?: Cart[];
 
   @OneToMany(
     () => PhotoDestination,

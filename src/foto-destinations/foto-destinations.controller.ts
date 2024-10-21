@@ -42,18 +42,21 @@ export class PhotoDestinationsController {
   @UseInterceptors(
     FileInterceptor('file', storageProfile('photo-destinations')),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    if (typeof file?.filename == 'undefined') {
-      return {
-        statusCode: HttpStatus.BAD_REQUEST,
-        message: 'error file cannot be upload',
-      };
-    } else {
-      return { fileName: file?.filename };
+  async createProduct(
+    @Body() createProductDto: CreatePhotoDestinationDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    if (file) {
+      createProductDto.pathPhoto = file.filename;
     }
+    return {
+      data: await this.photodestinationsService.create(createProductDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
-  @Get('upload/:image')
+  @Get(':image')
   getImage(
     // @Param('type') type: string,
     @Param('image') imagePath: string,

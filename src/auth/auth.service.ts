@@ -79,19 +79,6 @@ export class AuthService {
 
     this.storeRefreshToken(refreshToken, dataUser.id);
 
-    const cart = await this.cartsRepository.findOne({
-      where: { user: { email: dataUser.email } },
-    });
-    if (!cart) {
-      await this.cartService.create(dataUser.id);
-    }
-
-    const wishlist = await this.wishlistsRepository.findOne({
-      where: { user: { email: dataUser.email } },
-    });
-    if (!wishlist) {
-      await this.wishlistService.create(dataUser.id);
-    }
     return {
       accessToken,
       refreshToken,
@@ -113,20 +100,6 @@ export class AuthService {
     }
 
     const tokens = await this.generateTokens(email);
-
-    const cart = await this.cartsRepository.findOne({
-      where: { user: { email: dto.email } },
-    });
-    if (!cart) {
-      await this.cartService.create(user.id);
-    }
-
-    const wishlist = await this.wishlistsRepository.findOne({
-      where: { user: { email: dto.email } },
-    });
-    if (!wishlist) {
-      await this.wishlistService.create(user.id);
-    }
 
     return {
       token: tokens,

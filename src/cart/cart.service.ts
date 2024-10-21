@@ -54,97 +54,116 @@ export class CartService {
     });
   }
 
-  async addDestinationToCart(dto: {
-    userId: string;
-    cartId: string;
-    destinationId: string;
-  }) {
-    const user = await this.usersService.findOne(dto.userId);
-    if (!user) throw new Error('User not found');
+  // async addDestinationToCart(dto: {
+  //   userId: string;
+  //   cartId: string;
+  //   destinationId: string;
+  // }) {
+  //   const user = await this.usersService.findOne(dto.userId);
+  //   if (!user) throw new Error('User not found');
 
-    const cart = await this.cartsRepository.findOne({
-      where: { id: dto.cartId, user: { id: dto.userId } },
-      relations: { destination: true },
-    });
-    if (!cart) throw new Error('Cart not found');
+  //   const cart = await this.cartsRepository.findOne({
+  //     where: { id: dto.cartId, user: { id: dto.userId } },
+  //     relations: { destination: true },
+  //   });
+  //   if (!cart) throw new Error('Cart not found');
 
-    const destination = await this.destinationsService.findOne(
-      dto.destinationId,
-    );
-    if (!destination) throw new Error('Destination not found');
+  //   const destination = await this.destinationsService.findOne(
+  //     dto.destinationId,
+  //   );
+  //   if (!destination) throw new Error('Destination not found');
 
-    if (cart.destination.some((d) => d.id === destination.id)) {
-      throw new Error('Destination already in cart');
+  //   if (cart.destination.some((d) => d.id === destination.id)) {
+  //     throw new Error('Destination already in cart');
+  //   }
+
+  //   cart.destination.push(destination);
+
+  //   return this.cartsRepository.save(cart);
+  // }
+
+  // Add to Cart function
+  async addToCart(userId: string, destinationId: string, roomHotelId: string) {
+    const user = await this.usersService.findOne(userId);
+    const destination = destinationId
+      ? await this.destinationsService.findOne(destinationId)
+      : null;
+    const roomHotel = roomHotelId
+      ? await this.roomHotelsService.findOne(roomHotelId)
+      : null;
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
-
-    cart.destination.push(destination);
-
-    return this.cartsRepository.save(cart);
+    const cartItem = new Cart();
+    cartItem.user = user;
+    cartItem.destination = destination;
+    cartItem.roomHotel = roomHotel;
+    return await this.cartsRepository.save(cartItem);
   }
 
-  async addRoomHotelToCart(dto: {
-    userId: string;
-    cartId: string;
-    roomHotelId: string;
-  }) {
-    const user = await this.usersService.findOne(dto.userId);
-    if (!user) throw new Error('User not found');
+  // async addRoomHotelToCart(dto: {
+  //   userId: string;
+  //   cartId: string;
+  //   roomHotelId: string;
+  // }) {
+  //   const user = await this.usersService.findOne(dto.userId);
+  //   if (!user) throw new Error('User not found');
 
-    const cart = await this.cartsRepository.findOne({
-      where: { id: dto.cartId, user: { id: dto.userId } },
-      relations: { roomHotel: true },
-    });
-    if (!cart) throw new Error('Cart not found');
+  //   const cart = await this.cartsRepository.findOne({
+  //     where: { id: dto.cartId, user: { id: dto.userId } },
+  //     relations: { roomHotel: true },
+  //   });
+  //   if (!cart) throw new Error('Cart not found');
 
-    const roomHotel = await this.roomHotelsService.findOne(dto.roomHotelId);
-    if (!roomHotel) throw new Error('Room Hotel not found');
+  //   const roomHotel = await this.roomHotelsService.findOne(dto.roomHotelId);
+  //   if (!roomHotel) throw new Error('Room Hotel not found');
 
-    if (cart.roomHotel.some((d) => d.id === roomHotel.id)) {
-      throw new Error('Room Hotel already in cart');
-    }
+  //   if (cart.roomHotel.some((d) => d.id === roomHotel.id)) {
+  //     throw new Error('Room Hotel already in cart');
+  //   }
 
-    cart.roomHotel.push(roomHotel);
+  //   cart.roomHotel.push(roomHotel);
 
-    return this.cartsRepository.save(cart);
-  }
+  //   return this.cartsRepository.save(cart);
+  // }
 
-  async removeDestinationFromCart(dto: {
-    userId: string;
-    cartId: string;
-    destinationId: string;
-  }) {
-    const cart = await this.findOne(dto.cartId);
-    if (!cart.destination) {
-      throw new Error('No destinations found in the wishlist');
-    }
+  // async removeDestinationFromCart(dto: {
+  //   userId: string;
+  //   cartId: string;
+  //   destinationId: string;
+  // }) {
+  //   const cart = await this.findOne(dto.cartId);
+  //   if (!cart.destination) {
+  //     throw new Error('No destinations found in the cart');
+  //   }
 
-    const destination = cart.destination.findIndex(
-      (d) => d.id === dto.destinationId,
-    );
-    if (destination === -1) {
-      throw new Error('Destination not found in wishlist');
-    }
+  //   const destination = cart.destination.findIndex(
+  //     (d) => d.id === dto.destinationId,
+  //   );
+  //   if (destination === -1) {
+  //     throw new Error('Destination not found in cart');
+  //   }
 
-    cart.destination.splice(destination, 1);
-    return this.cartsRepository.save(cart);
-  }
+  //   cart.destination.splice(destination, 1);
+  //   return this.cartsRepository.save(cart);
+  // }
 
-  async removeRoomHotelFromCart(dto: {
-    userId: string;
-    cartId: string;
-    roomHotelId: string;
-  }) {
-    const cart = await this.findOne(dto.cartId);
+  // async removeRoomHotelFromCart(dto: {
+  //   userId: string;
+  //   cartId: string;
+  //   roomHotelId: string;
+  // }) {
+  //   const cart = await this.findOne(dto.cartId);
 
-    const roomHotel = cart.roomHotel.findIndex((h) => h.id === dto.roomHotelId);
+  //   const roomHotel = cart.roomHotel.findIndex((h) => h.id === dto.roomHotelId);
 
-    if (roomHotel === -1) {
-      throw new Error('RoomHotel not found in cart');
-    }
+  //   if (roomHotel === -1) {
+  //     throw new Error('RoomHotel not found in cart');
+  //   }
 
-    cart.roomHotel.splice(roomHotel, 1);
-    return this.cartsRepository.save(cart);
-  }
+  //   cart.roomHotel.splice(roomHotel, 1);
+  //   return this.cartsRepository.save(cart);
+  // }
 
   findAll() {
     return this.cartsRepository.findAndCount({
