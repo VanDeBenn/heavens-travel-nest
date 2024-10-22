@@ -47,5 +47,5 @@ export class CreateUserDto {
   roleId: string;
 
   @IsOptional()
-  districtId: string;
+  cityId: string;
 }

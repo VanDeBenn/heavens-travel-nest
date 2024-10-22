@@ -26,5 +26,5 @@ export class CreateDestinationDto {
   pathLocation: string;
 
   @IsOptional()
-  districtId: string;
+  cityId: string;
 }

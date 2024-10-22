@@ -14,7 +14,6 @@ import { RolesModule } from './roles/roles.module';
 import { DestinationsModule } from './destinations/destinations.module';
 import { BlogsModule } from './blogs/blogs.module';
 import { HotelsModule } from './hotels/hotels.module';
-import { DistrictsModule } from './districts/districts.module';
 import { RoomHotelsModule } from './room-hotels/room-hotels.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { CartModule } from './cart/cart.module';
@@ -133,7 +132,6 @@ import { RoomTypeModule } from './room-type/room-type.module';
     DestinationsModule,
     BlogsModule,
     HotelsModule,
-    DistrictsModule,
     RoomHotelsModule,
     BookingsModule,
     CartModule,

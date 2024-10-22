@@ -1,24 +1,22 @@
-import { DistrictsService } from '#/districts/districts.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateHotelDto } from './dto/create-hotel.dto';
 import { UpdateHotelDto } from './dto/update-hotel.dto';
 import { Hotel } from './entities/hotel.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { CitysService } from '#/cities/cities.service';
 
 @Injectable()
 export class HotelsService {
   constructor(
     @InjectRepository(Hotel)
     private hotelsRepository: Repository<Hotel>,
-    private districtsService: DistrictsService,
+    private citysService: CitysService,
   ) {}
 
   // create new hotel
   async create(createHotelDto: CreateHotelDto) {
-    const district = await this.districtsService.findOne(
-      createHotelDto.districtId,
-    );
+    const city = await this.citysService.findOne(createHotelDto.cityId);
 
     const dataHotel = new Hotel();
     dataHotel.name = createHotelDto.name;
@@ -26,7 +24,7 @@ export class HotelsService {
     dataHotel.description = createHotelDto.description;
     dataHotel.address = createHotelDto.address;
     dataHotel.pathLocation = createHotelDto.pathLocation;
-    dataHotel.district = district;
+    dataHotel.city = city;
 
     const result = await this.hotelsRepository.insert(dataHotel);
 
@@ -48,7 +46,7 @@ export class HotelsService {
         categoriserviceamenities: true,
         roomhotels: true,
         propertypolicys: true,
-        district: { city: true },
+        city: true,
       },
     });
   }

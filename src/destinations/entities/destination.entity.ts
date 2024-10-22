@@ -3,7 +3,7 @@ import { BookingDetail } from '#/booking-detail/entities/booking-detail.entity';
 import { Booking } from '#/bookings/entities/booking.entity';
 import { Cart } from '#/cart/entities/cart.entity';
 import { CategoriesFaq } from '#/categories-faqs/entities/categories-faqs.entity';
-import { District } from '#/districts/entities/district.entity';
+import { City } from '#/cities/entities/city.entity';
 import { PhotoDestination } from '#/foto-destinations/entities/foto-destination.entity';
 import { User } from '#/users/entities/user.entity';
 import { Wishlist } from '#/wishlist/entities/wishlist.entity';
@@ -100,7 +100,7 @@ export class Destination {
   @OneToMany(() => Booking, (booking) => booking.destination)
   bookings?: Booking[];
 
-  @ManyToOne(() => District, (district) => district.destinations)
+  @ManyToOne(() => City, (city) => city.destinations)
   @JoinColumn()
-  district?: District;
+  city?: City;
 }

@@ -14,7 +14,7 @@ import { BookingDetailsService } from './booking-detail.service';
 import { CreateBookingDetailDto } from './dto/create-booking-detail.dto';
 import { UpdateBookingDetailDto } from './dto/update-booking-detail.dto';
 
-@Controller('bookingdetails')
+@Controller('booking-details')
 export class BookingDetailsController {
   constructor(private readonly bookingdetailsService: BookingDetailsService) {}
 

@@ -1,17 +1,18 @@
-import { IsAlpha, IsNotEmpty, IsNumber } from 'class-validator';
-
+import { IsAlpha, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateBookingDetailDto {
-  @IsNotEmpty()
+  @IsOptional()
   priceDetail: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   totalPrice: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   orderStatus: string;
-  
-  @IsNotEmpty()
-  bookingId: string;
-}
 
+  @IsOptional()
+  bookingId: string;
+
+  // @IsOptional()
+  // cartId: string;
+}

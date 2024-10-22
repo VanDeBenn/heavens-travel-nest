@@ -1,7 +1,7 @@
 import { Blog } from '#/blogs/entities/blog.entity';
 import { Booking } from '#/bookings/entities/booking.entity';
 import { Cart } from '#/cart/entities/cart.entity';
-import { District } from '#/districts/entities/district.entity';
+import { City } from '#/cities/entities/city.entity';
 import { ReplyReview } from '#/reply-reviews/entities/reply-review.entity';
 import { Report } from '#/reports/entities/report.entity';
 import { Review } from '#/reviews/entities/review.entity';
@@ -109,7 +109,7 @@ export class User {
   @JoinColumn()
   role: Role;
 
-  @ManyToOne(() => District, (district) => district.users)
+  @ManyToOne(() => City, (city) => city.users)
   @JoinColumn()
-  district?: District;
+  city?: City;
 }

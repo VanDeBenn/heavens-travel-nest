@@ -105,6 +105,11 @@ export class CartService {
     return await this.cartsRepository.save(cartItem);
   }
 
+  // addBook(createCartDto: CreateCartDto) {
+  //   const data = new Cart();
+  //   data.bookingDetail =
+  // }
+
   // async addRoomHotelToCart(dto: {
   //   userId: string;
   //   cartId: string;

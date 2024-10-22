@@ -1,5 +1,7 @@
-import { District } from '#/districts/entities/district.entity';
+import { Destination } from '#/destinations/entities/destination.entity';
+import { Hotel } from '#/hotels/entities/hotel.entity';
 import { Province } from '#/provinces/entities/province.entity';
+import { User } from '#/users/entities/user.entity';
 import {
   Entity,
   Column,
@@ -39,8 +41,14 @@ export class City {
   })
   deletedAt: Date;
 
-  @OneToMany(() => District, (district) => district.city)
-  districts?: District[];
+  @OneToMany(() => User, (user) => user.city)
+  users?: User[];
+
+  @OneToMany(() => Hotel, (hotel) => hotel.city)
+  hotels?: Hotel[];
+
+  @OneToMany(() => Destination, (destination) => destination.city)
+  destinations?: Destination[];
 
   @ManyToOne(() => Province, (province) => province.cities)
   @JoinColumn()

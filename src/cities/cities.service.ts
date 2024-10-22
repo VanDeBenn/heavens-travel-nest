@@ -36,6 +36,9 @@ export class CitysService {
   findAll() {
     return this.citysRepository.findAndCount({
       relations: {
+        users: true,
+        hotels: true,
+        destinations: true,
         province: true,
       },
     });
@@ -46,9 +49,6 @@ export class CitysService {
       return await this.citysRepository.findOneOrFail({
         where: {
           id,
-        },
-        relations: {
-          districts: true,
         },
       });
     } catch (e) {

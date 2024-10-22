@@ -56,6 +56,10 @@ export class Cart {
   @JoinColumn()
   booking: Booking;
 
+  @ManyToOne(() => BookingDetail, (bookingDetail) => bookingDetail.cart)
+  @JoinColumn()
+  bookingDetail: BookingDetail;
+
   @ManyToOne(() => User, (user) => user.carts)
   @JoinColumn()
   user: User;

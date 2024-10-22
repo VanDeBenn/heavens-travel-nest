@@ -6,8 +6,7 @@ import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RolesService } from '#/roles/roles.service';
 import * as bcrypt from 'bcrypt';
-import { DistrictsService } from '#/districts/districts.service';
-import { District } from '#/districts/entities/district.entity';
+import { CitysService } from '#/cities/cities.service';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +14,7 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private roleService: RolesService,
-    private districtService: DistrictsService,
+    private citysService: CitysService,
   ) {}
 
   // create new user
@@ -43,7 +42,7 @@ export class UsersService {
     return this.usersRepository.findAndCount({
       relations: {
         role: true,
-        district: true,
+        city: true,
       },
     });
   }
@@ -57,8 +56,8 @@ export class UsersService {
         relations: {
           blogs: true,
           bookings: true,
-          carts: { destination: true, roomHotel: true },
-          district: true,
+          carts: { destination: true, roomHotel: true, bookingDetail: true },
+          city: true,
           replyreviews: true,
           reports: true,
           reviews: true,
@@ -88,9 +87,7 @@ export class UsersService {
   // update user
   async update(id: string, updateUserDto: UpdateUserDto) {
     const role = await this.roleService.findOne(updateUserDto.roleId);
-    const district = await this.districtService.findOne(
-      updateUserDto.districtId,
-    );
+    const city = await this.citysService.findOne(updateUserDto.cityId);
 
     let dataUser = new User();
     dataUser.fullName = updateUserDto.fullName;
@@ -101,7 +98,7 @@ export class UsersService {
     dataUser.address = updateUserDto.address;
     dataUser.password = updateUserDto.password;
     dataUser.role = role;
-    dataUser.district = district;
+    dataUser.city = city;
 
     try {
       await this.usersRepository.findOneOrFail({

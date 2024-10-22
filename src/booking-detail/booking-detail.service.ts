@@ -1,3 +1,4 @@
+import { CartService } from '#/cart/cart.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
@@ -15,19 +16,24 @@ export class BookingDetailsService {
     @InjectRepository(BookingDetail)
     private rolesRepository: Repository<BookingDetail>,
     private bookingService: BookingsService,
+    private cartService: CartService,
   ) {}
 
   // create new role
   async create(createBookingDetailDto: CreateBookingDetailDto) {
+    // const cart = await this.cartService.findOne(createBookingDetailDto.cartId);
 
-    const booking = await this.bookingService.findOne(createBookingDetailDto.bookingId);
+    // const booking = await this.bookingService.findOne(
+    //   createBookingDetailDto.bookingId,
+    // );
 
     const dataBookingDetail = new BookingDetail();
     dataBookingDetail.priceDetail = createBookingDetailDto.priceDetail;
     dataBookingDetail.totalPrice = createBookingDetailDto.totalPrice;
     dataBookingDetail.orderStatus = createBookingDetailDto.orderStatus;
-    dataBookingDetail.booking = booking;
-    
+    // dataBookingDetail.booking = booking;
+    // dataBookingDetail.cart = cart;
+
     const result = await this.rolesRepository.insert(dataBookingDetail);
 
     return this.rolesRepository.findOneOrFail({
@@ -72,14 +78,15 @@ export class BookingDetailsService {
 
   // update role
   async update(id: string, updateBookingDetailDto: UpdateBookingDetailDto) {
-    const booking = await this.bookingService.findOne(updateBookingDetailDto.bookingId);
+    const booking = await this.bookingService.findOne(
+      updateBookingDetailDto.bookingId,
+    );
 
     let dataBookingDetail = new BookingDetail();
     dataBookingDetail.priceDetail = updateBookingDetailDto.priceDetail;
     dataBookingDetail.totalPrice = updateBookingDetailDto.totalPrice;
     dataBookingDetail.orderStatus = updateBookingDetailDto.orderStatus;
     dataBookingDetail.booking = booking;
-
 
     try {
       await this.rolesRepository.findOneOrFail({
@@ -135,4 +142,3 @@ export class BookingDetailsService {
     await this.rolesRepository.delete(id);
   }
 }
-

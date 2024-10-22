@@ -3,14 +3,15 @@ import { DestinationsService } from './destinations.service';
 import { DestinationsController } from './destinations.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Destination } from './entities/destination.entity';
-import { DistrictsModule } from '#/districts/districts.module';
 import { CartModule } from '#/cart/cart.module';
 import { UsersModule } from '#/users/users.module';
+import { CitysModule } from '#/cities/cities.module';
+import { City } from '#/cities/entities/city.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Destination]),
-    DistrictsModule,
+    TypeOrmModule.forFeature([Destination, City]),
+    CitysModule,
     // CartModule,
     UsersModule,
   ],

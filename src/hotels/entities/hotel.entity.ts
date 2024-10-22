@@ -2,7 +2,7 @@ import { CategoriesFaq } from '#/categories-faqs/entities/categories-faqs.entity
 import { CategoriesNearbyLocation } from '#/categories-nearby-location/entities/categories-nearby-location.entity';
 import { CategoriServiceAmenity } from '#/categories-service-amenities/entities/categories-service-amenity.entity';
 import { CategoriSomehelpfulFact } from '#/categories-somehelpful-facts/entities/categories-somehelpful-fact.entity';
-import { District } from '#/districts/entities/district.entity';
+import { City } from '#/cities/entities/city.entity';
 import { PhotoHotel } from '#/foto-hotels/entities/foto-hotel.entity';
 import { PropertyPolicy } from '#/property-policies/entities/property-policy.entity';
 import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
@@ -91,7 +91,7 @@ export class Hotel {
   @OneToMany(() => PropertyPolicy, (propertypolicy) => propertypolicy.hotel)
   propertypolicys?: PropertyPolicy[];
 
-  @ManyToOne(() => District, (district) => district.hotels)
+  @ManyToOne(() => City, (city) => city.hotels)
   @JoinColumn()
-  district: District;
+  city: City;
 }

@@ -54,6 +54,13 @@ export class BookingDetail {
   })
   deletedAt: Date;
 
+  @ManyToOne(() => Booking, (booking) => booking.bookingdetails)
+  @JoinColumn()
+  booking: Booking;
+
+  @OneToMany(() => Cart, (cart) => cart.bookingDetail)
+  cart: Cart[];
+
   @OneToOne(() => Refund, (refund) => refund.bookingdetail)
   @JoinColumn()
   refund: Refund;
@@ -65,8 +72,4 @@ export class BookingDetail {
   @OneToOne(() => Report, (report) => report.bookingdetail)
   @JoinColumn()
   report: Report;
-
-  @ManyToOne(() => Booking, (booking) => booking.bookingdetails)
-  @JoinColumn()
-  booking: Booking;
 }
