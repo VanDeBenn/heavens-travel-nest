@@ -13,6 +13,6 @@ export class CreateBookingDetailDto {
   @IsOptional()
   bookingId: string;
 
-  // @IsOptional()
-  // cartId: string;
+  @IsOptional()
+  cartId: string;
 }

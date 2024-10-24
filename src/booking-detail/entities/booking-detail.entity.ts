@@ -24,15 +24,16 @@ export class BookingDetail {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: true })
   priceDetail: number;
 
-  @Column()
+  @Column({ nullable: true })
   totalPrice: number;
 
   @Column({
     type: 'enum',
     enum: ['booked', 'refund', 'pending', 'canceled'],
+    nullable: true,
   })
   orderStatus: string;
 
@@ -58,8 +59,9 @@ export class BookingDetail {
   @JoinColumn()
   booking: Booking;
 
-  @OneToMany(() => Cart, (cart) => cart.bookingDetail)
-  cart: Cart[];
+  @OneToOne(() => Cart, { cascade: true })
+  @JoinColumn()
+  cart: Cart;
 
   @OneToOne(() => Refund, (refund) => refund.bookingdetail)
   @JoinColumn()

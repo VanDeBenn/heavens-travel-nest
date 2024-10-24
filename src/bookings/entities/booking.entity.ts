@@ -20,9 +20,6 @@ import {
 
 @Entity()
 export class Booking {
-  findOne(bookingId: string) {
-    throw new Error('Method not implemented.');
-  }
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -56,6 +53,7 @@ export class Booking {
   @Column({
     type: 'enum',
     enum: ['bank', 'e-wallet', 'virtual account'],
+    nullable: true,
   })
   paymentType: string;
 

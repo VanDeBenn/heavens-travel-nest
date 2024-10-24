@@ -177,10 +177,7 @@ export class CartService {
   findAll() {
     return this.cartsRepository.findAndCount({
       relations: {
-        booking: true,
         user: true,
-        destination: true,
-        // roomhotel: true,
       },
     });
   }
@@ -191,7 +188,13 @@ export class CartService {
         where: {
           id,
         },
-        relations: { destination: true, roomHotel: true },
+        relations: {
+          booking: true,
+          bookingDetail: true,
+          destination: true,
+          roomHotel: true,
+          // roomhotel: true,
+        },
       });
     } catch (e) {
       if (e instanceof EntityNotFoundError) {

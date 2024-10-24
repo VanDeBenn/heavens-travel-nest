@@ -21,18 +21,18 @@ export class BookingDetailsService {
 
   // create new role
   async create(createBookingDetailDto: CreateBookingDetailDto) {
-    // const cart = await this.cartService.findOne(createBookingDetailDto.cartId);
+    const cart = await this.cartService.findOne(createBookingDetailDto.cartId);
 
-    // const booking = await this.bookingService.findOne(
-    //   createBookingDetailDto.bookingId,
-    // );
+    const booking = await this.bookingService.findOne(
+      createBookingDetailDto.bookingId,
+    );
 
     const dataBookingDetail = new BookingDetail();
-    dataBookingDetail.priceDetail = createBookingDetailDto.priceDetail;
-    dataBookingDetail.totalPrice = createBookingDetailDto.totalPrice;
-    dataBookingDetail.orderStatus = createBookingDetailDto.orderStatus;
     // dataBookingDetail.booking = booking;
-    // dataBookingDetail.cart = cart;
+    dataBookingDetail.cart = cart;
+    // dataBookingDetail.priceDetail = createBookingDetailDto.priceDetail || null;
+    // dataBookingDetail.totalPrice = createBookingDetailDto.totalPrice || null;
+    // dataBookingDetail.orderStatus = createBookingDetailDto.orderStatus || null;
 
     const result = await this.rolesRepository.insert(dataBookingDetail);
 
@@ -46,9 +46,6 @@ export class BookingDetailsService {
   findAll() {
     return this.rolesRepository.findAndCount({
       relations: {
-        refund: true,
-        review: true,
-        report: true,
         booking: true,
       },
     });
@@ -59,6 +56,12 @@ export class BookingDetailsService {
       return await this.rolesRepository.findOneOrFail({
         where: {
           id,
+        },
+        relations: {
+          cart: true,
+          refund: true,
+          review: true,
+          report: true,
         },
       });
     } catch (e) {
