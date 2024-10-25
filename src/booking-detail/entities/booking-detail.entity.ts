@@ -59,7 +59,7 @@ export class BookingDetail {
   @JoinColumn()
   booking: Booking;
 
-  @OneToOne(() => Cart, { cascade: true })
+  @OneToOne(() => Cart)
   @JoinColumn()
   cart: Cart;
 

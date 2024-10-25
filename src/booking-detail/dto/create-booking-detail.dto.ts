@@ -1,4 +1,10 @@
-import { IsAlpha, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsAlpha,
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateBookingDetailDto {
   @IsOptional()
@@ -15,4 +21,8 @@ export class CreateBookingDetailDto {
 
   @IsOptional()
   cartId: string;
+
+  @IsOptional()
+  @IsArray()
+  selectedCartIds: string[];
 }

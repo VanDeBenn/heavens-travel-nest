@@ -1,3 +1,4 @@
+import { BookingsService } from '#/bookings/bookings.service';
 import { RoomHotelsService } from './../room-hotels/room-hotels.service';
 import { DestinationsService } from './../destinations/destinations.service';
 import { UsersService } from '#/users/users.service';
@@ -21,6 +22,7 @@ export class CartService {
     private usersService: UsersService,
     private destinationsService: DestinationsService,
     private roomHotelsService: RoomHotelsService,
+    private bookingsService: BookingsService,
   ) {}
 
   // create new cart
@@ -213,7 +215,8 @@ export class CartService {
 
   // update cart
   async update(id: string, updateCartDto: UpdateCartDto) {
-    const user = await this.usersService.findOne(updateCartDto.userId);
+    // const user = await this.usersService.findOne(updateCartDto.userId);
+    const booking = await this.bookingsService.findOne(updateCartDto.bookingId);
 
     // const destination = updateCartDto.destinationId
     //   ? await this.destinationsService.findOne(updateCartDto.destinationId)
@@ -228,7 +231,7 @@ export class CartService {
     // dataCart.quantityChildren = updateCartDto.quantityChildren;
     // dataCart.startDate = updateCartDto.startDate;
     // dataCart.endDate = updateCartDto.endDate;
-    dataCart.user = user;
+    dataCart.booking = booking;
     // dataCart.destination = destination;
     // dataCart.roomhotel = roomHotel;
 

@@ -21,4 +21,7 @@ export class CreateCartDto {
 
   @IsOptional()
   roomHotelId: string;
+
+  @IsOptional()
+  bookingId: string;
 }

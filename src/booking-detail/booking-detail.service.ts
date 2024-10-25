@@ -9,12 +9,15 @@ import { Destination } from '#/destinations/entities/destination.entity';
 import { DestinationsService } from '#/destinations/destinations.service';
 import { RoomHotelsService } from '#/room-hotels/room-hotels.service';
 import { BookingsService } from '#/bookings/bookings.service';
+import { Booking } from '#/bookings/entities/booking.entity';
 
 @Injectable()
 export class BookingDetailsService {
   constructor(
     @InjectRepository(BookingDetail)
-    private rolesRepository: Repository<BookingDetail>,
+    private bookingDetailRepository: Repository<BookingDetail>,
+    @InjectRepository(Booking)
+    private bookingRepository: Repository<Booking>,
     private bookingService: BookingsService,
     private cartService: CartService,
   ) {}
@@ -28,15 +31,15 @@ export class BookingDetailsService {
     );
 
     const dataBookingDetail = new BookingDetail();
-    // dataBookingDetail.booking = booking;
+    dataBookingDetail.booking = booking;
     dataBookingDetail.cart = cart;
     // dataBookingDetail.priceDetail = createBookingDetailDto.priceDetail || null;
     // dataBookingDetail.totalPrice = createBookingDetailDto.totalPrice || null;
     // dataBookingDetail.orderStatus = createBookingDetailDto.orderStatus || null;
 
-    const result = await this.rolesRepository.insert(dataBookingDetail);
+    const result = await this.bookingDetailRepository.insert(dataBookingDetail);
 
-    return this.rolesRepository.findOneOrFail({
+    return this.bookingDetailRepository.findOneOrFail({
       where: {
         id: result.identifiers[0].id,
       },
@@ -44,7 +47,7 @@ export class BookingDetailsService {
   }
 
   findAll() {
-    return this.rolesRepository.findAndCount({
+    return this.bookingDetailRepository.findAndCount({
       relations: {
         booking: true,
       },
@@ -53,7 +56,7 @@ export class BookingDetailsService {
 
   async findOne(id: string) {
     try {
-      return await this.rolesRepository.findOneOrFail({
+      return await this.bookingDetailRepository.findOneOrFail({
         where: {
           id,
         },
@@ -79,6 +82,81 @@ export class BookingDetailsService {
     }
   }
 
+  async updateBookingDetails(updateBookingDetailsDto: UpdateBookingDetailDto) {
+    const { selectedCartIds } = updateBookingDetailsDto;
+    console.log('DTO:', updateBookingDetailsDto);
+
+    try {
+      // find booking
+      const booking = await this.bookingService.findOne(
+        updateBookingDetailsDto.bookingId,
+      );
+      if (!booking) {
+        throw new Error('Booking not found');
+      }
+      console.log('Found booking:', booking);
+
+      // find existing booking detail
+      const existingBookingDetails = await this.bookingDetailRepository.find({
+        where: { booking: { id: updateBookingDetailsDto.bookingId } },
+        relations: { cart: true },
+      });
+      console.log('Existing booking details:', existingBookingDetails);
+
+      // delete booking details with unselected cart id
+      const bookingDetailsToDelete = existingBookingDetails.filter(
+        (detail) => !selectedCartIds.includes(detail.cart.id),
+      );
+      console.log('Booking details to delete:', bookingDetailsToDelete);
+
+      // loop to delete unselected booking details
+      for (const detail of bookingDetailsToDelete) {
+        await this.bookingDetailRepository.delete(detail.id);
+        console.log(`Deleted booking detail ID: ${detail.id}`);
+      }
+
+      const newBookingDetails = [];
+      // loop through selected cart ids and create new booking details if not exist
+      for (const cartId of selectedCartIds) {
+        const cart = await this.cartService.findOne(cartId);
+        if (!cart) {
+          console.warn(`Cart with ID ${cartId} not found, skipping...`);
+          continue;
+        }
+        console.log('Found cart:', cart);
+
+        const existingDetail = existingBookingDetails.find(
+          (detail) => detail.cart.id === cartId,
+        );
+        if (!existingDetail) {
+          const newBookingDetail = new BookingDetail();
+          newBookingDetail.cart = cart;
+          newBookingDetail.booking = booking;
+
+          const savedDetail = await this.bookingDetailRepository.save(
+            newBookingDetail,
+          );
+          console.log('Saved new booking detail:', savedDetail);
+          newBookingDetails.push(savedDetail);
+        }
+      }
+
+      console.log('New booking details added:', newBookingDetails);
+      return newBookingDetails;
+    } catch (error) {
+      console.error('Error in updateBookingDetails:', error);
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: 'Error updating booking details',
+          error: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+  s;
+
   // update role
   async update(id: string, updateBookingDetailDto: UpdateBookingDetailDto) {
     const booking = await this.bookingService.findOne(
@@ -92,7 +170,7 @@ export class BookingDetailsService {
     dataBookingDetail.booking = booking;
 
     try {
-      await this.rolesRepository.findOneOrFail({
+      await this.bookingDetailRepository.findOneOrFail({
         where: {
           id,
         },
@@ -111,9 +189,12 @@ export class BookingDetailsService {
       }
     }
 
-    const result = await this.rolesRepository.update(id, dataBookingDetail);
+    const result = await this.bookingDetailRepository.update(
+      id,
+      dataBookingDetail,
+    );
 
-    return this.rolesRepository.findOneOrFail({
+    return this.bookingDetailRepository.findOneOrFail({
       where: {
         id,
       },
@@ -123,7 +204,7 @@ export class BookingDetailsService {
   // delete role
   async remove(id: string) {
     try {
-      await this.rolesRepository.findOneOrFail({
+      await this.bookingDetailRepository.findOneOrFail({
         where: {
           id,
         },
@@ -142,6 +223,6 @@ export class BookingDetailsService {
       }
     }
 
-    await this.rolesRepository.delete(id);
+    await this.bookingDetailRepository.delete(id);
   }
 }

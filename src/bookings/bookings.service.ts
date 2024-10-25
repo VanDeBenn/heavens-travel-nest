@@ -80,7 +80,11 @@ export class BookingsService {
         where: {
           id,
         },
-        relations: { carts: true, bookingdetails: true },
+        relations: {
+          bookingdetails: { cart: { destination: true, roomHotel: true } },
+          destination: true,
+          roomhotel: true,
+        },
       });
     } catch (e) {
       if (e instanceof EntityNotFoundError) {

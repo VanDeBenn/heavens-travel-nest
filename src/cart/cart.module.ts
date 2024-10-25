@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from '#/users/users.module';
 import { DestinationsModule } from '#/destinations/destinations.module';
 import { RoomHotelsModule } from '#/room-hotels/room-hotels.module';
+import { BookingsModule } from '#/bookings/bookings.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { RoomHotelsModule } from '#/room-hotels/room-hotels.module';
     UsersModule,
     DestinationsModule,
     RoomHotelsModule,
+    BookingsModule,
   ],
   controllers: [CartController],
   providers: [CartService],
