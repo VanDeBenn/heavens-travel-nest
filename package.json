@@ -51,7 +51,8 @@
     "rxjs": "^7.8.0",
     "swagger-ui-express": "^4.6.0",
     "typeorm": "^0.3.12",
-    "typeorm-naming-strategies": "^4.1.0"
+    "typeorm-naming-strategies": "^4.1.0",
+    "xendit-node": "^6.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.2.0",

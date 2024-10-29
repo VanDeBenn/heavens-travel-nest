@@ -41,6 +41,7 @@ import { FaqsModule } from './faqs/faqs.module';
 import { CategoriesNearbyLocationModule } from './categories-nearby-location/categories-nearby-location.module';
 import { NearbyLocationModule } from './nearby-location/nearby-location.module';
 import { RoomTypeModule } from './room-type/room-type.module';
+import { XenditModule } from './xendit/xendit.module';
 
 @Module({
   imports: [
@@ -160,6 +161,7 @@ import { RoomTypeModule } from './room-type/room-type.module';
     CategoriesNearbyLocationModule,
     NearbyLocationModule,
     RoomTypeModule,
+    XenditModule,
   ],
 })
 export class AppModule {}

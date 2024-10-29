@@ -6105,6 +6105,11 @@ write-file-atomic@^4.0.2:
     imurmurhash "^0.1.4"
     signal-exit "^3.0.7"
 
+xendit-node@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/xendit-node/-/xendit-node-6.0.0.tgz#08522679cd86d8acaf1f05b5058ef9b991891c00"
+  integrity sha512-Z7ewJNQz9/Wg8i/bYvS1GPTmQDozFFeN+XQfq1R89d7BDmn97H+1bAu1LNRACy/uoP3Vft185DUGMBHQEjgsmg==
+
 xml2js@^0.4.23:
   version "0.4.23"
   resolved "https://registry.npmjs.org/xml2js/-/xml2js-0.4.23.tgz"

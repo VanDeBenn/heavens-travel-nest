@@ -81,7 +81,7 @@ export class DestinationsService {
   findAll() {
     return this.destinationsRepository.findAndCount({
       relations: {
-        // city: true,
+        city: true,
       },
     });
   }
