@@ -30,7 +30,7 @@ export class Booking {
   customerEmail: string;
 
   @Column({ nullable: true })
-  CustomerPhoneNumber: number;
+  customerPhoneNumber: string;
 
   @Column({ nullable: true })
   guestName: string;
@@ -39,7 +39,7 @@ export class Booking {
   guestEmail: string;
 
   @Column({ nullable: true })
-  guestPhoneNumber: number;
+  guestPhoneNumber: string;
 
   @Column({ nullable: true })
   endDate: Date;

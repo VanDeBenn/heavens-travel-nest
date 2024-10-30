@@ -18,8 +18,8 @@ export class CreateUserDto {
   email: string;
 
   @IsOptional()
-  @Length(10, 15)
-  @Matches(/^[0-9]+$/)
+  // @Length(10, 15)
+  // @Matches(/^[0-9]+$/)
   phoneNumber: string;
 
   @IsOptional()

@@ -84,6 +84,7 @@ export class BookingsService {
           bookingdetails: { cart: { destination: true, roomHotel: true } },
           destination: true,
           roomhotel: true,
+          user: true,
         },
       });
     } catch (e) {
@@ -108,7 +109,7 @@ export class BookingsService {
     let dataBooking = new Booking();
     dataBooking.customerName = updateBookingDto.customerName;
     dataBooking.customerEmail = updateBookingDto.customerEmail;
-    dataBooking.CustomerPhoneNumber = updateBookingDto.CustomerPhoneNumber;
+    dataBooking.customerPhoneNumber = updateBookingDto.customerPhoneNumber;
     dataBooking.guestName = updateBookingDto.guestName;
     dataBooking.guestEmail = updateBookingDto.guestEmail;
     dataBooking.guestPhoneNumber = updateBookingDto.guestPhoneNumber;
@@ -119,7 +120,7 @@ export class BookingsService {
     dataBooking.totalPrice = updateBookingDto.totalPrice;
     dataBooking.statusPayment = updateBookingDto.statusPayment;
     dataBooking.fullFilment = updateBookingDto.fullFilment;
-    dataBooking.user = user;
+    // dataBooking.user = user;
 
     try {
       await this.bookingsRepository.findOneOrFail({

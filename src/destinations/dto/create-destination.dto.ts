@@ -22,7 +22,7 @@ export class CreateDestinationDto {
   @IsNotEmpty()
   address: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   pathLocation: string;
 
   @IsOptional()

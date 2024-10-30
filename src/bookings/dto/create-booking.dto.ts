@@ -8,7 +8,7 @@ export class CreateBookingDto {
   customerEmail: string;
 
   @IsOptional()
-  CustomerPhoneNumber: number;
+  customerPhoneNumber: string;
 
   @IsOptional()
   guestName: string;
@@ -17,7 +17,7 @@ export class CreateBookingDto {
   guestEmail: string;
 
   @IsOptional()
-  guestPhoneNumber: number;
+  guestPhoneNumber: string;
 
   @IsOptional()
   startDate: Date;

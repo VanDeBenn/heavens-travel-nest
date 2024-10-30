@@ -13,10 +13,14 @@ import {
 import { BookingsService } from './bookings.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
+import { XenditService } from '#/xendit/xendit.service';
 
 @Controller('bookings')
 export class BookingsController {
-  constructor(private readonly bookingsService: BookingsService) {}
+  constructor(
+    private readonly bookingsService: BookingsService,
+    private readonly xenditService: XenditService,
+  ) {}
 
   @Post()
   async create(@Body() createBookingDto: CreateBookingDto) {
@@ -67,6 +71,19 @@ export class BookingsController {
     return {
       statusCode: HttpStatus.OK,
       message: 'success',
+    };
+  }
+
+  @Post('checkout')
+  async createCheckoutSession(
+    @Body()
+    dto,
+  ) {
+    const invoice = await this.xenditService.createInvoice(dto);
+
+    return {
+      // invoice: invoice,
+      redirect: invoice?.invoice_url,
     };
   }
 }
