@@ -84,7 +84,7 @@ export class BookingDetailsService {
 
   async updateBookingDetails(updateBookingDetailsDto: UpdateBookingDetailDto) {
     const { selectedCartIds } = updateBookingDetailsDto;
-    console.log('DTO:', updateBookingDetailsDto);
+    // console.log('DTO:', updateBookingDetailsDto);
 
     try {
       // find booking
@@ -94,25 +94,25 @@ export class BookingDetailsService {
       if (!booking) {
         throw new Error('Booking not found');
       }
-      console.log('Found booking:', booking);
+      // console.log('Found booking:', booking);
 
       // find existing booking detail
       const existingBookingDetails = await this.bookingDetailRepository.find({
         where: { booking: { id: updateBookingDetailsDto.bookingId } },
         relations: { cart: true },
       });
-      console.log('Existing booking details:', existingBookingDetails);
+      // console.log('Existing booking details:', existingBookingDetails);
 
       // delete booking details with unselected cart id
       const bookingDetailsToDelete = existingBookingDetails.filter(
         (detail) => !selectedCartIds.includes(detail.cart.id),
       );
-      console.log('Booking details to delete:', bookingDetailsToDelete);
+      // console.log('Booking details to delete:', bookingDetailsToDelete);
 
       // loop to delete unselected booking details
       for (const detail of bookingDetailsToDelete) {
         await this.bookingDetailRepository.delete(detail.id);
-        console.log(`Deleted booking detail ID: ${detail.id}`);
+        // console.log(`Deleted booking detail ID: ${detail.id}`);
       }
 
       const newBookingDetails = [];
@@ -123,7 +123,7 @@ export class BookingDetailsService {
           console.warn(`Cart with ID ${cartId} not found, skipping...`);
           continue;
         }
-        console.log('Found cart:', cart);
+        // console.log('Found cart:', cart);
 
         const existingDetail = existingBookingDetails.find(
           (detail) => detail.cart.id === cartId,
@@ -136,12 +136,12 @@ export class BookingDetailsService {
           const savedDetail = await this.bookingDetailRepository.save(
             newBookingDetail,
           );
-          console.log('Saved new booking detail:', savedDetail);
+          // console.log('Saved new booking detail:', savedDetail);
           newBookingDetails.push(savedDetail);
         }
       }
 
-      console.log('New booking details added:', newBookingDetails);
+      // console.log('New booking details added:', newBookingDetails);
       return newBookingDetails;
     } catch (error) {
       console.error('Error in updateBookingDetails:', error);

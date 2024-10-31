@@ -4,6 +4,7 @@ import { Destination } from '#/destinations/entities/destination.entity';
 import { Refund } from '#/refund/entities/refund.entity';
 import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
 import { User } from '#/users/entities/user.entity';
+import { Xendit } from '#/xendit/entities/xendit.entity';
 import {
   Entity,
   Column,
@@ -110,4 +111,7 @@ export class Booking {
   @ManyToOne(() => RoomHotel, (roomhotel) => roomhotel.bookings)
   @JoinColumn()
   roomhotel: RoomHotel;
+
+  @OneToOne(() => Xendit, (xendit) => xendit.booking)
+  xendit: Xendit;
 }

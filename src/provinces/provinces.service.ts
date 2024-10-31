@@ -21,9 +21,9 @@ export class ProvinceService {
     const url = 'https://ibnux.github.io/data-indonesia/provinsi.json';
 
     try {
-      console.log(`Fetching data from: ${url}`);
+      // console.log(`Fetching data from: ${url}`);
       const response = await lastValueFrom(this.httpService.get(url));
-      console.log('Response data:', response);
+      // console.log('Response data:', response);
       return response;
     } catch (error) {
       console.error('Error fetching data:', error);

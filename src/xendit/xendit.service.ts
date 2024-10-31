@@ -62,6 +62,8 @@ export class XenditService {
           description: 'no refund',
           payer_email: email,
           items,
+          success_redirect_url: 'http://localhost:3000/booking',
+          failure_redirect_url: 'http://localhost:3000/booking',
         },
         {
           headers: { 'Content-Type': 'application/json' },
@@ -77,6 +79,25 @@ export class XenditService {
       console.error('Xendit Error:', error.response?.data || error.message);
       throw new Error(
         error.response?.data?.message || 'Unknown error from Xendit',
+      );
+    }
+  }
+
+  async getInvoiceById(invoiceId: string) {
+    try {
+      const response = await axios.get(`${this.xenditUrl}/${invoiceId}`, {
+        auth: {
+          username: process.env.XENDIT_SECRET_KEY,
+          password: '',
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Xendit Error:', error.response?.data || error.message);
+      throw new Error(
+        error.response?.data?.message ||
+          'Failed to retrieve invoice from Xendit',
       );
     }
   }

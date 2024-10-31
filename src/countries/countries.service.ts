@@ -35,9 +35,9 @@ export class CountrysService {
         const country = new Country();
         country.name = countryName;
         await this.countrysRepository.save(country);
-        console.log(`Country saved: ${countryName}`);
+        // console.log(`Country saved: ${countryName}`);
       } else {
-        console.log(`Country already exists: ${countryName}`);
+        // console.log(`Country already exists: ${countryName}`);
       }
     }
 

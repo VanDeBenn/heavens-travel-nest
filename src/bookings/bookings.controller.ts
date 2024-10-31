@@ -75,15 +75,25 @@ export class BookingsController {
   }
 
   @Post('checkout')
-  async createCheckoutSession(
+  async createCheckout(
     @Body()
     dto,
   ) {
     const invoice = await this.xenditService.createInvoice(dto);
 
     return {
-      // invoice: invoice,
+      invoice: invoice,
+      id: invoice?.id,
       redirect: invoice?.invoice_url,
+    };
+  }
+
+  @Get('checkout/:invoiceId')
+  async createCheckoutSession(@Param('invoiceId') invoiceId: string) {
+    const invoice = await this.xenditService.getInvoiceById(invoiceId);
+
+    return {
+      data: invoice,
     };
   }
 }

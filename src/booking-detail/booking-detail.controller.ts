@@ -62,7 +62,7 @@ export class BookingDetailsController {
   //     where: { booking: { id: createBookingDetailDto.bookingId } },
   //     relations: { cart: true },
   //   });
-  //   console.log('Existing booking details:', existingBookingDetails);
+  //   // console.log('Existing booking details:', existingBookingDetails);
   //   return {
   //     data: existingBookingDetails,
   //     statusCode: HttpStatus.OK,
@@ -81,7 +81,7 @@ export class BookingDetailsController {
       const result = await this.bookingdetailsService.updateBookingDetails(
         updateBookingDetailsDto,
       );
-      console.log('dto', updateBookingDetailsDto);
+      // console.log('dto', updateBookingDetailsDto);
 
       return {
         statusCode: HttpStatus.OK,
