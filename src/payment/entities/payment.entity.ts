@@ -14,7 +14,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Xendit {
+export class Payment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -29,6 +29,9 @@ export class Xendit {
 
   @Column()
   status: string;
+
+  @Column()
+  amount: string;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',

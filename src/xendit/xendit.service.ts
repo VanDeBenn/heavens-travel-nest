@@ -1,16 +1,23 @@
 import { BookingsService } from '#/bookings/bookings.service';
+import { Payment } from '#/payment/entities/payment.entity';
 import { UsersService } from '#/users/users.service';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
 import { randomUUID } from 'crypto';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class XenditService {
   constructor(
     private readonly userService: UsersService,
     private readonly bookingService: BookingsService,
+    @InjectRepository(Payment)
+    private paymentRepository: Repository<Payment>,
   ) {}
   private readonly xenditUrl = 'https://api.xendit.co/v2/invoices';
+  private readonly xenditDisbursementUrl =
+    'https://api.xendit.co/disbursements';
 
   async createInvoice(dto: {
     items?: {
@@ -98,6 +105,49 @@ export class XenditService {
       throw new Error(
         error.response?.data?.message ||
           'Failed to retrieve invoice from Xendit',
+      );
+    }
+  }
+
+  async createDisbursement(dto: {
+    externalId: string;
+    bankCode: string;
+    accountHolderName: string;
+    accountNumber: string;
+    description?: string;
+  }) {
+    const payment = await this.paymentRepository.findOneOrFail({
+      where: { externalId: dto.externalId },
+    });
+    try {
+      const response = await axios.post(
+        this.xenditDisbursementUrl,
+        {
+          external_id: dto.externalId,
+          amount: payment.amount,
+          bank_code: dto.bankCode,
+          account_holder_name: dto.accountHolderName,
+          account_number: dto.accountNumber,
+          description: dto.description || 'Refund disbursement',
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          auth: {
+            username: process.env.XENDIT_SECRET_KEY,
+            password: '',
+          },
+        },
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error(
+        'Xendit Disbursement Error:',
+        error.response?.data || error.message,
+      );
+      throw new BadRequestException(
+        error.response?.data?.message ||
+          'Error processing disbursement with Xendit',
       );
     }
   }

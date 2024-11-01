@@ -1,6 +1,7 @@
 import { BookingDetail } from '#/booking-detail/entities/booking-detail.entity';
 import { Cart } from '#/cart/entities/cart.entity';
 import { Destination } from '#/destinations/entities/destination.entity';
+import { Payment } from '#/payment/entities/payment.entity';
 import { Refund } from '#/refund/entities/refund.entity';
 import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
 import { User } from '#/users/entities/user.entity';
@@ -112,6 +113,6 @@ export class Booking {
   @JoinColumn()
   roomhotel: RoomHotel;
 
-  @OneToOne(() => Xendit, (xendit) => xendit.booking)
-  xendit: Xendit;
+  @OneToOne(() => Payment, (payment) => payment.booking)
+  payment?: Payment;
 }

@@ -7,10 +7,12 @@ import { UsersModule } from '#/users/users.module';
 import { DestinationsModule } from '#/destinations/destinations.module';
 import { RoomHotelsModule } from '#/room-hotels/room-hotels.module';
 import { XenditModule } from '#/xendit/xendit.module';
+import { Payment } from '#/payment/entities/payment.entity';
+import { Refund } from '#/refund/entities/refund.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Booking]),
+    TypeOrmModule.forFeature([Booking, Payment, Refund]),
     UsersModule,
     DestinationsModule,
     RoomHotelsModule,

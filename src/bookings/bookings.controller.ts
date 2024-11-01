@@ -14,12 +14,20 @@ import { BookingsService } from './bookings.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { XenditService } from '#/xendit/xendit.service';
+import { Payment } from '#/payment/entities/payment.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Refund } from '#/refund/entities/refund.entity';
 
 @Controller('bookings')
 export class BookingsController {
   constructor(
     private readonly bookingsService: BookingsService,
     private readonly xenditService: XenditService,
+    @InjectRepository(Payment)
+    private paymentRepository: Repository<Payment>,
+    @InjectRepository(Refund)
+    private refundRepository: Repository<Refund>,
   ) {}
 
   @Post()
@@ -80,20 +88,52 @@ export class BookingsController {
     dto,
   ) {
     const invoice = await this.xenditService.createInvoice(dto);
+    if (invoice) {
+      const data = new Payment();
+      data.invoiceId = invoice?.id;
+      data.externalId = invoice?.external_id;
+      data.payerEmail = invoice?.payer_email;
+      data.status = invoice?.status;
+      data.amount = invoice?.amount;
+      data.booking = dto?.bookingId;
+
+      await this.paymentRepository.insert(data);
+    }
 
     return {
-      invoice: invoice,
+      data: invoice,
       id: invoice?.id,
       redirect: invoice?.invoice_url,
     };
   }
 
-  @Get('checkout/:invoiceId')
+  @Get(':invoiceId')
   async createCheckoutSession(@Param('invoiceId') invoiceId: string) {
     const invoice = await this.xenditService.getInvoiceById(invoiceId);
 
     return {
       data: invoice,
+    };
+  }
+
+  @Post('refund')
+  async disbursement(
+    @Body()
+    dto,
+  ) {
+    const refund = await this.xenditService.createDisbursement(dto);
+    if (refund) {
+      const data = new Refund();
+      data.nameofBank = refund?.bank_code;
+      data.accountHolder = refund?.account_holder_name;
+      data.bankAccountNumber = dto.accountNumber;
+      data.refundReason = refund?.disbursement_description;
+
+      await this.refundRepository.insert(data);
+    }
+
+    return {
+      data: refund,
     };
   }
 }
