@@ -85,6 +85,8 @@ export class BookingsService {
           destination: true,
           roomhotel: true,
           user: true,
+          payment: true,
+          refund: true,
         },
       });
     } catch (e) {

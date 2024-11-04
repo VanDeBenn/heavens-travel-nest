@@ -19,7 +19,7 @@ export class RefundController {
   constructor(private readonly refundsService: RefundService) {}
 
   @Post()
-  async create(@Body() createRefundDto: CreateRefundDto) {
+  async create(@Body() createRefundDto: CreateRefundDto, dto) {
     return {
       data: await this.refundsService.create(createRefundDto),
       statusCode: HttpStatus.CREATED,
@@ -55,6 +55,15 @@ export class RefundController {
   ) {
     return {
       data: await this.refundsService.update(id, updateRefundDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
+  }
+
+  @Put('approve')
+  async updateStatusRefund(@Body() dto) {
+    return {
+      data: await this.refundsService.updateStatusRefund(dto),
       statusCode: HttpStatus.OK,
       message: 'success',
     };

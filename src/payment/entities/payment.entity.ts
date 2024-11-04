@@ -31,7 +31,7 @@ export class Payment {
   status: string;
 
   @Column()
-  amount: string;
+  amount: number;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',

@@ -9,6 +9,8 @@ import { RoomHotelsModule } from '#/room-hotels/room-hotels.module';
 import { XenditModule } from '#/xendit/xendit.module';
 import { Payment } from '#/payment/entities/payment.entity';
 import { Refund } from '#/refund/entities/refund.entity';
+import { PaymentModule } from '#/payment/payment.module';
+import { RefundModule } from '#/refund/refund.module';
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import { Refund } from '#/refund/entities/refund.entity';
     UsersModule,
     DestinationsModule,
     RoomHotelsModule,
+    forwardRef(() => RefundModule),
     forwardRef(() => XenditModule),
+    forwardRef(() => PaymentModule),
   ],
   controllers: [BookingsController],
   providers: [BookingsService],

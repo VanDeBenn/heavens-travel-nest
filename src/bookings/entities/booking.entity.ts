@@ -115,4 +115,7 @@ export class Booking {
 
   @OneToOne(() => Payment, (payment) => payment.booking)
   payment?: Payment;
+
+  @OneToOne(() => Refund, (refund) => refund.booking)
+  refund?: Refund;
 }

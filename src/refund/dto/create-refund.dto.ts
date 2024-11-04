@@ -1,18 +1,21 @@
-import { IsAlpha, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsAlpha, isNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateRefundDto {
-  @IsNotEmpty()
+  @IsOptional()
   nameofBank: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   bankAccountNumber: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   accountHolder: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   refundReason: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   bookingId: string;
+
+  @IsOptional()
+  status: string;
 }

@@ -18,11 +18,17 @@ import { Payment } from '#/payment/entities/payment.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Refund } from '#/refund/entities/refund.entity';
+import { PaymentsService } from '#/payment/payment.service';
+import { RefundService } from '#/refund/refund.service';
+import { UpdateRefundDto } from '#/refund/dto/update-refund.dto';
+import { CreateRefundDto } from '#/refund/dto/create-refund.dto';
 
 @Controller('bookings')
 export class BookingsController {
   constructor(
     private readonly bookingsService: BookingsService,
+    private readonly paymentService: PaymentsService,
+    private readonly refundService: RefundService,
     private readonly xenditService: XenditService,
     @InjectRepository(Payment)
     private paymentRepository: Repository<Payment>,
@@ -87,7 +93,7 @@ export class BookingsController {
     @Body()
     dto,
   ) {
-    const invoice = await this.xenditService.createInvoice(dto);
+    const invoice = await this.paymentService.createInvoice(dto);
     if (invoice) {
       const data = new Payment();
       data.invoiceId = invoice?.id;
@@ -117,6 +123,26 @@ export class BookingsController {
   }
 
   @Post('refund')
+  async createRefund(@Body() createRefundDto: CreateRefundDto, dto) {
+    return {
+      data: await this.refundService.create(createRefundDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
+  }
+
+  @Post('refund/approve')
+  async approve(
+    @Body()
+    dto,
+  ) {
+    const refund = await this.refundService.updateStatusRefund(dto);
+    return {
+      data: refund,
+    };
+  }
+
+  @Post('disbursement')
   async disbursement(
     @Body()
     dto,
@@ -128,10 +154,8 @@ export class BookingsController {
       data.accountHolder = refund?.account_holder_name;
       data.bankAccountNumber = dto.accountNumber;
       data.refundReason = refund?.disbursement_description;
-
       await this.refundRepository.insert(data);
     }
-
     return {
       data: refund,
     };

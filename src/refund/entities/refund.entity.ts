@@ -30,6 +30,14 @@ export class Refund {
   @Column()
   refundReason: string;
 
+  @Column({
+    type: 'enum',
+    enum: ['approve', 'reject', 'pending'],
+    default: 'pending',
+    nullable: true,
+  })
+  status: string;
+
   @CreateDateColumn({
     type: 'timestamp with time zone',
     nullable: false,
@@ -48,7 +56,7 @@ export class Refund {
   })
   deletedAt: Date;
 
-  @OneToOne(() => BookingDetail, (bookingdetail) => bookingdetail.refund)
+  @OneToOne(() => Booking)
   @JoinColumn()
-  bookingdetail: BookingDetail;
+  booking?: Booking;
 }

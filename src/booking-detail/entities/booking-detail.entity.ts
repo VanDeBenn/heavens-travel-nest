@@ -63,10 +63,6 @@ export class BookingDetail {
   @JoinColumn()
   cart: Cart;
 
-  @OneToOne(() => Refund, (refund) => refund.bookingdetail)
-  @JoinColumn()
-  refund: Refund;
-
   @OneToOne(() => Review, (review) => review.bookingdetail)
   @JoinColumn()
   review: Review;
