@@ -14,5 +14,6 @@ import { CartModule } from '#/cart/cart.module';
   ],
   controllers: [BookingDetailsController],
   providers: [BookingDetailsService],
+  exports: [BookingDetailsService],
 })
 export class BookingDetailModule {}

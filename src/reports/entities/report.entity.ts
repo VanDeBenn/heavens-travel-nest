@@ -2,52 +2,52 @@ import { BookingDetail } from '#/booking-detail/entities/booking-detail.entity';
 import { PhotoReport } from '#/foto-reports/entities/foto-report.entity';
 import { User } from '#/users/entities/user.entity';
 import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-    DeleteDateColumn,
-    VersionColumn,
-    CreateDateColumn,
-    OneToMany,
-    OneToOne,
-    JoinColumn,
-    ManyToOne,
-  } from 'typeorm';
-  
-  @Entity()
-  export class Report {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-  
-    @Column()
-    title: string;
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  VersionColumn,
+  CreateDateColumn,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
+  ManyToOne,
+} from 'typeorm';
 
-    @Column()
-    description: string;
-  
-    @Column()
-    pathPhoto: string;
-  
-    @Column()
-    email: string;
-  
-    @Column()
-    replyReport: string;
+@Entity()
+export class Report {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @CreateDateColumn({
-      type: 'timestamp with time zone',
-      nullable: false,
-    })
-    createdAt: Date;
-  
-    @UpdateDateColumn({
-      type: 'timestamp with time zone',
-      nullable: false,
-    })
-    updatedAt: Date;
+  @Column()
+  title: string;
 
-    @DeleteDateColumn({
+  @Column()
+  description: string;
+
+  @Column()
+  email: string;
+
+  @Column({ nullable: true })
+  pathPhoto: string;
+
+  @Column({ nullable: true })
+  replyReport: string;
+
+  @CreateDateColumn({
+    type: 'timestamp with time zone',
+    nullable: false,
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp with time zone',
+    nullable: false,
+  })
+  updatedAt: Date;
+
+  @DeleteDateColumn({
     type: 'timestamp with time zone',
     nullable: true,
   })
@@ -63,5 +63,4 @@ import {
   @ManyToOne(() => User, (user) => user.reports)
   @JoinColumn()
   user: User;
-  }
-  
+}

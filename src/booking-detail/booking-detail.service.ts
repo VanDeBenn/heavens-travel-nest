@@ -155,7 +155,6 @@ export class BookingDetailsService {
       );
     }
   }
-  s;
 
   // update role
   async update(id: string, updateBookingDetailDto: UpdateBookingDetailDto) {

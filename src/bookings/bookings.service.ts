@@ -70,6 +70,7 @@ export class BookingsService {
     return this.bookingsRepository.findAndCount({
       relations: {
         user: true,
+        payment: true,
       },
     });
   }

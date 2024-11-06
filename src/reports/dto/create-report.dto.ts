@@ -1,4 +1,4 @@
-import { IsAlpha, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsAlpha, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateReportDto {
   @IsNotEmpty()
@@ -8,15 +8,17 @@ export class CreateReportDto {
   description: string;
 
   @IsNotEmpty()
-  pathPhoto: string;
-
-  @IsNotEmpty()
   email: string;
 
-  @IsNotEmpty()
+  @IsOptional()
+  pathPhoto: string;
+
+  @IsOptional()
   replyReport: string;
 
   @IsNotEmpty()
   userId: string;
-}
 
+  @IsNotEmpty()
+  bookingDetailId: string;
+}

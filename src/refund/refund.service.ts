@@ -142,7 +142,7 @@ export class RefundService {
     return this.refundsRepository.findAndCount({
       relations: {
         // bookingdetail: true,
-        booking: true,
+        booking: { payment: true },
       },
     });
   }
@@ -152,6 +152,14 @@ export class RefundService {
       return await this.refundsRepository.findOneOrFail({
         where: {
           id,
+        },
+        relations: {
+          // bookingdetail: true,
+          booking: {
+            bookingdetails: { cart: { destination: true, roomHotel: true } },
+            payment: true,
+            user: true,
+          },
         },
       });
     } catch (e) {

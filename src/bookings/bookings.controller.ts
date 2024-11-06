@@ -99,7 +99,7 @@ export class BookingsController {
       data.invoiceId = invoice?.id;
       data.externalId = invoice?.external_id;
       data.payerEmail = invoice?.payer_email;
-      data.status = invoice?.status;
+      data.status = 'PAID';
       data.amount = invoice?.amount;
       data.booking = dto?.bookingId;
 

@@ -1,4 +1,10 @@
-import { IsAlpha, IsNotEmpty, IsNumber, isNotEmpty } from 'class-validator';
+import {
+  IsAlpha,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  isNotEmpty,
+} from 'class-validator';
 
 export class CreateBlogDto {
   @IsNotEmpty()
@@ -13,6 +19,6 @@ export class CreateBlogDto {
   @IsNotEmpty()
   userId: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   destinationId: string;
 }

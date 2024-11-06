@@ -5,26 +5,31 @@ import { Report } from './entities/report.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { UsersService } from '#/users/users.service';
+import { BookingDetailsService } from '#/booking-detail/booking-detail.service';
 
 @Injectable()
 export class ReportsService {
- 
   constructor(
     @InjectRepository(Report)
     private reportsRepository: Repository<Report>,
     private userService: UsersService,
+    private bookingDetail: BookingDetailsService,
   ) {}
 
   // create new report
   async create(createReportDto: CreateReportDto) {
     const user = await this.userService.findOne(createReportDto.userId);
+    const bookingDetail = await this.bookingDetail.findOne(
+      createReportDto.bookingDetailId,
+    );
 
     const dataReport = new Report();
     dataReport.title = createReportDto.title;
     dataReport.description = createReportDto.description;
-    dataReport.replyReport = createReportDto.replyReport,
-    dataReport.email = createReportDto.email;
+    (dataReport.replyReport = createReportDto.replyReport),
+      (dataReport.email = createReportDto.email);
     dataReport.user = user;
+    dataReport.bookingdetail = bookingDetail;
 
     const result = await this.reportsRepository.insert(dataReport);
 
@@ -51,6 +56,9 @@ export class ReportsService {
         where: {
           id,
         },
+        relations: {
+          bookingdetail: { cart: { destination: true, roomHotel: true } },
+        },
       });
     } catch (e) {
       if (e instanceof EntityNotFoundError) {
@@ -74,8 +82,8 @@ export class ReportsService {
     let dataReport = new Report();
     dataReport.title = updateReportDto.title;
     dataReport.description = updateReportDto.description;
-    dataReport.replyReport = updateReportDto.replyReport,
-    dataReport.email = updateReportDto.email;
+    (dataReport.replyReport = updateReportDto.replyReport),
+      (dataReport.email = updateReportDto.email);
     dataReport.user = user;
     try {
       await this.reportsRepository.findOneOrFail({
