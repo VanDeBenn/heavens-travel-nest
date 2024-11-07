@@ -7,11 +7,11 @@ export class CreateRoomHotelDto {
   @IsOptional()
   price: number;
 
-  // @IsOptional()
-  // adult: number;
+  @IsOptional()
+  adult: number;
 
-  // @IsOptional()
-  // children: number;
+  @IsOptional()
+  children: number;
 
   // @IsOptional()
   // singleBed: number;
@@ -25,6 +25,6 @@ export class CreateRoomHotelDto {
   // @IsOptional()
   // kingBed: number;
 
-  // @IsOptional()
-  // hotelId: string;
+  @IsOptional()
+  hotelId: string;
 }

@@ -5,24 +5,29 @@ import { Review } from './entities/review.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { UsersService } from '#/users/users.service';
+import { BookingDetailsService } from '#/booking-detail/booking-detail.service';
 
 @Injectable()
 export class ReviewsService {
-  bookingDetailService: any;
   constructor(
     @InjectRepository(Review)
     private reviewsRepository: Repository<Review>,
     private userService: UsersService,
+    private bookingDetailService: BookingDetailsService,
   ) {}
 
   // create new review
   async create(createReviewDto: CreateReviewDto) {
     const user = await this.userService.findOne(createReviewDto.userId);
+    const bookingDetail = await this.bookingDetailService.findOne(
+      createReviewDto.bookingDetailId,
+    );
 
     const dataReview = new Review();
     dataReview.rating = createReviewDto.rating;
     dataReview.comment = createReviewDto.comment;
     dataReview.user = user;
+    dataReview.bookingdetail = bookingDetail;
 
     const result = await this.reviewsRepository.insert(dataReview);
 

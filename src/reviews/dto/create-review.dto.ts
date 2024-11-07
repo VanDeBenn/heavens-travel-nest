@@ -9,5 +9,7 @@ export class CreateReviewDto {
 
   @IsNotEmpty()
   userId: string;
-}
 
+  @IsNotEmpty()
+  bookingDetailId: string;
+}

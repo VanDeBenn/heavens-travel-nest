@@ -16,18 +16,18 @@ export class RoomHotelsService {
 
   // create new roomhotel
   async create(createRoomHotelDto: CreateRoomHotelDto) {
-    // const hotel = await this.hotelService.findOne(createRoomHotelDto.hotelId);
+    const hotel = await this.hotelService.findOne(createRoomHotelDto.hotelId);
 
     const dataRoomHotel = new RoomHotel();
     // dataRoomHotel.numberRoom = createRoomHotelDto.numberRoom;
     dataRoomHotel.price = createRoomHotelDto.price;
-    // dataRoomHotel.adult = createRoomHotelDto.adult;
-    // dataRoomHotel.children = createRoomHotelDto.children;
+    dataRoomHotel.adult = createRoomHotelDto.adult;
+    dataRoomHotel.children = createRoomHotelDto.children;
     // dataRoomHotel.singleBed = createRoomHotelDto.singleBed;
     // dataRoomHotel.doubleBed = createRoomHotelDto.doubleBed;
     // dataRoomHotel.kingBed = createRoomHotelDto.kingBed;
     // dataRoomHotel.children = createRoomHotelDto.queenBed;
-    // dataRoomHotel.hotel = hotel;
+    dataRoomHotel.hotel = hotel;
 
     const result = await this.roomhotelsRepository.insert(dataRoomHotel);
 

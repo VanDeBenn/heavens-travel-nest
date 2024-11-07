@@ -57,6 +57,7 @@ export class HotelsService {
         where: {
           id,
         },
+        relations: { roomhotels: true },
       });
     } catch (e) {
       if (e instanceof EntityNotFoundError) {
