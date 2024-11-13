@@ -9,11 +9,17 @@ import {
   HttpStatus,
   ParseUUIDPipe,
   Put,
+  UseInterceptors,
+  UploadedFile,
+  Res,
 } from '@nestjs/common';
 import { PhotoReviewsService } from './foto-reviews.service';
 import { UpdatePhotoReviewDto } from './dto/update-foto-review.dto';
 import { CreatePhotoReviewDto } from './dto/create-foto-review.dto';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import { storageProfile } from '#/utils/upload-file';
+import { of } from 'rxjs';
+import { join } from 'path';
 
 @Controller('photoreviews')
 export class PhotoReviewsController {
@@ -26,6 +32,25 @@ export class PhotoReviewsController {
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
+  }
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file', storageProfile('photo-reviews')))
+  async createProduct(@UploadedFile() file: Express.Multer.File) {
+    return {
+      data: file,
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
+  }
+
+  @Get(':image')
+  getImage(@Param('image') imagePath: string, @Res() res: any) {
+    return of(
+      res.sendFile(
+        join(process.cwd(), `public/images/photo-reviews/${imagePath}`),
+      ),
+    );
   }
 
   @Get()

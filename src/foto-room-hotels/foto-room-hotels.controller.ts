@@ -9,15 +9,23 @@ import {
   HttpStatus,
   ParseUUIDPipe,
   Put,
+  UseInterceptors,
+  UploadedFile,
+  Res,
 } from '@nestjs/common';
 import { UpdatePhotoRoomHotelDto } from './dto/update-foto-room-hotel.dto';
 import { PhotoRoomHotelsService } from './foto-room-hotels.service';
 import { CreatePhotoRoomHotelDto } from './dto/create-foto-room-hotel.dto';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import { storageProfile } from '#/utils/upload-file';
+import { of } from 'rxjs';
+import { join } from 'path';
 
 @Controller('photoroomhotels')
 export class PhotoRoomHotelsController {
-  constructor(private readonly photoroomhotelsService: PhotoRoomHotelsService) {}
+  constructor(
+    private readonly photoroomhotelsService: PhotoRoomHotelsService,
+  ) {}
 
   @Post()
   async create(@Body() createPhotoRoomHotelDto: CreatePhotoRoomHotelDto) {
@@ -26,6 +34,25 @@ export class PhotoRoomHotelsController {
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
+  }
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file', storageProfile('photo-hotels')))
+  async createProduct(@UploadedFile() file: Express.Multer.File) {
+    return {
+      data: file,
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
+  }
+
+  @Get(':image')
+  getImage(@Param('image') imagePath: string, @Res() res: any) {
+    return of(
+      res.sendFile(
+        join(process.cwd(), `public/images/photo-hotels/${imagePath}`),
+      ),
+    );
   }
 
   @Get()
@@ -55,7 +82,10 @@ export class PhotoRoomHotelsController {
     @Body() updatePhotoRoomHotelDto: UpdatePhotoRoomHotelDto,
   ) {
     return {
-      data: await this.photoroomhotelsService.update(id, updatePhotoRoomHotelDto),
+      data: await this.photoroomhotelsService.update(
+        id,
+        updatePhotoRoomHotelDto,
+      ),
       statusCode: HttpStatus.OK,
       message: 'success',
     };

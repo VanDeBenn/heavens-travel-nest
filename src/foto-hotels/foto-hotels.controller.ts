@@ -9,11 +9,17 @@ import {
   HttpStatus,
   ParseUUIDPipe,
   Put,
+  UseInterceptors,
+  UploadedFile,
+  Res,
 } from '@nestjs/common';
 import { PhotoHotelsService } from './foto-hotels.service';
 import { CreatePhotoHotelDto } from './dto/create-foto-hotel.dto';
 import { UpdatePhotoHotelDto } from './dto/update-foto-hotel.dto';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import { storageProfile } from '#/utils/upload-file';
+import { of } from 'rxjs';
+import { join } from 'path';
 
 @Controller('photohotels')
 export class PhotoHotelsController {
@@ -26,6 +32,25 @@ export class PhotoHotelsController {
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
+  }
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file', storageProfile('photo-hotels')))
+  async createProduct(@UploadedFile() file: Express.Multer.File) {
+    return {
+      data: file,
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
+  }
+
+  @Get(':image')
+  getImage(@Param('image') imagePath: string, @Res() res: any) {
+    return of(
+      res.sendFile(
+        join(process.cwd(), `public/images/photo-hotels/${imagePath}`),
+      ),
+    );
   }
 
   @Get()

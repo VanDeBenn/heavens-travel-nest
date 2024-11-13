@@ -53,7 +53,7 @@ export class AuthService {
 
     if (!dataUser) {
       const role = await this.roleService.findOne(
-        'd8e7efdd-bd07-4154-85d8-b960894e2c6a',
+        '32a5bee8-e7a7-4631-9f6e-f394b519ae86',
       );
       const newUser = new User();
       newUser.fullName = user.displayName;
@@ -68,7 +68,7 @@ export class AuthService {
     const payload = {
       sub: dataUser.id,
       email: user.emails[0].value,
-      role: 'd8e7efdd-bd07-4154-85d8-b960894e2c6a',
+      role: '32a5bee8-e7a7-4631-9f6e-f394b519ae86',
     };
 
     const accessToken = this.jwtService.sign(payload, {

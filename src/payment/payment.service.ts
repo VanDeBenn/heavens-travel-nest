@@ -68,8 +68,10 @@ export class PaymentsService {
           description: 'no refund',
           payer_email: email,
           items,
-          success_redirect_url: 'http://localhost:3000/booking',
-          failure_redirect_url: 'http://localhost:3000/booking',
+          success_redirect_url:
+            'https://45db-45-251-5-29.ngrok-free.app/booking',
+          failure_redirect_url:
+            'https://45db-45-251-5-29.ngrok-free.app/booking',
         },
         {
           headers: { 'Content-Type': 'application/json' },

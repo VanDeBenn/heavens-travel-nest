@@ -41,8 +41,8 @@ export class UsersService {
   findAll() {
     return this.usersRepository.findAndCount({
       relations: {
-        role: true,
         city: true,
+        role: true,
       },
     });
   }
