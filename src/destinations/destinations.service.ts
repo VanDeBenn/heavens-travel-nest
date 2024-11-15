@@ -10,6 +10,8 @@ import { City } from '#/cities/entities/city.entity';
 import { Province } from '#/provinces/entities/province.entity';
 import { Country } from '#/countries/entities/country.entity';
 import { CitysService } from '#/cities/cities.service';
+import { ProvinceService } from '#/provinces/provinces.service';
+import { CountrysService } from '#/countries/countries.service';
 
 @Injectable()
 export class DestinationsService {
@@ -22,22 +24,13 @@ export class DestinationsService {
     private cityRepository: Repository<City>,
     // @InjectRepository(Province)
     // private provinceRepository: Repository<Province>,
-    // // @InjectRepository(Country)
+    // @InjectRepository(Country)
     // private countryRepository: Repository<Country>,
-    private citysService: CitysService,
-    private userService: UsersService,
+    private citysService: CitysService, // private provincesService: ProvinceService, // private countriesService: CountrysService, // private userService: UsersService,
   ) {}
 
   // create new destination
-  async create(
-    createDestinationDto: CreateDestinationDto,
-    dto: {
-      // districtName: string;
-      // cityName: string;
-      // provinceName: string;
-      // countryName: string;
-    },
-  ) {
+  async create(createDestinationDto: CreateDestinationDto) {
     // const district = await this.districtsService.findOne(
     //   createDestinationDto.districtId,
     // );
@@ -56,7 +49,28 @@ export class DestinationsService {
     // const country = await this.countryRepository.findOneOrFail({where: {name: dto.countryName}})
     // const countryId = country.id
 
-    const city = await this.citysService.findOne(createDestinationDto.cityId);
+    // const city = await this.citysService.findOne(dto.cityName);
+    // const cityByProvince = await this.cityRepository.findOneOrFail({
+    //   where: { province: { name: dto.provinceName } },
+    // });
+    // const cityByCountry = await this.cityRepository.findOneOrFail({
+    //   where: { province: { name: dto.countryName } },
+    // });
+
+    const city = await this.cityRepository.findOne({
+      where: {
+        name: createDestinationDto.cityName,
+        province: { name: createDestinationDto.provinceName },
+        // country: { name: dto.countryName },
+      },
+    });
+
+    if (!city) {
+      throw new Error('City not found');
+    }
+
+    // const province = await this.provincesService.findOne(dto.provinceName)
+    // const country = await this.countriesService.findOne(dto.countryName)
 
     const dataDestination = new Destination();
     dataDestination.name = createDestinationDto.name;
@@ -68,6 +82,7 @@ export class DestinationsService {
     dataDestination.address = createDestinationDto.address;
     dataDestination.pathLocation = createDestinationDto.pathLocation;
     dataDestination.city = city;
+    // || cityByProvince || cityByCountry;
 
     const result = await this.destinationsRepository.insert(dataDestination);
 

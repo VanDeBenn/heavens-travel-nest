@@ -5,18 +5,31 @@ import { Hotel } from './entities/hotel.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { CitysService } from '#/cities/cities.service';
+import { City } from '#/cities/entities/city.entity';
 
 @Injectable()
 export class HotelsService {
   constructor(
     @InjectRepository(Hotel)
     private hotelsRepository: Repository<Hotel>,
+    @InjectRepository(City)
+    private citiesRepository: Repository<City>,
     private citysService: CitysService,
   ) {}
 
   // create new hotel
   async create(createHotelDto: CreateHotelDto) {
-    const city = await this.citysService.findOne(createHotelDto.cityId);
+    const city = await this.citiesRepository.findOne({
+      where: {
+        name: createHotelDto.cityName,
+        province: { name: createHotelDto.provinceName },
+        // country: { name: dto.countryName },
+      },
+    });
+
+    if (!city) {
+      throw new Error('City not found');
+    }
 
     const dataHotel = new Hotel();
     dataHotel.name = createHotelDto.name;

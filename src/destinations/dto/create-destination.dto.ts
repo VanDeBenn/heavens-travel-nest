@@ -27,4 +27,13 @@ export class CreateDestinationDto {
 
   @IsOptional()
   cityId: string;
+
+  @IsOptional()
+  cityName: string;
+
+  @IsOptional()
+  provinceName: string;
+
+  @IsOptional()
+  countryName: string;
 }

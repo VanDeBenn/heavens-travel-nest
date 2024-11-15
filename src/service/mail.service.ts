@@ -23,7 +23,7 @@ export class MailService {
 
     this.otpStorage[reseToken] = { otp, expiry };
 
-    const resetLink = `https://45db-45-251-5-29.ngrok-free.app/authenticator?token=${reseToken}?code=${otp}`;
+    const resetLink = `http://localhost:3000/authenticator?token=${reseToken}?code=${otp}`;
 
     const mailOptions = {
       from: '"Auth-backend Service" <no-reply@example.com>',

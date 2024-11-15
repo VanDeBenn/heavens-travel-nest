@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateHotelDto {
   @IsNotEmpty()
@@ -18,4 +18,13 @@ export class CreateHotelDto {
 
   @IsNotEmpty()
   cityId: string;
+
+  @IsOptional()
+  cityName: string;
+
+  @IsOptional()
+  provinceName: string;
+
+  @IsOptional()
+  countryName: string;
 }

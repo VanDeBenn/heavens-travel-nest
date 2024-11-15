@@ -19,9 +19,9 @@ export class DestinationsController {
   constructor(private readonly destinationsService: DestinationsService) {}
 
   @Post()
-  async create(@Body() createDestinationDto: CreateDestinationDto, dto) {
+  async create(@Body() createDestinationDto: CreateDestinationDto) {
     return {
-      data: await this.destinationsService.create(createDestinationDto, dto),
+      data: await this.destinationsService.create(createDestinationDto),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };

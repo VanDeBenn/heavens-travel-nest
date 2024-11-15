@@ -54,22 +54,14 @@ export class AuthController {
     const token = await this.authService.googleLogin(req);
     const result = await this.jwtService.verifyAsync(token.accessToken);
 
-    const cookieOptions = {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      path: '/',
-      domain: 'ce87-101-255-119-166.ngrok-free.app',
-    };
-
-    res.cookie('access_token', token.accessToken, cookieOptions);
-    res.cookie('refresh_token', token.refreshToken, cookieOptions);
-    res.cookie('id', result.sub, cookieOptions);
+    res.cookie('access_token', token.accessToken);
+    res.cookie('refresh_token', token.refreshToken);
+    res.cookie('id', result.sub);
 
     if (result && token) {
-      res.redirect(`https://45db-45-251-5-29.ngrok-free.app/profile`);
+      res.redirect(`http://localhost:3000/profile`);
     } else {
-      res.redirect('https://45db-45-251-5-29.ngrok-free.app/register');
+      res.redirect('http://localhost:3000/register');
     }
   }
 
