@@ -1,3 +1,4 @@
+import { Blog } from '#/blogs/entities/blog.entity';
 import { CategoriesFaq } from '#/categories-faqs/entities/categories-faqs.entity';
 import { CategoriesNearbyLocation } from '#/categories-nearby-location/entities/categories-nearby-location.entity';
 import { CategoriServiceAmenity } from '#/categories-service-amenities/entities/categories-service-amenity.entity';
@@ -61,16 +62,14 @@ export class Hotel {
   @ManyToOne(() => Wishlist, (wishlist) => wishlist.hotel)
   wishlists?: Wishlist;
 
-  @OneToMany(
-    () => CategoriSomehelpfulFact,
-    (categorisomehelpfulfact) => categorisomehelpfulfact.hotel,
-  )
+  @OneToMany(() => Blog,(blog) => blog.hotel)
+  blogs?: Blog[];
+
+  @OneToMany(() => CategoriSomehelpfulFact, (categorisomehelpfulfact) => categorisomehelpfulfact.hotel)
   categorisomehelpfulfacts?: CategoriSomehelpfulFact[];
 
-  @OneToMany(
-    () => CategoriesNearbyLocation,
-    (categoriesnearbylocation) => categoriesnearbylocation.hotel,
-  )
+  @OneToMany(() => CategoriesNearbyLocation,
+  (categoriesnearbylocation) => categoriesnearbylocation.hotel)
   categoriesnearbylocations?: CategoriesNearbyLocation[];
 
   @OneToMany(() => CategoriesFaq, (categoriesfaq) => categoriesfaq.hotel)
@@ -81,8 +80,7 @@ export class Hotel {
 
   @OneToMany(
     () => CategoriServiceAmenity,
-    (categoriserviceamenity) => categoriserviceamenity.hotel,
-  )
+    (categoriserviceamenity) => categoriserviceamenity.hotel)
   categoriserviceamenities?: CategoriServiceAmenity[];
 
   @OneToMany(() => RoomHotel, (roomhotel) => roomhotel.hotel)

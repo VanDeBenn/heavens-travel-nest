@@ -21,4 +21,7 @@ export class CreateBlogDto {
 
   @IsOptional()
   destinationId: string;
+
+  @IsOptional()
+  hotelId: string;
 }

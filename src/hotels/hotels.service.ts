@@ -52,6 +52,7 @@ export class HotelsService {
     return this.hotelsRepository.findAndCount({
       relations: {
         wishlists: true,
+        blogs: true,
         categorisomehelpfulfacts: true,
         categoriesnearbylocations: true,
         categoriesfaqs: true,

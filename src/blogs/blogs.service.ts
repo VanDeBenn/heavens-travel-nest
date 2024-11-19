@@ -8,6 +8,8 @@ import { User } from '#/users/entities/user.entity';
 import { Destination } from '#/destinations/entities/destination.entity';
 import { UsersService } from '#/users/users.service';
 import { DestinationsService } from '#/destinations/destinations.service';
+import { HotelsService } from '#/hotels/hotels.service';
+import { constants } from 'buffer';
 
 @Injectable()
 export class BlogsService {
@@ -16,6 +18,7 @@ export class BlogsService {
     private blogsRepository: Repository<Blog>,
     private usersService: UsersService,
     private destinationService: DestinationsService,
+    private hotelService: HotelsService,
   ) {}
 
   // create new blog
@@ -23,8 +26,9 @@ export class BlogsService {
     const user = await this.usersService.findOne(createBlogDto.userId);
 
     const destination = await this.destinationService.findOne(
-      createBlogDto.destinationId,
-    );
+      createBlogDto.destinationId);
+
+    const hotel = await this.hotelService.findOne(createBlogDto.hotelId);
 
     const dataBlog = new Blog();
     dataBlog.title = createBlogDto.title;
@@ -32,6 +36,7 @@ export class BlogsService {
     dataBlog.pathPhoto = createBlogDto.pathPhoto;
     dataBlog.user = user;
     dataBlog.destination = destination;
+    dataBlog.hotel = hotel;
 
     const result = await this.blogsRepository.insert(dataBlog);
 
@@ -47,6 +52,7 @@ export class BlogsService {
       relations: {
         user: true,
         destination: true,
+        hotel: true,
       },
     });
   }
@@ -78,8 +84,9 @@ export class BlogsService {
     const user = await this.usersService.findOne(updateBlogDto.userId);
 
     const destination = await this.destinationService.findOne(
-      updateBlogDto.destinationId,
-    );
+    updateBlogDto.destinationId);
+
+    const hotel = await this.hotelService.findOne(updateBlogDto.hotelId);
 
     let dataBlog = new Blog();
     dataBlog.title = updateBlogDto.title;
@@ -87,6 +94,7 @@ export class BlogsService {
     dataBlog.pathPhoto = updateBlogDto.pathPhoto;
     dataBlog.user = user;
     dataBlog.destination = destination;
+    dataBlog.hotel = hotel;
 
     try {
       await this.blogsRepository.findOneOrFail({

@@ -1,4 +1,5 @@
 import { Destination } from '#/destinations/entities/destination.entity';
+import { Hotel } from '#/hotels/entities/hotel.entity';
 import { User } from '#/users/entities/user.entity';
 import {
   Entity,
@@ -52,4 +53,10 @@ export class Blog {
   @ManyToOne(() => Destination, (destination) => destination.blogs)
   @JoinColumn()
   destination: Destination;
+
+  @ManyToOne(() => Hotel, (hotel) => hotel.blogs)
+  @JoinColumn()
+  hotel: Hotel;
+
+
 }
