@@ -21,26 +21,32 @@ import { storageProfile } from '#/utils/upload-file';
 import { of } from 'rxjs';
 import { join } from 'path';
 
-@Controller('photoroomhotels')
+@Controller('photo-room-hotels')
 export class PhotoRoomHotelsController {
   constructor(
-    private readonly photoroomhotelsService: PhotoRoomHotelsService,
+    private readonly photoRoomHotelsService: PhotoRoomHotelsService,
   ) {}
 
   @Post()
   async create(@Body() createPhotoRoomHotelDto: CreatePhotoRoomHotelDto) {
     return {
-      data: await this.photoroomhotelsService.create(createPhotoRoomHotelDto),
+      data: await this.photoRoomHotelsService.create(createPhotoRoomHotelDto),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
   }
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file', storageProfile('photo-hotels')))
-  async createProduct(@UploadedFile() file: Express.Multer.File) {
+  @UseInterceptors(FileInterceptor('file', storageProfile('photo-room-hotels')))
+  async addPhotoRoomHotels(
+    @Body() addPhotoRoomHotelsDto: CreatePhotoRoomHotelDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    if (file) {
+      addPhotoRoomHotelsDto.pathPhoto = file.filename;
+    }
     return {
-      data: file,
+      data: await this.photoRoomHotelsService.create(addPhotoRoomHotelsDto),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
@@ -50,14 +56,14 @@ export class PhotoRoomHotelsController {
   getImage(@Param('image') imagePath: string, @Res() res: any) {
     return of(
       res.sendFile(
-        join(process.cwd(), `public/images/photo-hotels/${imagePath}`),
+        join(process.cwd(), `public/images/photo-room-hotels/${imagePath}`),
       ),
     );
   }
 
   @Get()
   async findAll() {
-    const [data, count] = await this.photoroomhotelsService.findAll();
+    const [data, count] = await this.photoRoomHotelsService.findAll();
 
     return {
       data,
@@ -70,7 +76,7 @@ export class PhotoRoomHotelsController {
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return {
-      data: await this.photoroomhotelsService.findOne(id),
+      data: await this.photoRoomHotelsService.findOne(id),
       statusCode: HttpStatus.OK,
       message: 'success',
     };
@@ -82,7 +88,7 @@ export class PhotoRoomHotelsController {
     @Body() updatePhotoRoomHotelDto: UpdatePhotoRoomHotelDto,
   ) {
     return {
-      data: await this.photoroomhotelsService.update(
+      data: await this.photoRoomHotelsService.update(
         id,
         updatePhotoRoomHotelDto,
       ),
@@ -93,7 +99,7 @@ export class PhotoRoomHotelsController {
 
   @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id: string) {
-    await this.photoroomhotelsService.remove(id);
+    await this.photoRoomHotelsService.remove(id);
 
     return {
       statusCode: HttpStatus.OK,

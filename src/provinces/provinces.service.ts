@@ -54,6 +54,7 @@ export class ProvinceService {
     return this.provincesRepository.findAndCount({
       relations: {
         country: true,
+        cities: true,
       },
     });
   }

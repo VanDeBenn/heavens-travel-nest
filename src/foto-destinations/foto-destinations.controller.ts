@@ -42,15 +42,15 @@ export class PhotoDestinationsController {
   @UseInterceptors(
     FileInterceptor('file', storageProfile('photo-destinations')),
   )
-  async createProduct(
-    @Body() createProductDto: CreatePhotoDestinationDto,
+  async addPhotoDestinations(
+    @Body() addPhotoDestinationsDto: CreatePhotoDestinationDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
     if (file) {
-      createProductDto.pathPhoto = file.filename;
+      addPhotoDestinationsDto.pathPhoto = file.filename;
     }
     return {
-      data: await this.photodestinationsService.create(createProductDto),
+      data: await this.photodestinationsService.create(addPhotoDestinationsDto),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };

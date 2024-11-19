@@ -21,14 +21,14 @@ import { storageProfile } from '#/utils/upload-file';
 import { of } from 'rxjs';
 import { join } from 'path';
 
-@Controller('photoreports')
+@Controller('photo-reports')
 export class PhotoReportsController {
-  constructor(private readonly photoreportsService: PhotoReportsService) {}
+  constructor(private readonly photoReportsService: PhotoReportsService) {}
 
   @Post()
   async create(@Body() createPhotoReportDto: CreatePhotoReportDto) {
     return {
-      data: await this.photoreportsService.create(createPhotoReportDto),
+      data: await this.photoReportsService.create(createPhotoReportDto),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
@@ -36,9 +36,15 @@ export class PhotoReportsController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', storageProfile('photo-reports')))
-  async createProduct(@UploadedFile() file: Express.Multer.File) {
+  async addPhotoReports(
+    @Body() addPhotoReportsDto: CreatePhotoReportDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    if (file) {
+      addPhotoReportsDto.pathPhoto = file.filename;
+    }
     return {
-      data: file,
+      data: await this.photoReportsService.create(addPhotoReportsDto),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
@@ -55,7 +61,7 @@ export class PhotoReportsController {
 
   @Get()
   async findAll() {
-    const [data, count] = await this.photoreportsService.findAll();
+    const [data, count] = await this.photoReportsService.findAll();
 
     return {
       data,
@@ -68,7 +74,7 @@ export class PhotoReportsController {
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return {
-      data: await this.photoreportsService.findOne(id),
+      data: await this.photoReportsService.findOne(id),
       statusCode: HttpStatus.OK,
       message: 'success',
     };
@@ -80,7 +86,7 @@ export class PhotoReportsController {
     @Body() updatePhotoReportDto: UpdatePhotoReportDto,
   ) {
     return {
-      data: await this.photoreportsService.update(id, updatePhotoReportDto),
+      data: await this.photoReportsService.update(id, updatePhotoReportDto),
       statusCode: HttpStatus.OK,
       message: 'success',
     };
@@ -88,7 +94,7 @@ export class PhotoReportsController {
 
   @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id: string) {
-    await this.photoreportsService.remove(id);
+    await this.photoReportsService.remove(id);
 
     return {
       statusCode: HttpStatus.OK,

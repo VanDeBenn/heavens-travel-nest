@@ -21,14 +21,14 @@ import { storageProfile } from '#/utils/upload-file';
 import { of } from 'rxjs';
 import { join } from 'path';
 
-@Controller('photoreviews')
+@Controller('photo-reviews')
 export class PhotoReviewsController {
-  constructor(private readonly photoreviewsService: PhotoReviewsService) {}
+  constructor(private readonly photoReviewsService: PhotoReviewsService) {}
 
   @Post()
   async create(@Body() createPhotoReviewDto: CreatePhotoReviewDto) {
     return {
-      data: await this.photoreviewsService.create(createPhotoReviewDto),
+      data: await this.photoReviewsService.create(createPhotoReviewDto),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
@@ -36,9 +36,15 @@ export class PhotoReviewsController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', storageProfile('photo-reviews')))
-  async createProduct(@UploadedFile() file: Express.Multer.File) {
+  async addPhotoReviews(
+    @Body() addPhotoReviewsDto: CreatePhotoReviewDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    if (file) {
+      addPhotoReviewsDto.pathPhoto = file.filename;
+    }
     return {
-      data: file,
+      data: await this.photoReviewsService.create(addPhotoReviewsDto),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
@@ -55,7 +61,7 @@ export class PhotoReviewsController {
 
   @Get()
   async findAll() {
-    const [data, count] = await this.photoreviewsService.findAll();
+    const [data, count] = await this.photoReviewsService.findAll();
 
     return {
       data,
@@ -68,7 +74,7 @@ export class PhotoReviewsController {
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return {
-      data: await this.photoreviewsService.findOne(id),
+      data: await this.photoReviewsService.findOne(id),
       statusCode: HttpStatus.OK,
       message: 'success',
     };
@@ -80,7 +86,7 @@ export class PhotoReviewsController {
     @Body() updatePhotoReviewDto: UpdatePhotoReviewDto,
   ) {
     return {
-      data: await this.photoreviewsService.update(id, updatePhotoReviewDto),
+      data: await this.photoReviewsService.update(id, updatePhotoReviewDto),
       statusCode: HttpStatus.OK,
       message: 'success',
     };
@@ -88,7 +94,7 @@ export class PhotoReviewsController {
 
   @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id: string) {
-    await this.photoreviewsService.remove(id);
+    await this.photoReviewsService.remove(id);
 
     return {
       statusCode: HttpStatus.OK,

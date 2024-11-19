@@ -97,6 +97,7 @@ export class DestinationsService {
     return this.destinationsRepository.findAndCount({
       relations: {
         city: true,
+        photodestinations: true,
       },
     });
   }
