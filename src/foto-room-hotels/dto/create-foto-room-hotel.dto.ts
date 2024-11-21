@@ -1,9 +1,9 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreatePhotoRoomHotelDto {
-  @IsNotEmpty()
+  @IsOptional()
   pathPhoto: string;
 
   @IsNotEmpty()
-  roomHotelId : string;
+  roomHotelId: string;
 }

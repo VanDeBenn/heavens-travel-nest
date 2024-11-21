@@ -39,3 +39,5 @@ lerna-debug.log*
 k8s/**/secret.yaml
 
 src/auth/google.strategy.ts
+
+public

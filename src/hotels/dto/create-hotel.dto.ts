@@ -16,7 +16,7 @@ export class CreateHotelDto {
   @IsNotEmpty()
   pathLocation: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   cityId: string;
 
   @IsOptional()

@@ -26,7 +26,8 @@ export class BlogsService {
     const user = await this.usersService.findOne(createBlogDto.userId);
 
     const destination = await this.destinationService.findOne(
-      createBlogDto.destinationId);
+      createBlogDto.destinationId,
+    );
 
     const hotel = await this.hotelService.findOne(createBlogDto.hotelId);
 
@@ -84,7 +85,8 @@ export class BlogsService {
     const user = await this.usersService.findOne(updateBlogDto.userId);
 
     const destination = await this.destinationService.findOne(
-    updateBlogDto.destinationId);
+      updateBlogDto.destinationId,
+    );
 
     const hotel = await this.hotelService.findOne(updateBlogDto.hotelId);
 

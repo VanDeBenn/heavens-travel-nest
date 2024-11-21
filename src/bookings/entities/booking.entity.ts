@@ -71,8 +71,12 @@ export class Booking {
   @Column({ nullable: true })
   totalPrice: number;
 
-  @Column({ nullable: true })
-  statusPayment: string;
+  @Column({
+    nullable: true,
+    type: 'enum',
+    enum: ['PENDING', 'PAID', 'CANCEL', 'REFUND'],
+  })
+  status: string;
 
   @Column({ nullable: true })
   fullFilment: string;

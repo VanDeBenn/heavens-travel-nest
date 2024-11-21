@@ -7,12 +7,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RolesService } from '#/roles/roles.service';
 import * as bcrypt from 'bcrypt';
 import { CitysService } from '#/cities/cities.service';
+import { City } from '#/cities/entities/city.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    @InjectRepository(City)
+    private cityRepository: Repository<City>,
     private roleService: RolesService,
     private citysService: CitysService,
   ) {}
@@ -61,7 +64,7 @@ export class UsersService {
             roomHotel: true,
             bookingDetail: { booking: { payment: true } },
           },
-          city: true,
+          city: { province: { country: true } },
           replyreviews: true,
           reports: true,
           reviews: true,
@@ -91,7 +94,17 @@ export class UsersService {
   // update user
   async update(id: string, updateUserDto: UpdateUserDto) {
     const role = await this.roleService.findOne(updateUserDto.roleId);
-    const city = await this.citysService.findOne(updateUserDto.cityId);
+    const city = await this.cityRepository.findOne({
+      where: {
+        name: updateUserDto.cityName,
+        province: { name: updateUserDto.provinceName },
+        // country: { name: dto.countryName },
+      },
+    });
+
+    if (!city) {
+      throw new Error('City not found');
+    }
 
     let dataUser = new User();
     dataUser.fullName = updateUserDto.fullName;

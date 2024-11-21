@@ -1,8 +1,8 @@
-import { IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateRoomHotelDto {
-  // @IsOptional()
-  // numberRoom: number;
+  @IsOptional()
+  roomType: string;
 
   @IsOptional()
   price: number;
@@ -13,18 +13,21 @@ export class CreateRoomHotelDto {
   @IsOptional()
   children: number;
 
-  // @IsOptional()
-  // singleBed: number;
-
-  // @IsOptional()
-  // doubleBed: number;
-
-  // @IsOptional()
-  // queenBed: number;
-
-  // @IsOptional()
-  // kingBed: number;
+  @IsOptional()
+  numberRoom: number;
 
   @IsOptional()
+  singleBed: number;
+
+  @IsOptional()
+  doubleBed: number;
+
+  @IsOptional()
+  queenBed: number;
+
+  @IsOptional()
+  kingBed: number;
+
+  @IsNotEmpty()
   hotelId: string;
 }

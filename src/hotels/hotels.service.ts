@@ -71,7 +71,11 @@ export class HotelsService {
         where: {
           id,
         },
-        relations: { roomhotels: true },
+        relations: {
+          roomhotels: { photoroomhotels: true },
+          photohotels: true,
+          city: { province: { country: true } },
+        },
       });
     } catch (e) {
       if (e instanceof EntityNotFoundError) {

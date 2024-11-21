@@ -23,8 +23,22 @@ export class RoomHotel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: true })
-  numberRoom: number;
+  @Column({
+    type: 'enum',
+    enum: [
+      'Superior',
+      'Superior Twin',
+      'Superior King',
+      'Superior Queen',
+      'Deluxe',
+      'Deluxe Twin',
+      'Deluxe King',
+      'Deluxe Queen',
+    ],
+    default: 'Superior',
+    nullable: true,
+  })
+  roomType: string;
 
   @Column()
   price: number;
@@ -34,6 +48,9 @@ export class RoomHotel {
 
   @Column({ nullable: true })
   children: number;
+
+  @Column({ nullable: true })
+  numberRoom: number;
 
   @Column({ nullable: true })
   singleBed: number;

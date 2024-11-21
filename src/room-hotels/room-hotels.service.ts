@@ -20,9 +20,15 @@ export class RoomHotelsService {
 
     const dataRoomHotel = new RoomHotel();
     // dataRoomHotel.numberRoom = createRoomHotelDto.numberRoom;
+    dataRoomHotel.roomType = createRoomHotelDto.roomType;
     dataRoomHotel.price = createRoomHotelDto.price;
     dataRoomHotel.adult = createRoomHotelDto.adult;
     dataRoomHotel.children = createRoomHotelDto.children;
+    dataRoomHotel.numberRoom = createRoomHotelDto.numberRoom;
+    dataRoomHotel.singleBed = createRoomHotelDto.singleBed;
+    dataRoomHotel.doubleBed = createRoomHotelDto.doubleBed;
+    dataRoomHotel.queenBed = createRoomHotelDto.queenBed;
+    dataRoomHotel.kingBed = createRoomHotelDto.kingBed;
     // dataRoomHotel.singleBed = createRoomHotelDto.singleBed;
     // dataRoomHotel.doubleBed = createRoomHotelDto.doubleBed;
     // dataRoomHotel.kingBed = createRoomHotelDto.kingBed;
@@ -43,8 +49,8 @@ export class RoomHotelsService {
       relations: {
         // categoriserviceamenities: true,
         // // carts: true,
-        // photoroomhotels: true,
-        // hotel: true,
+        photoroomhotels: true,
+        hotel: true,
       },
     });
   }
@@ -55,6 +61,7 @@ export class RoomHotelsService {
         where: {
           id,
         },
+        relations: { photoroomhotels: true },
       });
     } catch (e) {
       if (e instanceof EntityNotFoundError) {

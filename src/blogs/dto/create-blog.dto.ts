@@ -13,7 +13,7 @@ export class CreateBlogDto {
   @IsNotEmpty()
   description: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   pathPhoto: string;
 
   @IsNotEmpty()

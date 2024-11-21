@@ -41,7 +41,7 @@ export class BlogsController {
     };
   }
 
-  @Get(':image')
+  @Get('image/:image')
   getImage(
     // @Param('type') type: string,
     @Param('image') imagePath: string,

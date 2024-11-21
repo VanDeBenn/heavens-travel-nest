@@ -113,7 +113,7 @@ export class DestinationsService {
           bookings: true,
           carts: true,
           categoriesfaqs: true,
-          city: true,
+          city: { province: { country: true } },
           photodestinations: true,
           wishlists: true,
         },
