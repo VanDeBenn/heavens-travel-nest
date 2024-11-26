@@ -57,7 +57,9 @@ export class ReportsService {
           id,
         },
         relations: {
-          bookingdetail: { cart: { destination: true, roomHotel: true } },
+          bookingdetail: {
+            cart: { destination: { photodestinations: true }, roomHotel: true },
+          },
         },
       });
     } catch (e) {

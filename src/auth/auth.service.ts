@@ -147,7 +147,6 @@ export class AuthService {
   // forgot password
   async forgotPassword(dto: { email: string }) {
     const email = dto.email;
-    await this.generateOtp(email);
 
     const user = await this.usersService.findByEmail(email);
     if (!user) {
@@ -156,6 +155,7 @@ export class AuthService {
 
     const resetToken = user.resetToken;
 
+    await this.generateOtp(email);
     return { email, resetToken };
   }
 

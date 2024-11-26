@@ -51,9 +51,9 @@ export class BlogsService {
   findAll() {
     return this.blogsRepository.findAndCount({
       relations: {
-        user: true,
-        destination: true,
-        hotel: true,
+        // user: true,
+        destination: { city: true },
+        hotel: { city: true },
       },
     });
   }
@@ -63,6 +63,10 @@ export class BlogsService {
       return await this.blogsRepository.findOneOrFail({
         where: {
           id,
+        },
+        relations: {
+          destination: { city: true },
+          hotel: { city: true },
         },
       });
     } catch (e) {

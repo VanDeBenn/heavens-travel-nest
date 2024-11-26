@@ -43,43 +43,43 @@ export class Booking {
   @Column({ nullable: true })
   guestPhoneNumber: string;
 
-  @Column({ nullable: true })
-  endDate: Date;
+  // @Column({ nullable: true })
+  // endDate: Date;
 
-  @Column({ nullable: true })
-  quantity: number;
+  // @Column({ nullable: true })
+  // quantity: number;
 
-  @Column({ nullable: true })
-  priceDetail: number;
+  // @Column({ nullable: true })
+  // priceDetail: number;
 
-  @Column({
-    type: 'enum',
-    enum: ['bank', 'e-wallet', 'virtual account'],
-    nullable: true,
-  })
-  paymentType: string;
+  // @Column({
+  //   type: 'enum',
+  //   enum: ['bank', 'e-wallet', 'virtual account'],
+  //   nullable: true,
+  // })
+  // paymentType: string;
 
-  @Column({ nullable: true })
-  paymentDueDate: string;
+  // @Column({ nullable: true })
+  // paymentDueDate: string;
 
-  @Column({ nullable: true })
-  paymentAmount: number;
+  // @Column({ nullable: true })
+  // paymentAmount: number;
 
-  @Column({ nullable: true })
-  tokenTransaction: number;
+  // @Column({ nullable: true })
+  // tokenTransaction: number;
 
-  @Column({ nullable: true })
-  totalPrice: number;
+  // @Column({ nullable: true })
+  // totalPrice: number;
 
-  @Column({
-    nullable: true,
-    type: 'enum',
-    enum: ['PENDING', 'PAID', 'CANCEL', 'REFUND'],
-  })
-  status: string;
+  // @Column({
+  //   nullable: true,
+  //   type: 'enum',
+  //   enum: ['PENDING', 'PAID', 'CANCEL', 'REFUND'],
+  // })
+  // status: string;
 
-  @Column({ nullable: true })
-  fullFilment: string;
+  // @Column({ nullable: true })
+  // fullFilment: string;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',

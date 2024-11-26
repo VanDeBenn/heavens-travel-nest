@@ -156,7 +156,12 @@ export class RefundService {
         relations: {
           // bookingdetail: true,
           booking: {
-            bookingdetails: { cart: { destination: true, roomHotel: true } },
+            bookingdetails: {
+              cart: {
+                destination: { photodestinations: true },
+                roomHotel: true,
+              },
+            },
             payment: true,
             user: true,
           },

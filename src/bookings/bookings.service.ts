@@ -71,6 +71,7 @@ export class BookingsService {
       relations: {
         user: true,
         payment: true,
+        bookingdetails: true,
       },
     });
   }
@@ -82,7 +83,9 @@ export class BookingsService {
           id,
         },
         relations: {
-          bookingdetails: { cart: { destination: true, roomHotel: true } },
+          bookingdetails: {
+            cart: { destination: { photodestinations: true }, roomHotel: true },
+          },
           destination: true,
           roomhotel: true,
           user: true,
@@ -116,13 +119,13 @@ export class BookingsService {
     dataBooking.guestName = updateBookingDto.guestName;
     dataBooking.guestEmail = updateBookingDto.guestEmail;
     dataBooking.guestPhoneNumber = updateBookingDto.guestPhoneNumber;
-    dataBooking.paymentType = updateBookingDto.paymentType;
-    dataBooking.paymentDueDate = updateBookingDto.paymentDueDate;
-    dataBooking.paymentAmount = updateBookingDto.paymentAmount;
-    dataBooking.tokenTransaction = updateBookingDto.tokenTransaction;
-    dataBooking.totalPrice = updateBookingDto.totalPrice;
-    dataBooking.statusPayment = updateBookingDto.statusPayment;
-    dataBooking.fullFilment = updateBookingDto.fullFilment;
+    // dataBooking.paymentType = updateBookingDto.paymentType;
+    // dataBooking.paymentDueDate = updateBookingDto.paymentDueDate;
+    // dataBooking.paymentAmount = updateBookingDto.paymentAmount;
+    // dataBooking.tokenTransaction = updateBookingDto.tokenTransaction;
+    // dataBooking.totalPrice = updateBookingDto.totalPrice;
+    // dataBooking.status = updateBookingDto.statusPayment;
+    // dataBooking.fullFilment = updateBookingDto.fullFilment;
     // dataBooking.user = user;
 
     try {

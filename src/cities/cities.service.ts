@@ -37,8 +37,8 @@ export class CitysService {
     return this.citysRepository.findAndCount({
       relations: {
         // users: true,
-        // hotels: true,
-        // destinations: true,
+        hotels: true,
+        destinations: true,
         province: true,
       },
     });

@@ -60,7 +60,7 @@ export class HotelsService {
         categoriserviceamenities: true,
         roomhotels: true,
         propertypolicys: true,
-        city: true,
+        city: { province: { country: true } },
       },
     });
   }
