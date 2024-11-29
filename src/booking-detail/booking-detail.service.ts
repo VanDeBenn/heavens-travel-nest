@@ -61,7 +61,8 @@ export class BookingDetailsService {
           id,
         },
         relations: {
-          cart: true,
+          booking: { payment: true },
+          cart: { destination: true, roomHotel: true },
           // refund: true,
           review: true,
           report: true,

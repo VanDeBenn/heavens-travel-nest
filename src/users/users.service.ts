@@ -58,7 +58,10 @@ export class UsersService {
         },
         relations: {
           blogs: true,
-          bookings: true,
+          bookings: {
+            bookingdetails: { cart: { destination: true, roomHotel: true } },
+            payment: true,
+          },
           carts: {
             destination: true,
             roomHotel: true,

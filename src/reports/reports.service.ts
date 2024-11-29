@@ -26,8 +26,8 @@ export class ReportsService {
     const dataReport = new Report();
     dataReport.title = createReportDto.title;
     dataReport.description = createReportDto.description;
-    (dataReport.replyReport = createReportDto.replyReport),
-      (dataReport.email = createReportDto.email);
+    dataReport.replyReport = createReportDto.replyReport;
+    dataReport.email = createReportDto.email;
     dataReport.user = user;
     dataReport.bookingdetail = bookingDetail;
 
