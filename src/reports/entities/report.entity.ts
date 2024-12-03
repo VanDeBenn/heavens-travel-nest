@@ -1,4 +1,5 @@
 import { BookingDetail } from '#/booking-detail/entities/booking-detail.entity';
+import { Booking } from '#/bookings/entities/booking.entity';
 import { PhotoReport } from '#/foto-reports/entities/foto-report.entity';
 import { User } from '#/users/entities/user.entity';
 import {
@@ -52,6 +53,10 @@ export class Report {
     nullable: true,
   })
   deletedAt: Date;
+
+  @OneToOne(() => Booking, (booking) => booking.report)
+  @JoinColumn()
+  booking: Booking;
 
   @OneToOne(() => BookingDetail, (bookingdetail) => bookingdetail.report)
   @JoinColumn()

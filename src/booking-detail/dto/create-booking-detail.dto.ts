@@ -25,4 +25,7 @@ export class CreateBookingDetailDto {
   @IsOptional()
   @IsArray()
   selectedCartIds: string[];
+
+  @IsOptional()
+  reportId: string;
 }

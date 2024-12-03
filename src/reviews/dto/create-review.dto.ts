@@ -2,7 +2,7 @@ import { IsAlpha, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateReviewDto {
   @IsNotEmpty()
-  rating: number;
+  rating: string;
 
   @IsNotEmpty()
   comment: string;

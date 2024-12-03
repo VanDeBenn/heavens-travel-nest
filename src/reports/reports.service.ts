@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { UsersService } from '#/users/users.service';
 import { BookingDetailsService } from '#/booking-detail/booking-detail.service';
+import { BookingsService } from '#/bookings/bookings.service';
 
 @Injectable()
 export class ReportsService {
@@ -14,14 +15,19 @@ export class ReportsService {
     private reportsRepository: Repository<Report>,
     private userService: UsersService,
     private bookingDetail: BookingDetailsService,
+    private bookingService: BookingsService,
   ) {}
 
   // create new report
   async create(createReportDto: CreateReportDto) {
     const user = await this.userService.findOne(createReportDto.userId);
-    const bookingDetail = await this.bookingDetail.findOne(
-      createReportDto.bookingDetailId,
-    );
+    const bookingDetail = createReportDto.bookingDetailId
+      ? await this.bookingDetail.findOne(createReportDto.bookingDetailId)
+      : null;
+
+    const booking = createReportDto.bookingId
+      ? await this.bookingService.findOne(createReportDto.bookingId)
+      : null;
 
     const dataReport = new Report();
     dataReport.title = createReportDto.title;
@@ -30,6 +36,7 @@ export class ReportsService {
     dataReport.email = createReportDto.email;
     dataReport.user = user;
     dataReport.bookingdetail = bookingDetail;
+    dataReport.booking = booking;
 
     const result = await this.reportsRepository.insert(dataReport);
 

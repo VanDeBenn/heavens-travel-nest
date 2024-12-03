@@ -3,43 +3,43 @@ import { PhotoReview } from '#/foto-reviews/entities/foto-review.entity';
 import { ReplyReview } from '#/reply-reviews/entities/reply-review.entity';
 import { User } from '#/users/entities/user.entity';
 import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-    DeleteDateColumn,
-    VersionColumn,
-    CreateDateColumn,
-    OneToMany,
-    OneToOne,
-    JoinColumn,
-    ManyToOne,
-  } from 'typeorm';
-  
-  @Entity()
-  export class Review {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-  
-    @Column()
-    rating: number;
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  VersionColumn,
+  CreateDateColumn,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
+  ManyToOne,
+} from 'typeorm';
 
-    @Column()
-    comment: string;
+@Entity()
+export class Review {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @CreateDateColumn({
-      type: 'timestamp with time zone',
-      nullable: false,
-    })
-    createdAt: Date;
-  
-    @UpdateDateColumn({
-      type: 'timestamp with time zone',
-      nullable: false,
-    })
-    updatedAt: Date;
+  @Column()
+  rating: string;
 
-    @DeleteDateColumn({
+  @Column()
+  comment: string;
+
+  @CreateDateColumn({
+    type: 'timestamp with time zone',
+    nullable: false,
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp with time zone',
+    nullable: false,
+  })
+  updatedAt: Date;
+
+  @DeleteDateColumn({
     type: 'timestamp with time zone',
     nullable: true,
   })
@@ -58,5 +58,4 @@ import {
   @ManyToOne(() => User, (user) => user.reviews)
   @JoinColumn()
   user: User;
-  }
-  
+}

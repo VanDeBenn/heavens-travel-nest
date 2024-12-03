@@ -3,6 +3,7 @@ import { Cart } from '#/cart/entities/cart.entity';
 import { Destination } from '#/destinations/entities/destination.entity';
 import { Payment } from '#/payment/entities/payment.entity';
 import { Refund } from '#/refund/entities/refund.entity';
+import { Report } from '#/reports/entities/report.entity';
 import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
 import { User } from '#/users/entities/user.entity';
 import { Xendit } from '#/xendit/entities/xendit.entity';
@@ -122,4 +123,8 @@ export class Booking {
 
   @OneToOne(() => Refund, (refund) => refund.booking)
   refund?: Refund;
+
+  @OneToOne(() => Report, (report) => report.bookingdetail)
+  @JoinColumn()
+  report: Report;
 }
