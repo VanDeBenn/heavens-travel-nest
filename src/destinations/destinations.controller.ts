@@ -48,6 +48,15 @@ export class DestinationsController {
     };
   }
 
+  @Post('city')
+  async findByCityName(@Body() dto: any) {
+    return {
+      data: await this.destinationsService.findByCityName(dto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
+  }
+
   @Put(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,

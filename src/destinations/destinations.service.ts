@@ -133,6 +133,44 @@ export class DestinationsService {
     }
   }
 
+  // const city = await this.cityRepository.findOne({
+  //   where: {
+  //     name: cityName,
+  //     // province: { name: createDestinationDto.provinceName },
+  //     // country: { name: dto.countryName },
+  //   },
+  // });
+  // console.log(city);
+  async findByCityName(dto: { cityName: string }) {
+    try {
+      console.log(`City name received: ${dto.cityName}`);
+
+      const city = await this.cityRepository
+        .createQueryBuilder('city')
+        .where('LOWER(city.name) = LOWER(:name)', { name: dto.cityName })
+        .getOne();
+
+      if (!city) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'City not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      const cityId = city?.id;
+
+      return await this.destinationsRepository.find({
+        where: { city: { id: cityId } },
+        relations: { city: true },
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+
   // update destination
   async update(id: string, updateDestinationDto: UpdateDestinationDto) {
     const city = await this.citysService.findOne(updateDestinationDto.cityId);
