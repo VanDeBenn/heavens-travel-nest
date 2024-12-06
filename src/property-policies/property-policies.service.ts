@@ -10,21 +10,25 @@ import { HotelsService } from '#/hotels/hotels.service';
 export class PropertyPolicyService {
   constructor(
     @InjectRepository(PropertyPolicy)
-    private propertypolicysRepository: Repository<PropertyPolicy>,
+    private propertypoliciesRepository: Repository<PropertyPolicy>,
     private hotelService: HotelsService,
   ) {}
 
   // create new propertypolicy
   async create(createPropertyPolicyDto: CreatePropertyPolicyDto) {
-    const hotel = await this.hotelService.findOne(createPropertyPolicyDto.hotelId);
+    const hotel = await this.hotelService.findOne(
+      createPropertyPolicyDto.hotelId,
+    );
 
     const dataPropertyPolicy = new PropertyPolicy();
     dataPropertyPolicy.title = createPropertyPolicyDto.title;
     dataPropertyPolicy.hotel = hotel;
 
-    const result = await this.propertypolicysRepository.insert(dataPropertyPolicy);
+    const result = await this.propertypoliciesRepository.insert(
+      dataPropertyPolicy,
+    );
 
-    return this.propertypolicysRepository.findOneOrFail({
+    return this.propertypoliciesRepository.findOneOrFail({
       where: {
         id: result.identifiers[0].id,
       },
@@ -32,7 +36,7 @@ export class PropertyPolicyService {
   }
 
   findAll() {
-    return this.propertypolicysRepository.findAndCount({
+    return this.propertypoliciesRepository.findAndCount({
       relations: {
         hotel: true,
       },
@@ -41,7 +45,7 @@ export class PropertyPolicyService {
 
   async findOne(id: string) {
     try {
-      return await this.propertypolicysRepository.findOneOrFail({
+      return await this.propertypoliciesRepository.findOneOrFail({
         where: {
           id,
         },
@@ -63,15 +67,16 @@ export class PropertyPolicyService {
 
   // update propertypolicy
   async update(id: string, updatePropertyPolicyDto: UpdatePropertyPolicyDto) {
-    const hotel = await this.hotelService.findOne(updatePropertyPolicyDto.hotelId);
+    const hotel = await this.hotelService.findOne(
+      updatePropertyPolicyDto.hotelId,
+    );
 
     let dataPropertyPolicy = new PropertyPolicy();
     dataPropertyPolicy.title = updatePropertyPolicyDto.title;
     dataPropertyPolicy.hotel = hotel;
 
-
     try {
-      await this.propertypolicysRepository.findOneOrFail({
+      await this.propertypoliciesRepository.findOneOrFail({
         where: {
           id,
         },
@@ -90,9 +95,12 @@ export class PropertyPolicyService {
       }
     }
 
-    const result = await this.propertypolicysRepository.update(id, dataPropertyPolicy);
+    const result = await this.propertypoliciesRepository.update(
+      id,
+      dataPropertyPolicy,
+    );
 
-    return this.propertypolicysRepository.findOneOrFail({
+    return this.propertypoliciesRepository.findOneOrFail({
       where: {
         id,
       },
@@ -102,7 +110,7 @@ export class PropertyPolicyService {
   // delete propertypolicy
   async remove(id: string) {
     try {
-      await this.propertypolicysRepository.findOneOrFail({
+      await this.propertypoliciesRepository.findOneOrFail({
         where: {
           id,
         },
@@ -121,6 +129,6 @@ export class PropertyPolicyService {
       }
     }
 
-    await this.propertypolicysRepository.delete(id);
+    await this.propertypoliciesRepository.delete(id);
   }
 }

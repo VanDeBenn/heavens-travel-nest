@@ -62,14 +62,19 @@ export class Hotel {
   @ManyToOne(() => Wishlist, (wishlist) => wishlist.hotel)
   wishlists?: Wishlist;
 
-  @OneToMany(() => Blog,(blog) => blog.hotel)
+  @OneToMany(() => Blog, (blog) => blog.hotel)
   blogs?: Blog[];
 
-  @OneToMany(() => CategoriSomehelpfulFact, (categorisomehelpfulfact) => categorisomehelpfulfact.hotel)
+  @OneToMany(
+    () => CategoriSomehelpfulFact,
+    (categorisomehelpfulfact) => categorisomehelpfulfact.hotel,
+  )
   categorisomehelpfulfacts?: CategoriSomehelpfulFact[];
 
-  @OneToMany(() => CategoriesNearbyLocation,
-  (categoriesnearbylocation) => categoriesnearbylocation.hotel)
+  @OneToMany(
+    () => CategoriesNearbyLocation,
+    (categoriesnearbylocation) => categoriesnearbylocation.hotel,
+  )
   categoriesnearbylocations?: CategoriesNearbyLocation[];
 
   @OneToMany(() => CategoriesFaq, (categoriesfaq) => categoriesfaq.hotel)
@@ -80,14 +85,15 @@ export class Hotel {
 
   @OneToMany(
     () => CategoriServiceAmenity,
-    (categoriserviceamenity) => categoriserviceamenity.hotel)
+    (categoriserviceamenity) => categoriserviceamenity.hotel,
+  )
   categoriserviceamenities?: CategoriServiceAmenity[];
 
   @OneToMany(() => RoomHotel, (roomhotel) => roomhotel.hotel)
   roomhotels?: RoomHotel[];
 
   @OneToMany(() => PropertyPolicy, (propertypolicy) => propertypolicy.hotel)
-  propertypolicys?: PropertyPolicy[];
+  propertypolicies?: PropertyPolicy[];
 
   @ManyToOne(() => City, (city) => city.hotels)
   @JoinColumn()

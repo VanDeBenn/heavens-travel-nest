@@ -59,7 +59,7 @@ export class HotelsService {
         photohotels: true,
         categoriserviceamenities: true,
         roomhotels: true,
-        propertypolicys: true,
+        propertypolicies: true,
         city: { province: { country: true } },
       },
     });
@@ -75,6 +75,7 @@ export class HotelsService {
           roomhotels: { photoroomhotels: true },
           photohotels: true,
           city: { province: { country: true } },
+          propertypolicies: true,
         },
       });
     } catch (e) {

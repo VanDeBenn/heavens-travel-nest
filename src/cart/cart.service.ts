@@ -3,6 +3,7 @@ import { RoomHotelsService } from './../room-hotels/room-hotels.service';
 import { DestinationsService } from './../destinations/destinations.service';
 import { UsersService } from '#/users/users.service';
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -95,6 +96,14 @@ export class CartService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
+
+    // Validasi minimal salah satu ada antara destination atau roomHotel
+    if (!destination && !roomHotel) {
+      throw new BadRequestException(
+        'Either destination or room hotel must be provided',
+      );
+    }
+
     const cartItem = new Cart();
     cartItem.user = user;
     cartItem.destination = destination;
