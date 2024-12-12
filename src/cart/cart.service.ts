@@ -97,17 +97,18 @@ export class CartService {
       throw new NotFoundException('User not found');
     }
 
-    // Validasi minimal salah satu ada antara destination atau roomHotel
-    if (!destination && !roomHotel) {
-      throw new BadRequestException(
-        'Either destination or room hotel must be provided',
-      );
-    }
+    // // Validasi minimal salah satu ada antara destination atau roomHotel
+    // if (!destination && !roomHotel) {
+    //   throw new BadRequestException(
+    //     'Either destination or room hotel must be provided',
+    //   );
+    // }
 
     const cartItem = new Cart();
     cartItem.user = user;
     cartItem.destination = destination;
     cartItem.roomHotel = roomHotel;
+    cartItem.quantityRoom = createCartDto.quantityRoom;
     cartItem.quantityAdult = createCartDto.quantityAdult;
     cartItem.quantityChildren = createCartDto.quantityChildren;
     cartItem.startDate = createCartDto.startDate;

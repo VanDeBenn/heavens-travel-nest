@@ -29,9 +29,9 @@ export class BookingsService {
     //   ? await this.destinationService.findOne(createBookingDto.destinationId)
     //   : null;
 
-    // const roomHotel = createBookingDto.roomHotelId
-    //   ? await this.roomHotelService.findOne(createBookingDto.roomHotelId)
-    //   : null;
+    const roomHotel = createBookingDto.roomHotelId
+      ? await this.roomHotelService.findOne(createBookingDto.roomHotelId)
+      : null;
 
     // if (!destination && !roomHotel) {
     //   throw new Error(
@@ -54,6 +54,12 @@ export class BookingsService {
     // dataBooking.statusPayment = createBookingDto.statusPayment;
     // dataBooking.fullFilment = createBookingDto.fullFilment;
     dataBooking.user = user;
+    dataBooking.startDate = createBookingDto.startDate;
+    dataBooking.endDate = createBookingDto.endDate;
+    dataBooking.quantityRoom = createBookingDto.quantityRoom;
+    dataBooking.quantityAdult = createBookingDto.quantityAdult;
+    dataBooking.quantityChildren = createBookingDto.quantityChildren;
+    dataBooking.roomhotel = roomHotel;
     // dataBooking.roomhotel = roomHotel;
     // dataBooking.destination = destination;
 
@@ -84,7 +90,16 @@ export class BookingsService {
         },
         relations: {
           bookingdetails: {
-            cart: { destination: { photodestinations: true }, roomHotel: true },
+            cart: {
+              destination: {
+                city: { province: { country: true } },
+                photodestinations: true,
+              },
+              roomHotel: {
+                photoroomhotels: true,
+                hotel: { city: { province: { country: true } } },
+              },
+            },
           },
           destination: true,
           roomhotel: true,

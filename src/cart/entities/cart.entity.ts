@@ -23,6 +23,9 @@ export class Cart {
   id: string;
 
   @Column({ nullable: true })
+  quantityRoom: Number;
+
+  @Column({ nullable: true })
   quantityAdult: Number;
 
   @Column({ nullable: true })

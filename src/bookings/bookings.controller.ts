@@ -9,6 +9,8 @@ import {
   HttpStatus,
   ParseUUIDPipe,
   Put,
+  Req,
+  HttpException,
 } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
@@ -99,9 +101,10 @@ export class BookingsController {
       data.invoiceId = invoice?.id;
       data.externalId = invoice?.external_id;
       data.payerEmail = invoice?.payer_email;
-      data.status = 'PAID';
+      data.status = 'PENDING';
       data.amount = invoice?.amount;
       data.booking = dto?.bookingId;
+      data.invoiceUrl = invoice?.invoice_url;
 
       await this.paymentRepository.insert(data);
     }
@@ -113,9 +116,16 @@ export class BookingsController {
     };
   }
 
-  @Get(':invoiceId')
+  @Get('invoice/:invoiceId')
   async createCheckoutSession(@Param('invoiceId') invoiceId: string) {
     const invoice = await this.xenditService.getInvoiceById(invoiceId);
+    const payment = await this.paymentService.findOne(invoiceId);
+
+    if (invoice) {
+      payment.status = invoice?.status;
+
+      await this.paymentRepository.save(payment);
+    }
 
     return {
       data: invoice,

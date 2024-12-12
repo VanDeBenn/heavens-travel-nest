@@ -44,8 +44,20 @@ export class Booking {
   @Column({ nullable: true })
   guestPhoneNumber: string;
 
-  // @Column({ nullable: true })
-  // endDate: Date;
+  @Column({ nullable: true })
+  startDate: Date;
+
+  @Column({ nullable: true })
+  endDate: Date;
+
+  @Column({ nullable: true })
+  quantityRoom: Number;
+
+  @Column({ nullable: true })
+  quantityAdult: Number;
+
+  @Column({ nullable: true })
+  quantityChildren: Number;
 
   // @Column({ nullable: true })
   // quantity: number;

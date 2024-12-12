@@ -18,19 +18,22 @@ export class Payment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: true })
   invoiceId: string;
 
-  @Column()
+  @Column({ nullable: true })
+  invoiceUrl: string;
+
+  @Column({ nullable: true })
   externalId: string;
 
-  @Column()
+  @Column({ nullable: true })
   payerEmail: string;
 
-  @Column()
+  @Column({ nullable: true })
   status: string;
 
-  @Column()
+  @Column({ nullable: true })
   amount: number;
 
   @CreateDateColumn({

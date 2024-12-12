@@ -26,31 +26,37 @@ export class CreateBookingDto {
   endDate: Date;
 
   @IsOptional()
-  quantity: number;
+  quantityRoom: number;
 
   @IsOptional()
-  priceDetail: number;
+  quantityAdult: number;
 
   @IsOptional()
-  paymentType: string;
+  quantityChildren: number;
 
-  @IsOptional()
-  paymentDueDate: string;
+  // @IsOptional()
+  // priceDetail: number;
 
-  @IsOptional()
-  paymentAmount: number;
+  // @IsOptional()
+  // paymentType: string;
 
-  @IsOptional()
-  tokenTransaction: number;
+  // @IsOptional()
+  // paymentDueDate: string;
 
-  @IsOptional()
-  totalPrice: number;
+  // @IsOptional()
+  // paymentAmount: number;
 
-  @IsOptional()
-  statusPayment: string;
+  // @IsOptional()
+  // tokenTransaction: number;
 
-  @IsOptional()
-  fullFilment: string;
+  // @IsOptional()
+  // totalPrice: number;
+
+  // @IsOptional()
+  // statusPayment: string;
+
+  // @IsOptional()
+  // fullFilment: string;
 
   @IsOptional()
   userId: string;

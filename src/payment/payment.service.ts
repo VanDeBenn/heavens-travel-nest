@@ -30,56 +30,80 @@ export class PaymentsService {
     user_id: string;
     bookingId: string;
   }) {
-    const user = await this.userService.findOne(dto.user_id);
-    const email = user?.email;
-    const booking = await this.bookingService.findOne(dto.bookingId);
-    const bookingDetails = booking?.bookingdetails;
-    const invoiceId = randomUUID();
-    const external_id = `heavens-travel-${invoiceId}`;
+    console.log('Received DTO:', dto);
 
-    if (!bookingDetails) {
+    const user = await this.userService.findOne(dto.user_id);
+    if (!user || !user.email) {
+      throw new Error('User not found or email is missing');
+    }
+    const email = user.email;
+    console.log('User found:', { user_id: dto.user_id, email });
+
+    const booking = await this.bookingService.findOne(dto.bookingId);
+    if (!booking || !booking.bookingdetails) {
       throw new Error('No booking details found for this booking ID');
     }
+    const bookingDetails = booking.bookingdetails;
+    console.log('Booking details found:', bookingDetails);
+
+    const invoiceId = randomUUID();
+    const external_id = `htrip-${invoiceId}`;
+    console.log('Generated external_id:', external_id);
 
     const items = bookingDetails.map((detail: any) => {
-      const cart = detail.cart;
-      const destination = cart.destination;
+      const cart = detail.cart || {};
+      const destination = cart.destination || {};
+      const roomHotel = cart.roomHotel || {};
+      console.log('ini room hotel', roomHotel);
 
       return {
-        name: destination?.name,
-        quantity: cart.quantityAdult + cart.quantityChildren,
+        name: destination.name || roomHotel.roomType || 'Unknown Item',
+        quantity:
+          (cart.quantityAdult || 0) + (cart.quantityChildren || 0) ||
+          cart.quantityRoom,
         price:
-          destination?.priceAdult * cart.quantityAdult +
-          destination?.priceChildren * cart.quantityChildren,
-        category: 'Destination',
-        url: `${process.env.FRONTEND_URL}/destinations/detail/${destination?.id}`,
+          (destination.priceAdult || 0) * (cart.quantityAdult || 0) +
+            (destination.priceChildren || 0) * (cart.quantityChildren || 0) ||
+          roomHotel.price ||
+          0,
+        category: destination.name ? 'Destination' : 'Hotel',
+        url: destination.name
+          ? `${process.env.FRONTEND_URL}/destinations/detail/${destination.id}`
+          : `${process.env.FRONTEND_URL}/hotels/detail/${roomHotel.hotel.id}` ||
+            `${process.env.FRONTEND_URL}/default-detail`,
       };
     });
+    console.log('Processed items:', items);
 
-    const totalAmount = items.reduce((sum, item) => sum + item.price, 0);
+    const totalAmount = items.reduce((sum, item) => sum + (item.price || 0), 0);
+    console.log('Total amount calculated:', totalAmount);
+
+    if (totalAmount <= 0) {
+      throw new Error('Total amount must be greater than zero');
+    }
 
     try {
-      const response = await axios.post(
-        this.xenditUrl,
-        {
-          external_id: external_id,
-          user_id: user,
-          amount: totalAmount,
-          description: 'no refund',
-          payer_email: email,
-          items,
-          success_redirect_url: 'http://localhost:3000/booking',
-          failure_redirect_url: 'http://localhost:3000/booking',
-        },
-        {
-          headers: { 'Content-Type': 'application/json' },
-          auth: {
-            username: process.env.XENDIT_SECRET_KEY,
-            password: '',
-          },
-        },
-      );
+      const payload = {
+        external_id: external_id,
+        user_id: user.id,
+        amount: totalAmount,
+        description: 'No refund',
+        payer_email: email,
+        items,
+        success_redirect_url: `${process.env.FRONTEND_URL}/booking`,
+        failure_redirect_url: `${process.env.FRONTEND_URL}/booking`,
+      };
+      console.log('Sending payload to Xendit:', payload);
 
+      const response = await axios.post(this.xenditUrl, payload, {
+        headers: { 'Content-Type': 'application/json' },
+        auth: {
+          username: process.env.XENDIT_SECRET_KEY,
+          password: '',
+        },
+      });
+
+      console.log('Xendit response:', response.data);
       return response.data;
     } catch (error) {
       console.error('Xendit Error:', error.response?.data || error.message);
@@ -112,11 +136,11 @@ export class PaymentsService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(invoiceId: string) {
     try {
       return await this.paymentsRepository.findOneOrFail({
         where: {
-          id,
+          invoiceId,
         },
       });
     } catch (e) {
