@@ -16,7 +16,13 @@ async function bootstrap() {
   app.use(CorrelationIdMiddleware());
   app.useLogger(logger);
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: [
+      'http://localhost:3000',
+      '192.168.195.16:3000',
+      '192.168.195.59:3000',
+      'http://192.168.195.16:3000',
+      'http://192.168.195.59.16:3000',
+    ],
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   });

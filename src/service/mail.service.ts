@@ -15,7 +15,7 @@ export class MailService {
       requireTLS: true,
       auth: {
         user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD, // app pw a
+        pass: process.env.APP_PASSWORDS, // app pw a
       },
       tls: {
         rejectUnauthorized: true,

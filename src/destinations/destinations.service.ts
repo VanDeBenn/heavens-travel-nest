@@ -96,7 +96,7 @@ export class DestinationsService {
   findAll() {
     return this.destinationsRepository.findAndCount({
       relations: {
-        city: true,
+        city: { province: true },
         photodestinations: true,
         blogs: true,
       },
@@ -110,11 +110,11 @@ export class DestinationsService {
           id,
         },
         relations: {
-          blogs: { destination: true } ,
+          blogs: { destination: true },
           bookings: true,
           carts: true,
           categoriesfaqs: true,
-          city: { province: { country: true },hotels: true },
+          city: { province: { country: true }, hotels: true },
           photodestinations: true,
           wishlists: true,
         },
