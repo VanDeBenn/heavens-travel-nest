@@ -25,11 +25,13 @@ export class BlogsService {
   async create(createBlogDto: CreateBlogDto) {
     const user = await this.usersService.findOne(createBlogDto.userId);
 
-    const destination = await this.destinationService.findOne(
-      createBlogDto.destinationId,
-    );
-
-    const hotel = await this.hotelService.findOne(createBlogDto.hotelId);
+    const destination = createBlogDto.destinationId 
+      ? await this.destinationService.findOne(createBlogDto.destinationId) 
+      : null; 
+ 
+    const hotel = createBlogDto.hotelId 
+      ? await this.hotelService.findOne(createBlogDto.hotelId) 
+      : null; 
 
     const dataBlog = new Blog();
     dataBlog.title = createBlogDto.title;
@@ -51,9 +53,9 @@ export class BlogsService {
   findAll() {
     return this.blogsRepository.findAndCount({
       relations: {
-        // user: true,
-        destination: { city: true },
-        hotel: { city: true },
+        user: true,
+        destination:  {city: true},
+        hotel:  {city: true},
       },
     });
   }
@@ -68,7 +70,7 @@ export class BlogsService {
           destination: { city: true },
           hotel: { city: true },
         },
-      });
+        });
     } catch (e) {
       if (e instanceof EntityNotFoundError) {
         throw new HttpException(
@@ -88,11 +90,19 @@ export class BlogsService {
   async update(id: string, updateBlogDto: UpdateBlogDto) {
     const user = await this.usersService.findOne(updateBlogDto.userId);
 
-    const destination = await this.destinationService.findOne(
-      updateBlogDto.destinationId,
-    );
-
-    const hotel = await this.hotelService.findOne(updateBlogDto.hotelId);
+    const destination = updateBlogDto.destinationId 
+      ? await this.destinationService.findOne(updateBlogDto.destinationId) 
+      : null; 
+ 
+    const hotel = updateBlogDto.hotelId 
+      ? await this.hotelService.findOne(updateBlogDto.hotelId) 
+      : null; 
+ 
+    if (!destination && !hotel) { 
+      throw new Error( 
+        'Error: Harus ada salah satu dari destination atau roomHotel yang diisi.', 
+      ); 
+    }
 
     let dataBlog = new Blog();
     dataBlog.title = updateBlogDto.title;

@@ -93,6 +93,36 @@ export class HotelsService {
     }
   }
 
+  async findByCityName(dto: { cityName: string }) {
+    try {
+      console.log(`City name received: ${dto.cityName}`);
+
+      const city = await this.citiesRepository
+        .createQueryBuilder('city')
+        .where('LOWER(city.name) = LOWER(:name)', { name: dto.cityName })
+        .getOne();
+
+      if (!city) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'City not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      const cityId = city?.id;
+
+      return await this.hotelsRepository.find({
+        where: { city: { id: cityId } },
+        relations: { city: true },
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+
   // update hotel
   async update(id: string, updateHotelDto: UpdateHotelDto) {
     let dataHotel = new Hotel();

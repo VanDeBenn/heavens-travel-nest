@@ -98,6 +98,7 @@ export class DestinationsService {
       relations: {
         city: true,
         photodestinations: true,
+        blogs: true,
       },
     });
   }
@@ -109,11 +110,11 @@ export class DestinationsService {
           id,
         },
         relations: {
-          blogs: true,
+          blogs: { destination: true } ,
           bookings: true,
           carts: true,
           categoriesfaqs: true,
-          city: { province: { country: true } },
+          city: { province: { country: true },hotels: true },
           photodestinations: true,
           wishlists: true,
         },
