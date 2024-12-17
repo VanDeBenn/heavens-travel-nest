@@ -11,18 +11,23 @@ export class NearbyLocationService {
   constructor(
     @InjectRepository(NearbyLocation)
     private nearbylocationRepository: Repository<NearbyLocation>,
-    private categoriesNearbyLocationService: CategoriesNearbyLocationsService
+    private categoriesNearbyLocationService: CategoriesNearbyLocationsService,
   ) {}
 
   // create new nearbylocation
   async create(createNearbyLocationDto: CreateNearbyLocationDto) {
-    const categoriesNearbyLocation = await this.categoriesNearbyLocationService.findOne(createNearbyLocationDto.categoriesNearbyLocationId);
+    const categoriesNearbyLocation =
+      await this.categoriesNearbyLocationService.findOne(
+        createNearbyLocationDto.categoriesNearbyLocationId,
+      );
 
     const dataNearbyLocation = new NearbyLocation();
-    dataNearbyLocation.title = createNearbyLocationDto.title;
-    dataNearbyLocation.categoriesnearbylocation = categoriesNearbyLocation
+    // dataNearbyLocation.title = createNearbyLocationDto.title;
+    dataNearbyLocation.categoriesnearbylocation = categoriesNearbyLocation;
 
-    const result = await this.nearbylocationRepository.insert(dataNearbyLocation);
+    const result = await this.nearbylocationRepository.insert(
+      dataNearbyLocation,
+    );
 
     return this.nearbylocationRepository.findOneOrFail({
       where: {
@@ -63,10 +68,13 @@ export class NearbyLocationService {
 
   // update nearbylocation
   async update(id: string, updateNearbyLocationDto: UpdateNearbyLocationDto) {
-    const categoriesNearbyLocation = await this.categoriesNearbyLocationService.findOne(updateNearbyLocationDto.categoriesNearbyLocationId);
+    const categoriesNearbyLocation =
+      await this.categoriesNearbyLocationService.findOne(
+        updateNearbyLocationDto.categoriesNearbyLocationId,
+      );
 
     let dataNearbyLocation = new NearbyLocation();
-    dataNearbyLocation.title = updateNearbyLocationDto.title;
+    // dataNearbyLocation.title = updateNearbyLocationDto.title;
     dataNearbyLocation.categoriesnearbylocation = categoriesNearbyLocation;
 
     try {
@@ -89,7 +97,10 @@ export class NearbyLocationService {
       }
     }
 
-    const result = await this.nearbylocationRepository.update(id, dataNearbyLocation);
+    const result = await this.nearbylocationRepository.update(
+      id,
+      dataNearbyLocation,
+    );
 
     return this.nearbylocationRepository.findOneOrFail({
       where: {

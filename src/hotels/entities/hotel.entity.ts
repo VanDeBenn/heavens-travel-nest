@@ -4,6 +4,7 @@ import { CategoriesNearbyLocation } from '#/categories-nearby-location/entities/
 import { CategoriServiceAmenity } from '#/categories-service-amenities/entities/categories-service-amenity.entity';
 import { CategoriSomehelpfulFact } from '#/categories-somehelpful-facts/entities/categories-somehelpful-fact.entity';
 import { City } from '#/cities/entities/city.entity';
+import { Facility } from '#/facilities/entities/facility.entity';
 import { PhotoHotel } from '#/foto-hotels/entities/foto-hotel.entity';
 import { PropertyPolicy } from '#/property-policies/entities/property-policy.entity';
 import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
@@ -98,4 +99,7 @@ export class Hotel {
   @ManyToOne(() => City, (city) => city.hotels)
   @JoinColumn()
   city: City;
+
+  @OneToMany(() => Facility, (facility) => facility.hotels)
+  facility: Facility[];
 }
