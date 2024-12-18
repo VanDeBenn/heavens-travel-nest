@@ -72,10 +72,12 @@ export class HotelsService {
           id,
         },
         relations: {
-          roomhotels: { photoroomhotels: true },
-          photohotels: true,
           city: { province: { country: true } },
+          facility: { serviceAmenities: true },
+          nearbyLocation: { categoriesnearbylocation: true },
+          photohotels: true,
           propertypolicies: true,
+          roomhotels: { photoroomhotels: true },
         },
       });
     } catch (e) {

@@ -6,6 +6,7 @@ import { CategoriSomehelpfulFact } from '#/categories-somehelpful-facts/entities
 import { City } from '#/cities/entities/city.entity';
 import { Facility } from '#/facilities/entities/facility.entity';
 import { PhotoHotel } from '#/foto-hotels/entities/foto-hotel.entity';
+import { NearbyLocation } from '#/nearby-location/entities/nearby-location.entity';
 import { PropertyPolicy } from '#/property-policies/entities/property-policy.entity';
 import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
 import { Wishlist } from '#/wishlist/entities/wishlist.entity';
@@ -102,4 +103,7 @@ export class Hotel {
 
   @OneToMany(() => Facility, (facility) => facility.hotels)
   facility: Facility[];
+
+  @OneToMany(() => NearbyLocation, (nearbyLocation) => nearbyLocation.hotel)
+  nearbyLocation: NearbyLocation[];
 }

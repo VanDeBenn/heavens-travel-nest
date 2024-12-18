@@ -1,15 +1,12 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
-export class CreateCategoriServiceAmenityDto{
-    @IsNotEmpty()
-    title: string;
-    
-    @IsNotEmpty()
-    hotelId: string;
-    
-    @IsNotEmpty()
-    roomHotelId: string;
+export class CreateCategoriServiceAmenityDto {
+  @IsNotEmpty()
+  title: string;
+
+  @IsOptional()
+  hotelId: string;
+
+  @IsOptional()
+  roomHotelId: string;
 }
-
-
- 

@@ -1,34 +1,74 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { FacilitiesService } from './facilities.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
 import { CreateFacilityDto } from './dto/create-facility.dto';
 import { UpdateFacilityDto } from './dto/update-facility.dto';
+import { FacilitiesService } from './facilities.service';
 
 @Controller('facilities')
 export class FacilitiesController {
   constructor(private readonly facilitiesService: FacilitiesService) {}
 
   @Post()
-  create(@Body() createFacilityDto: CreateFacilityDto) {
-    return this.facilitiesService.create(createFacilityDto);
+  async create(@Body() createFacilityDto: CreateFacilityDto) {
+    return {
+      data: await this.facilitiesService.create(createFacilityDto),
+      statusCode: HttpStatus.CREATED,
+      message: 'success',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.facilitiesService.findAll();
+  async findAll() {
+    const [data, count] = await this.facilitiesService.findAll();
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.facilitiesService.findOne(+id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.facilitiesService.findOne(id),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFacilityDto: UpdateFacilityDto) {
-    return this.facilitiesService.update(+id, updateFacilityDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateFacilityDto: UpdateFacilityDto,
+  ) {
+    return {
+      data: await this.facilitiesService.update(id, updateFacilityDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.facilitiesService.remove(+id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.facilitiesService.remove(id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
   }
 }
+
+//

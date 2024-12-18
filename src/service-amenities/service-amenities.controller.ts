@@ -14,9 +14,11 @@ import { ServiceAmenitysService } from './service-amenities.service';
 import { CreateServiceAmenityDto } from './dto/create-service-amenity.dto';
 import { UpdateServiceAmenityDto } from './dto/update-service-amenity.dto';
 
-@Controller('serviceamenitys')
+@Controller('service-amenities')
 export class ServiceAmenitysController {
-  constructor(private readonly serviceamenitysService: ServiceAmenitysService) {}
+  constructor(
+    private readonly serviceamenitysService: ServiceAmenitysService,
+  ) {}
 
   @Post()
   async create(@Body() createServiceAmenityDto: CreateServiceAmenityDto) {
@@ -54,7 +56,10 @@ export class ServiceAmenitysController {
     @Body() updateServiceAmenityDto: UpdateServiceAmenityDto,
   ) {
     return {
-      data: await this.serviceamenitysService.update(id, updateServiceAmenityDto),
+      data: await this.serviceamenitysService.update(
+        id,
+        updateServiceAmenityDto,
+      ),
       statusCode: HttpStatus.OK,
       message: 'success',
     };

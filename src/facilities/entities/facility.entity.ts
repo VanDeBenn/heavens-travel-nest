@@ -20,6 +20,9 @@ export class Facility {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column()
+  status: boolean;
+
   @CreateDateColumn({
     type: 'timestamp with time zone',
     nullable: false,

@@ -17,17 +17,25 @@ export class CategoriServiceAmenitysService {
   ) {}
 
   // create new categoriserviceamenity
-  async create(createCategoriServiceAmenityDto: CreateCategoriServiceAmenityDto) {
-    const hotel = await this.hotelService.findOne(createCategoriServiceAmenityDto.hotelId);
+  async create(
+    createCategoriServiceAmenityDto: CreateCategoriServiceAmenityDto,
+  ) {
+    const hotel = await this.hotelService.findOne(
+      createCategoriServiceAmenityDto.hotelId,
+    );
 
-    const roomHotel = await this.roomHotelService.findOne(createCategoriServiceAmenityDto.roomHotelId);
+    const roomHotel = await this.roomHotelService.findOne(
+      createCategoriServiceAmenityDto.roomHotelId,
+    );
 
     const dataCategoriServiceAmenity = new CategoriServiceAmenity();
     dataCategoriServiceAmenity.title = createCategoriServiceAmenityDto.title;
     dataCategoriServiceAmenity.hotel = hotel;
     dataCategoriServiceAmenity.roomhotel = roomHotel;
 
-    const result = await this.categoriserviceamenitysRepository.insert(dataCategoriServiceAmenity);
+    const result = await this.categoriserviceamenitysRepository.insert(
+      dataCategoriServiceAmenity,
+    );
 
     return this.categoriserviceamenitysRepository.findOneOrFail({
       where: {
@@ -40,8 +48,8 @@ export class CategoriServiceAmenitysService {
     return this.categoriserviceamenitysRepository.findAndCount({
       relations: {
         serviceamenities: true,
-        hotel: true,
-        roomhotel: true,
+        // hotel: true,
+        // roomhotel: true,
       },
     });
   }
@@ -69,13 +77,20 @@ export class CategoriServiceAmenitysService {
   }
 
   // update categoriserviceamenity
-  async update(id: string, updateCategoriServiceAmenityDto: CreateCategoriServiceAmenityDto) {
-    const hotel = await this.hotelService.findOne(updateCategoriServiceAmenityDto.hotelId);
+  async update(
+    id: string,
+    updateCategoriServiceAmenityDto: CreateCategoriServiceAmenityDto,
+  ) {
+    const hotel = await this.hotelService.findOne(
+      updateCategoriServiceAmenityDto.hotelId,
+    );
 
-    const roomHotel = await this.roomHotelService.findOne(updateCategoriServiceAmenityDto.roomHotelId);
+    const roomHotel = await this.roomHotelService.findOne(
+      updateCategoriServiceAmenityDto.roomHotelId,
+    );
 
     let dataCategoriServiceAmenity = new CategoriServiceAmenity();
-    dataCategoriServiceAmenity.title = updateCategoriServiceAmenityDto. title;
+    dataCategoriServiceAmenity.title = updateCategoriServiceAmenityDto.title;
     dataCategoriServiceAmenity.hotel = hotel;
     dataCategoriServiceAmenity.roomhotel = roomHotel;
 
@@ -99,7 +114,10 @@ export class CategoriServiceAmenitysService {
       }
     }
 
-    const result = await this.categoriserviceamenitysRepository.update(id, dataCategoriServiceAmenity);
+    const result = await this.categoriserviceamenitysRepository.update(
+      id,
+      dataCategoriServiceAmenity,
+    );
 
     return this.categoriserviceamenitysRepository.findOneOrFail({
       where: {
@@ -133,4 +151,3 @@ export class CategoriServiceAmenitysService {
     await this.categoriserviceamenitysRepository.delete(id);
   }
 }
-

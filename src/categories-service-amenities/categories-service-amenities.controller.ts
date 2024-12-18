@@ -13,15 +13,20 @@ import {
 import { CategoriServiceAmenitysService } from './categories-service-amenities.service';
 import { CreateCategoriServiceAmenityDto } from './dto/create-categories-service-amenity.dto';
 
-
-@Controller('categoriserviceamenitys')
+@Controller('categori-service-amenities')
 export class CategoriServiceAmenitysController {
-  constructor(private readonly categoriserviceamenitysService: CategoriServiceAmenitysService) {}
+  constructor(
+    private readonly categoriserviceamenitysService: CategoriServiceAmenitysService,
+  ) {}
 
   @Post()
-  async create(@Body() createCategoriServiceAmenityDto: CreateCategoriServiceAmenityDto) {
+  async create(
+    @Body() createCategoriServiceAmenityDto: CreateCategoriServiceAmenityDto,
+  ) {
     return {
-      data: await this.categoriserviceamenitysService.create(createCategoriServiceAmenityDto),
+      data: await this.categoriserviceamenitysService.create(
+        createCategoriServiceAmenityDto,
+      ),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
@@ -54,7 +59,10 @@ export class CategoriServiceAmenitysController {
     @Body() updateCategoriServiceAmenityDto: CreateCategoriServiceAmenityDto,
   ) {
     return {
-      data: await this.categoriserviceamenitysService.update(id, updateCategoriServiceAmenityDto),
+      data: await this.categoriserviceamenitysService.update(
+        id,
+        updateCategoriServiceAmenityDto,
+      ),
       statusCode: HttpStatus.OK,
       message: 'success',
     };
