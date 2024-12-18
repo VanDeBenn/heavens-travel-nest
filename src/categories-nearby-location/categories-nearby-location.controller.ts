@@ -14,14 +14,21 @@ import { CreateCategoriesNearbyLocationDto } from './dto/create-categories-nearb
 import { UpdateCategoriesNearbyLocationDto } from './dto/update-categories-nearby-location.dto';
 import { CategoriesNearbyLocationsService } from './categories-nearby-location.service';
 
-@Controller('categoriesnearbylocations')
+@Controller('categories-nearby-location')
 export class CategoriesNearbyLocationsController {
-  constructor(private readonly categoriesnearbylocationsService: CategoriesNearbyLocationsService) {}
+  constructor(
+    private readonly categoriesnearbylocationsService: CategoriesNearbyLocationsService,
+  ) {}
 
   @Post()
-  async create(@Body() createCategoriesNearbyLocationDto: CreateCategoriesNearbyLocationDto) {
+  async create(
+    @Body()
+    createCategoriesNearbyLocationDto: CreateCategoriesNearbyLocationDto,
+  ) {
     return {
-      data: await this.categoriesnearbylocationsService.create(createCategoriesNearbyLocationDto),
+      data: await this.categoriesnearbylocationsService.create(
+        createCategoriesNearbyLocationDto,
+      ),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
@@ -51,10 +58,14 @@ export class CategoriesNearbyLocationsController {
   @Put(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateCategoriesNearbyLocationDto: UpdateCategoriesNearbyLocationDto,
+    @Body()
+    updateCategoriesNearbyLocationDto: UpdateCategoriesNearbyLocationDto,
   ) {
     return {
-      data: await this.categoriesnearbylocationsService.update(id, updateCategoriesNearbyLocationDto),
+      data: await this.categoriesnearbylocationsService.update(
+        id,
+        updateCategoriesNearbyLocationDto,
+      ),
       statusCode: HttpStatus.OK,
       message: 'success',
     };
@@ -72,4 +83,3 @@ export class CategoriesNearbyLocationsController {
 }
 
 //
-

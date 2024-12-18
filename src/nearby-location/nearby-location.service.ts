@@ -5,6 +5,7 @@ import { NearbyLocation } from './entities/nearby-location.entity';
 import { CreateNearbyLocationDto } from './dto/create-nearby-location.dto';
 import { UpdateNearbyLocationDto } from './dto/update-nearby-location.dto';
 import { CategoriesNearbyLocationsService } from '#/categories-nearby-location/categories-nearby-location.service';
+import { HotelsService } from '#/hotels/hotels.service';
 
 @Injectable()
 export class NearbyLocationService {
@@ -12,6 +13,7 @@ export class NearbyLocationService {
     @InjectRepository(NearbyLocation)
     private nearbylocationRepository: Repository<NearbyLocation>,
     private categoriesNearbyLocationService: CategoriesNearbyLocationsService,
+    private hotelsService: HotelsService,
   ) {}
 
   // create new nearbylocation
@@ -21,9 +23,15 @@ export class NearbyLocationService {
         createNearbyLocationDto.categoriesNearbyLocationId,
       );
 
+    const hotel = await this.hotelsService.findOne(
+      createNearbyLocationDto.hotelId,
+    );
+
     const dataNearbyLocation = new NearbyLocation();
-    // dataNearbyLocation.title = createNearbyLocationDto.title;
+    dataNearbyLocation.location = createNearbyLocationDto.location;
+    dataNearbyLocation.distance = createNearbyLocationDto.distance;
     dataNearbyLocation.categoriesnearbylocation = categoriesNearbyLocation;
+    dataNearbyLocation.hotel = hotel;
 
     const result = await this.nearbylocationRepository.insert(
       dataNearbyLocation,

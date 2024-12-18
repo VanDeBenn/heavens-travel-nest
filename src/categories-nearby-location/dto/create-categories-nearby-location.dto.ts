@@ -1,9 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
 export class CreateCategoriesNearbyLocationDto {
-    @IsNotEmpty()
-    title: string;
-    
-    @IsNotEmpty()
-    hotelId: string;
+  @IsNotEmpty()
+  title: string;
 }

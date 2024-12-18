@@ -1,4 +1,5 @@
 import { CategoriesNearbyLocation } from '#/categories-nearby-location/entities/categories-nearby-location.entity';
+import { Hotel } from '#/hotels/entities/hotel.entity';
 import {
   Entity,
   Column,
@@ -47,4 +48,8 @@ export class NearbyLocation {
   )
   @JoinColumn()
   categoriesnearbylocation: CategoriesNearbyLocation;
+
+  @ManyToOne(() => Hotel, (hotel) => hotel.nearbyLocation)
+  @JoinColumn()
+  hotel: Hotel;
 }

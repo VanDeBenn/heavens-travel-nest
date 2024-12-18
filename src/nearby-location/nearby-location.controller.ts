@@ -14,8 +14,7 @@ import { NearbyLocationService } from './nearby-location.service';
 import { CreateNearbyLocationDto } from './dto/create-nearby-location.dto';
 import { UpdateNearbyLocationDto } from './dto/update-nearby-location.dto';
 
-
-@Controller('nearbylocation')
+@Controller('nearby-locations')
 export class NearbyLocationController {
   constructor(private readonly nearbylocationService: NearbyLocationService) {}
 
@@ -55,7 +54,10 @@ export class NearbyLocationController {
     @Body() updateNearbyLocationDto: UpdateNearbyLocationDto,
   ) {
     return {
-      data: await this.nearbylocationService.update(id, updateNearbyLocationDto),
+      data: await this.nearbylocationService.update(
+        id,
+        updateNearbyLocationDto,
+      ),
       statusCode: HttpStatus.OK,
       message: 'success',
     };

@@ -15,14 +15,16 @@ export class CategoriesNearbyLocationsService {
   ) {}
 
   // create new categoriesnearbylocation
-  async create(createCategoriesNearbyLocationDto: CreateCategoriesNearbyLocationDto) {
-    const hotel = await this.hotelService.findOne(createCategoriesNearbyLocationDto.hotelId);
-
+  async create(
+    createCategoriesNearbyLocationDto: CreateCategoriesNearbyLocationDto,
+  ) {
     const dataCategoriesNearbyLocation = new CategoriesNearbyLocation();
-    dataCategoriesNearbyLocation.title = createCategoriesNearbyLocationDto.title
-    dataCategoriesNearbyLocation.hotel = hotel;
+    dataCategoriesNearbyLocation.title =
+      createCategoriesNearbyLocationDto.title;
 
-    const result = await this.categoriesnearbylocationsRepository.insert(dataCategoriesNearbyLocation);
+    const result = await this.categoriesnearbylocationsRepository.insert(
+      dataCategoriesNearbyLocation,
+    );
 
     return this.categoriesnearbylocationsRepository.findOneOrFail({
       where: {
@@ -35,7 +37,6 @@ export class CategoriesNearbyLocationsService {
     return this.categoriesnearbylocationsRepository.findAndCount({
       relations: {
         nearbylocations: true,
-        hotel: true,
       },
     });
   }
@@ -63,12 +64,13 @@ export class CategoriesNearbyLocationsService {
   }
 
   // update categoriesnearbylocation
-  async update(id: string, updateCategoriesNearbyLocationDto: UpdateCategoriesNearbyLocationDto) {
-    const hotel = await this.hotelService.findOne(updateCategoriesNearbyLocationDto.hotelId);
-
+  async update(
+    id: string,
+    updateCategoriesNearbyLocationDto: UpdateCategoriesNearbyLocationDto,
+  ) {
     let dataCategoriesNearbyLocation = new CategoriesNearbyLocation();
-    dataCategoriesNearbyLocation.title = updateCategoriesNearbyLocationDto.title
-    dataCategoriesNearbyLocation.hotel = hotel;
+    dataCategoriesNearbyLocation.title =
+      updateCategoriesNearbyLocationDto.title;
 
     try {
       await this.categoriesnearbylocationsRepository.findOneOrFail({
@@ -90,7 +92,10 @@ export class CategoriesNearbyLocationsService {
       }
     }
 
-    const result = await this.categoriesnearbylocationsRepository.update(id, dataCategoriesNearbyLocation);
+    const result = await this.categoriesnearbylocationsRepository.update(
+      id,
+      dataCategoriesNearbyLocation,
+    );
 
     return this.categoriesnearbylocationsRepository.findOneOrFail({
       where: {
@@ -124,4 +129,3 @@ export class CategoriesNearbyLocationsService {
     await this.categoriesnearbylocationsRepository.delete(id);
   }
 }
-

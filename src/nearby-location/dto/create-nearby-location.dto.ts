@@ -1,11 +1,15 @@
 import { IsNotEmpty } from 'class-validator';
 
 export class CreateNearbyLocationDto {
-    @IsNotEmpty()
-    title: string;
+  @IsNotEmpty()
+  location: string;
 
-    @IsNotEmpty()
-    categoriesNearbyLocationId: string;;
+  @IsNotEmpty()
+  distance: string;
+
+  @IsNotEmpty()
+  categoriesNearbyLocationId: string;
+
+  @IsNotEmpty()
+  hotelId: string;
 }
-
-
