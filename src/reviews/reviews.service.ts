@@ -1,4 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HotelsService } from '#/hotels/hotels.service';
+import { DestinationsService } from '#/destinations/destinations.service';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { Review } from './entities/review.entity';
@@ -14,6 +21,8 @@ export class ReviewsService {
     private reviewsRepository: Repository<Review>,
     private userService: UsersService,
     private bookingDetailService: BookingDetailsService,
+    private destinationService: DestinationsService,
+    private hotelService: HotelsService,
   ) {}
 
   // create new review
@@ -22,6 +31,19 @@ export class ReviewsService {
     const bookingDetail = await this.bookingDetailService.findOne(
       createReviewDto.bookingDetailId,
     );
+
+    const destination = createReviewDto.destinationId
+      ? await this.destinationService.findOne(createReviewDto.destinationId)
+      : null;
+    const hotel = createReviewDto.hotelId
+      ? await this.hotelService.findOne(createReviewDto.hotelId)
+      : null;
+
+    if (!destination && !hotel) {
+      throw new BadRequestException(
+        'Either destination or hotel must be provided',
+      );
+    }
 
     const dataReview = new Review();
     dataReview.rating = createReviewDto.rating;

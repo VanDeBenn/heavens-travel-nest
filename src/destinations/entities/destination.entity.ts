@@ -5,6 +5,7 @@ import { Cart } from '#/cart/entities/cart.entity';
 import { CategoriesFaq } from '#/categories-faqs/entities/categories-faqs.entity';
 import { City } from '#/cities/entities/city.entity';
 import { PhotoDestination } from '#/foto-destinations/entities/foto-destination.entity';
+import { Review } from '#/reviews/entities/review.entity';
 import { User } from '#/users/entities/user.entity';
 import { Wishlist } from '#/wishlist/entities/wishlist.entity';
 import {
@@ -99,6 +100,9 @@ export class Destination {
 
   @OneToMany(() => Booking, (booking) => booking.destination)
   bookings?: Booking[];
+
+  @OneToMany(() => Review, (review) => review.destination)
+  reviews?: Review[];
 
   @ManyToOne(() => City, (city) => city.destinations)
   @JoinColumn()

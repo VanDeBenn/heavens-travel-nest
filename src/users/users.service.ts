@@ -62,14 +62,16 @@ export class UsersService {
             bookingdetails: {
               cart: {
                 destination: { photodestinations: true },
-                roomHotel: { photoroomhotels: true },
+                roomHotel: { hotel: true, photoroomhotels: true },
               },
             },
+            destination: true,
+            roomhotel: { hotel: true },
             payment: true,
           },
           carts: {
-            destination: true,
-            roomHotel: true,
+            destination: { photodestinations: true },
+            roomHotel: { hotel: { photohotels: true }, photoroomhotels: true },
             bookingDetail: { booking: { payment: true } },
           },
           city: { province: { country: true } },

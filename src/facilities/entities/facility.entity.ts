@@ -20,7 +20,7 @@ export class Facility {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: true })
   status: boolean;
 
   @CreateDateColumn({

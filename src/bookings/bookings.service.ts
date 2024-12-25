@@ -21,38 +21,19 @@ export class BookingsService {
     private roomHotelService: RoomHotelsService,
   ) {}
 
-  // create new booking
   async create(createBookingDto: CreateBookingDto) {
     const user = await this.userService.findOne(createBookingDto.userId);
 
-    // const destination = createBookingDto.destinationId
-    //   ? await this.destinationService.findOne(createBookingDto.destinationId)
-    //   : null;
+    const destination = createBookingDto.destinationId
+      ? await this.destinationService.findOne(createBookingDto.destinationId)
+      : null;
 
     const roomHotel = createBookingDto.roomHotelId
       ? await this.roomHotelService.findOne(createBookingDto.roomHotelId)
       : null;
 
-    // if (!destination && !roomHotel) {
-    //   throw new Error(
-    //     'Error: Harus ada salah satu dari destination atau roomHotel yang diisi.',
-    //   );
-    // }
-
     const dataBooking = new Booking();
-    // dataBooking.customerName = createBookingDto.customerName;
-    // dataBooking.customerEmail = createBookingDto.customerEmail;
-    // dataBooking.CustomerPhoneNumber = createBookingDto.CustomerPhoneNumber;
-    // dataBooking.guestName = createBookingDto.guestName;
-    // dataBooking.guestEmail = createBookingDto.guestEmail;
-    // dataBooking.guestPhoneNumber = createBookingDto.guestPhoneNumber;
-    // dataBooking.paymentType = createBookingDto.paymentType;
-    // dataBooking.paymentDueDate = createBookingDto.paymentDueDate;
-    // dataBooking.paymentAmount = createBookingDto.paymentAmount;
-    // dataBooking.tokenTransaction = createBookingDto.tokenTransaction;
-    // dataBooking.totalPrice = createBookingDto.totalPrice;
-    // dataBooking.statusPayment = createBookingDto.statusPayment;
-    // dataBooking.fullFilment = createBookingDto.fullFilment;
+
     dataBooking.user = user;
     dataBooking.startDate = createBookingDto.startDate;
     dataBooking.endDate = createBookingDto.endDate;
@@ -60,8 +41,7 @@ export class BookingsService {
     dataBooking.quantityAdult = createBookingDto.quantityAdult;
     dataBooking.quantityChildren = createBookingDto.quantityChildren;
     dataBooking.roomhotel = roomHotel;
-    // dataBooking.roomhotel = roomHotel;
-    // dataBooking.destination = destination;
+    dataBooking.destination = destination;
 
     const result = await this.bookingsRepository.insert(dataBooking);
 
@@ -123,7 +103,6 @@ export class BookingsService {
     }
   }
 
-  // update booking
   async update(id: string, updateBookingDto: UpdateBookingDto) {
     const user = await this.userService.findOne(updateBookingDto.userId);
 
@@ -134,14 +113,6 @@ export class BookingsService {
     dataBooking.guestName = updateBookingDto.guestName;
     dataBooking.guestEmail = updateBookingDto.guestEmail;
     dataBooking.guestPhoneNumber = updateBookingDto.guestPhoneNumber;
-    // dataBooking.paymentType = updateBookingDto.paymentType;
-    // dataBooking.paymentDueDate = updateBookingDto.paymentDueDate;
-    // dataBooking.paymentAmount = updateBookingDto.paymentAmount;
-    // dataBooking.tokenTransaction = updateBookingDto.tokenTransaction;
-    // dataBooking.totalPrice = updateBookingDto.totalPrice;
-    // dataBooking.status = updateBookingDto.statusPayment;
-    // dataBooking.fullFilment = updateBookingDto.fullFilment;
-    // dataBooking.user = user;
 
     try {
       await this.bookingsRepository.findOneOrFail({
@@ -172,7 +143,6 @@ export class BookingsService {
     });
   }
 
-  // delete booking
   async remove(id: string) {
     try {
       await this.bookingsRepository.findOneOrFail({

@@ -14,16 +14,20 @@ import { CategoriSomehelpfulFactService } from './categories-somehelpful-facts.s
 import { CreateCategoriSomehelpfulFactDto } from './dto/create-categories-somehelpful-fact.dto';
 import { UpdateCategoriSomehelpfulFactDto } from './dto/update-categories-somehelpful-fact.dto';
 
-
-
-@Controller('categorisomehelpfulfacts')
+@Controller('categori-somehelpful-facts')
 export class CategoriSomehelpfulFactController {
-  constructor(private readonly categorisomehelpfulfactsService: CategoriSomehelpfulFactService) {}
+  constructor(
+    private readonly categorisomehelpfulfactsService: CategoriSomehelpfulFactService,
+  ) {}
 
   @Post()
-  async create(@Body() createCategoriSomehelpfulFactDto: CreateCategoriSomehelpfulFactDto) {
+  async create(
+    @Body() createCategoriSomehelpfulFactDto: CreateCategoriSomehelpfulFactDto,
+  ) {
     return {
-      data: await this.categorisomehelpfulfactsService.create(createCategoriSomehelpfulFactDto),
+      data: await this.categorisomehelpfulfactsService.create(
+        createCategoriSomehelpfulFactDto,
+      ),
       statusCode: HttpStatus.CREATED,
       message: 'success',
     };
@@ -56,7 +60,10 @@ export class CategoriSomehelpfulFactController {
     @Body() updateCategoriSomehelpfulFactDto: UpdateCategoriSomehelpfulFactDto,
   ) {
     return {
-      data: await this.categorisomehelpfulfactsService.update(id, updateCategoriSomehelpfulFactDto),
+      data: await this.categorisomehelpfulfactsService.update(
+        id,
+        updateCategoriSomehelpfulFactDto,
+      ),
       statusCode: HttpStatus.OK,
       message: 'success',
     };

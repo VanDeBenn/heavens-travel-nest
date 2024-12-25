@@ -1,8 +1,8 @@
-import { IsAlpha, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsAlpha, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateReviewDto {
-  @IsNotEmpty()
-  rating: string;
+  @IsOptional()
+  rating: number;
 
   @IsNotEmpty()
   comment: string;
@@ -12,4 +12,10 @@ export class CreateReviewDto {
 
   @IsNotEmpty()
   bookingDetailId: string;
+
+  @IsNotEmpty()
+  destinationId: string;
+
+  @IsNotEmpty()
+  hotelId: string;
 }

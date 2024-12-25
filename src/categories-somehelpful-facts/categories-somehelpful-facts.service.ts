@@ -15,14 +15,15 @@ export class CategoriSomehelpfulFactService {
   ) {}
 
   // create new categorisomehelpfulfact
-  async create(createCategoriSomehelpfulFactDto: CreateCategoriSomehelpfulFactDto) {
-    const hotel = await this.hotelService.findOne(createCategoriSomehelpfulFactDto.hotelId)
-
+  async create(
+    createCategoriSomehelpfulFactDto: CreateCategoriSomehelpfulFactDto,
+  ) {
     const dataCategoriSomehelpfulFact = new CategoriSomehelpfulFact();
     dataCategoriSomehelpfulFact.title = createCategoriSomehelpfulFactDto.title;
-    dataCategoriSomehelpfulFact.hotel = hotel;
 
-    const result = await this.categorisomehelpfulfactsRepository.insert(dataCategoriSomehelpfulFact);
+    const result = await this.categorisomehelpfulfactsRepository.insert(
+      dataCategoriSomehelpfulFact,
+    );
 
     return this.categorisomehelpfulfactsRepository.findOneOrFail({
       where: {
@@ -63,12 +64,12 @@ export class CategoriSomehelpfulFactService {
   }
 
   // update categorisomehelpfulfact
-  async update(id: string, updateCategoriSomehelpfulFactDto: UpdateCategoriSomehelpfulFactDto) {
-    const hotel = await this.hotelService.findOne(updateCategoriSomehelpfulFactDto.hotelId)
-
+  async update(
+    id: string,
+    updateCategoriSomehelpfulFactDto: UpdateCategoriSomehelpfulFactDto,
+  ) {
     let dataCategoriSomehelpfulFact = new CategoriSomehelpfulFact();
     dataCategoriSomehelpfulFact.title = updateCategoriSomehelpfulFactDto.title;
-    dataCategoriSomehelpfulFact.hotel = hotel;
 
     try {
       await this.categorisomehelpfulfactsRepository.findOneOrFail({
@@ -90,7 +91,10 @@ export class CategoriSomehelpfulFactService {
       }
     }
 
-    const result = await this.categorisomehelpfulfactsRepository.update(id, dataCategoriSomehelpfulFact);
+    const result = await this.categorisomehelpfulfactsRepository.update(
+      id,
+      dataCategoriSomehelpfulFact,
+    );
 
     return this.categorisomehelpfulfactsRepository.findOneOrFail({
       where: {

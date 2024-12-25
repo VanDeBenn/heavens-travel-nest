@@ -70,7 +70,7 @@ export class PaymentsService {
         url: destination.name
           ? `${process.env.FRONTEND_URL}/destinations/detail/${destination.id}`
           : `${process.env.FRONTEND_URL}/hotels/detail/${roomHotel.hotel.id}` ||
-            `${process.env.FRONTEND_URL}/default-detail`,
+            `${process.env.FRONTEND_URL}/home`,
       };
     });
     console.log('Processed items:', items);
@@ -90,8 +90,8 @@ export class PaymentsService {
         description: 'No refund',
         payer_email: email,
         items,
-        success_redirect_url: `${process.env.FRONTEND_URL}/booking`,
-        failure_redirect_url: `${process.env.FRONTEND_URL}/booking`,
+        success_redirect_url: `${process.env.FRONTEND_URL}/booking?status=success`,
+        failure_redirect_url: `${process.env.FRONTEND_URL}/booking?status=settled`,
       };
       console.log('Sending payload to Xendit:', payload);
 

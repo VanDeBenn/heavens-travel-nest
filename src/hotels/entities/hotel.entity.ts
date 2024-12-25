@@ -8,6 +8,7 @@ import { Facility } from '#/facilities/entities/facility.entity';
 import { PhotoHotel } from '#/foto-hotels/entities/foto-hotel.entity';
 import { NearbyLocation } from '#/nearby-location/entities/nearby-location.entity';
 import { PropertyPolicy } from '#/property-policies/entities/property-policy.entity';
+import { Review } from '#/reviews/entities/review.entity';
 import { RoomHotel } from '#/room-hotels/entities/room-hotel.entity';
 import { Wishlist } from '#/wishlist/entities/wishlist.entity';
 import {
@@ -106,4 +107,7 @@ export class Hotel {
 
   @OneToMany(() => NearbyLocation, (nearbyLocation) => nearbyLocation.hotel)
   nearbyLocation: NearbyLocation[];
+
+  @OneToMany(() => Review, (reviews) => reviews.hotel)
+  reviews: Review[];
 }
