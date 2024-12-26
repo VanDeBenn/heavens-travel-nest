@@ -81,8 +81,14 @@ export class BookingsService {
               },
             },
           },
-          destination: true,
-          roomhotel: true,
+          destination: {
+            city: { province: { country: true } },
+            photodestinations: true,
+          },
+          roomhotel: {
+            hotel: { city: { province: { country: true } } },
+            photoroomhotels: true,
+          },
           user: true,
           payment: true,
           refund: true,

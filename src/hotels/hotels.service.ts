@@ -51,16 +51,18 @@ export class HotelsService {
   findAll() {
     return this.hotelsRepository.findAndCount({
       relations: {
-        wishlists: true,
         blogs: true,
-        categorisomehelpfulfacts: true,
-        categoriesnearbylocations: true,
-        categoriesfaqs: true,
-        photohotels: true,
-        categoriserviceamenities: true,
-        roomhotels: true,
-        propertypolicies: true,
         city: { province: { country: true } },
+        facility: { serviceAmenities: true },
+        nearbyLocation: true,
+        // categorisomehelpfulfacts: true,
+        // categoriesnearbylocations: true,
+        // categoriesfaqs: true,
+        photohotels: true,
+        propertypolicies: true,
+        // categoriserviceamenities: true,
+        roomhotels: true,
+        wishlists: true,
       },
     });
   }

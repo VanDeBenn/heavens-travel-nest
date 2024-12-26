@@ -116,6 +116,7 @@ export class DestinationsService {
           categoriesfaqs: true,
           city: { province: { country: true }, hotels: true },
           photodestinations: true,
+          reviews: true,
           wishlists: true,
         },
       });

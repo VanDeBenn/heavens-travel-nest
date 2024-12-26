@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateNearbyLocationDto {
   @IsNotEmpty()
@@ -7,7 +7,7 @@ export class CreateNearbyLocationDto {
   @IsNotEmpty()
   distance: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   categoriesNearbyLocationId: string;
 
   @IsNotEmpty()
