@@ -63,10 +63,14 @@ export class ReviewsService {
   findAll() {
     return this.reviewsRepository.findAndCount({
       relations: {
-        bookingdetail: true,
+        bookingdetail: {
+          cart: { destination: true, roomHotel: { hotel: true } },
+        },
         replyreviews: true,
         photoreviews: true,
         user: true,
+        destination: true,
+        hotel: true,
       },
     });
   }

@@ -65,8 +65,8 @@ export class UsersService {
                 roomHotel: { hotel: true, photoroomhotels: true },
               },
             },
-            destination: true,
-            roomhotel: { hotel: true },
+            destination: { photodestinations: true },
+            roomhotel: { hotel: true, photoroomhotels: true },
             payment: true,
           },
           carts: {

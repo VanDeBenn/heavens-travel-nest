@@ -166,7 +166,7 @@ export class DestinationsService {
 
       return await this.destinationsRepository.find({
         where: { city: { id: cityId } },
-        relations: { city: true },
+        relations: { city: true, photodestinations: true },
       });
     } catch (e) {
       throw e;

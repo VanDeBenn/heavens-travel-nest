@@ -79,6 +79,7 @@ export class HotelsService {
           nearbyLocation: { categoriesnearbylocation: true },
           photohotels: true,
           propertypolicies: true,
+          reviews: { user: true, photoreviews: true },
           roomhotels: { photoroomhotels: true },
         },
       });

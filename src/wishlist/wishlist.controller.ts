@@ -9,6 +9,7 @@ import {
   HttpStatus,
   ParseUUIDPipe,
   Put,
+  HttpException,
 } from '@nestjs/common';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
@@ -102,6 +103,29 @@ export class WishlistController {
       statusCode: HttpStatus.OK,
       message: 'success',
     };
+  }
+
+  @Delete()
+  async deleteWishlist(
+    @Body() dto: { destinationName: string; hotelName: string; userId: string },
+  ) {
+    try {
+      await this.wishlistService.delete(dto);
+      return {
+        message: 'Wishlist item deleted successfully',
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'An error occurred while deleting the wishlist',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
 

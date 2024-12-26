@@ -4,7 +4,7 @@ export class CreateWishlistDto {
   @IsNotEmpty()
   userId: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   destinationId: string;
 
   @IsOptional()

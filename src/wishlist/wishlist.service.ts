@@ -7,12 +7,18 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { UsersService } from '#/users/users.service';
 import { HotelsService } from '#/hotels/hotels.service';
 import { DestinationsService } from '#/destinations/destinations.service';
+import { Hotel } from '#/hotels/entities/hotel.entity';
+import { Destination } from '#/destinations/entities/destination.entity';
 
 @Injectable()
 export class WishlistService {
   constructor(
     @InjectRepository(Wishlist)
     private wishlistsRepository: Repository<Wishlist>,
+    @InjectRepository(Hotel)
+    private hotelsRepository: Repository<Hotel>,
+    @InjectRepository(Destination)
+    private destinationRepository: Repository<Destination>,
     private userService: UsersService,
     private destinationService: DestinationsService,
     private hotelService: HotelsService,
@@ -43,100 +49,6 @@ export class WishlistService {
       },
     });
   }
-
-
-
-  // async addDestinationToWishlist(dto: {
-  //   userId: string;
-  //   wishlistId: string;
-  //   destinationId: string;
-  // }) {
-  //   const user = await this.userService.findOne(dto.userId);
-  //   if (!user) throw new Error('User not found');
-
-  //   const wishlist = await this.wishlistsRepository.findOne({
-  //     where: { id: dto.wishlistId, user: { id: dto.userId } },
-  //     relations: { destination: true },
-  //   });
-  //   if (!wishlist) throw new Error('Cart not found');
-
-  //   const destination = await this.destinationService.findOne(
-  //     dto.destinationId,
-  //   );
-  //   if (!destination) throw new Error('Destination not found');
-
-  //   if (wishlist.destination.some((d) => d.id === destination.id)) {
-  //     throw new Error('Destination already in wishlist');
-  //   }
-
-  //   wishlist.destination.push(destination);
-
-  //   return this.wishlistsRepository.save(wishlist);
-  // }
-
-  // async addHotelToWishlist(dto: {
-  //   userId: string;
-  //   wishlistId: string;
-  //   hotelId: string;
-  // }) {
-  //   const user = await this.userService.findOne(dto.userId);
-  //   if (!user) throw new Error('User not found');
-
-  //   const wishlist = await this.wishlistsRepository.findOne({
-  //     where: { id: dto.wishlistId, user: { id: dto.userId } },
-  //     relations: { hotel: true },
-  //   });
-  //   if (!wishlist) throw new Error('Cart not found');
-
-  //   const hotel = await this.hotelService.findOne(dto.hotelId);
-  //   if (!hotel) throw new Error('Hotel not found');
-
-  //   if (wishlist.hotel.some((d) => d.id === hotel.id)) {
-  //     throw new Error('Hotel already in wishlist');
-  //   }
-
-  //   wishlist.hotel.push(hotel);
-
-  //   return this.wishlistsRepository.save(wishlist);
-  // }
-
-  // async removeDestinationFromWishlist(dto: {
-  //   userId: string;
-  //   wishlistId: string;
-  //   destinationId: string;
-  // }) {
-  //   const wishlist = await this.findOne(dto.wishlistId);
-  //   if (!wishlist.destination) {
-  //     throw new Error('No destinations found in the wishlist');
-  //   }
-
-  //   const destination = wishlist.destination.findIndex(
-  //     (d) => d.id === dto.destinationId,
-  //   );
-  //   if (destination === -1) {
-  //     throw new Error('Destination not found in wishlist');
-  //   }
-
-  //   wishlist.destination.splice(destination, 1);
-  //   return this.wishlistsRepository.save(wishlist);
-  // }
-
-  // async removeHotelFromWishlist(dto: {
-  //   userId: string;
-  //   wishlistId: string;
-  //   hotelId: string;
-  // }) {
-  //   const wishlist = await this.findOne(dto.wishlistId);
-
-  //   const hotel = wishlist.hotel.findIndex((h) => h.id === dto.hotelId);
-
-  //   if (hotel === -1) {
-  //     throw new Error('Hotel not found in wishlist');
-  //   }
-
-  //   wishlist.hotel.splice(hotel, 1);
-  //   return this.wishlistsRepository.save(wishlist);
-  // }
 
   findAll() {
     return this.wishlistsRepository.findAndCount({
@@ -240,5 +152,79 @@ export class WishlistService {
     }
 
     await this.wishlistsRepository.delete(id);
+  }
+
+  // delete wishlist
+  async delete(dto: {
+    userId: string;
+    destinationName?: string;
+    hotelName?: string;
+  }) {
+    const user = await this.userService.findOne(dto.userId);
+    if (!user) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.NOT_FOUND,
+          error: 'User not found',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    const filters: any = { user: { id: dto.userId } };
+
+    if (dto.destinationName) {
+      const destination = await this.destinationRepository.findOne({
+        where: { name: dto.destinationName },
+      });
+      if (!destination) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Destination not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      filters.destination = { id: destination.id };
+    }
+
+    if (dto.hotelName) {
+      const hotel = await this.hotelsRepository.findOne({
+        where: { name: dto.hotelName },
+      });
+      if (!hotel) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Hotel not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      filters.hotel = { id: hotel.id };
+    }
+
+    try {
+      const wishlist = await this.wishlistsRepository.findOneOrFail({
+        where: filters,
+      });
+
+      await this.wishlistsRepository.delete(wishlist.id);
+
+      return { message: 'Wishlist item deleted successfully' };
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            error: 'Wishlist not found for the specified filters',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw e;
+      }
+    }
   }
 }
